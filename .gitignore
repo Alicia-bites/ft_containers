@@ -1,0 +1,35 @@
+# Prérequis
+* .d
+ 
+# Fichiers objet compilés
+* .slo
+* .lo
+* .o
+* .obj
+ 
+# En-têtes précompilés
+* .gch
+* .pch
+ 
+# Bibliothèques dynamiques compilées
+* .ainsi
+* .dylib
+* .dll
+ 
+# fichiers de modules Fortran
+* .mod
+* .smod
+ 
+# Bibliothèques statiques compilées
+* .laï
+* .la
+* .a
+* .lib
+ 
+# exécutables
+* .exe
+* .out
+* .app
+
+.vscode
+ft_containers
