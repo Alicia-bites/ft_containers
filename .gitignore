@@ -2,6 +2,7 @@
 * .d
  
 # Fichiers objet compilés
+obj/
 * .slo
 * .lo
 * .o
