@@ -7,7 +7,7 @@ namespace ft
 {
 	// T - the type of the stored elements.
 	// Container - the type of the underlying container to use to store the elements.
-	template <class T, class Container = std::vector<T> >
+	template <typename T, typename Container = std::vector<T> >
 	class stack
 	{
 		public:
@@ -67,7 +67,7 @@ namespace ft
 			// Compares the contents of the underlying containers of two 
 			// container adaptors. The comparison is done by applying the 
 			// corresponding operator to the underlying containers.
-			
+
 			friend bool operator<(const stack<T, Container>& x, const stack<T, Container>& y)
 			{ 
 				return (x.c < y.c);
