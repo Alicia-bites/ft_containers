@@ -64,6 +64,10 @@ namespace ft
 
 			// NON_MEMBER FUNCTIONS -----------------------------------------------------------
 			
+			// Compares the contents of the underlying containers of two 
+			// container adaptors. The comparison is done by applying the 
+			// corresponding operator to the underlying containers.
+			
 			friend bool operator<(const stack<T, Container>& x, const stack<T, Container>& y)
 			{ 
 				return (x.c < y.c);
