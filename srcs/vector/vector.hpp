@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <type_traits>
 #include "../../cool_tools/colors/colors.hpp"
 
 // Generalites sur le conteneur Vector :
@@ -113,6 +114,9 @@ namespace ft
 					size++;
 				}
 			};
+
+			template <typename InputIt>
+			vector(typename std::enable_if<!std::is_integral<InputIt>::value, InputIt>::type first, InputIterator last, const Allocator& = Allocator());  //Range Constructor         //DONE
 
 	//		DESTRUCTORS ----------------------------------------------------------------------------
 			~vector(){};
