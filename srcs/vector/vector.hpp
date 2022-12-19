@@ -65,7 +65,10 @@ namespace ft
 			, capacity_(0)
 			, array_(0)
 			, allocator_(allocator)
-			{};
+			{
+				std::cout << SPRINGGREEN5 << "Calling default constructor " 
+					<< std::endl << RESET;
+			};
 
 			// constructor with a given number of elements
 			explicit vector(std::size_t size, const Allocator & allocator = Allocator())
