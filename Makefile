@@ -11,20 +11,25 @@ IPATH			:=	includes
 OPATH			:=	obj
 
 SRCS_PATH		:=	srcs
-STACK_PATH		:=	stack
+# STACK_PATH		:=	stack
+VECTOR_PATH		:= 	vector
 
 RM				:=	rm -rf
 
-STACK_SRCS		:=	main.cpp
+# STACK_SRCS		:=	main.cpp \
 
-SRCS			:= $(STACK_SRCS)
+VECTOR_SRCS		:= 	main.cpp \
+
+SRCS			:=	$(STACK_SRCS) \
+					$(VECTOR_SRCS)
 
 OBJS			:=	$(addprefix $(OPATH)/, $(SRCS:.cpp=.o))
 DEPS			:=	$(OBJS:.o=.d)
 
 vpath %.hpp $(IPATH)
 vpath %.cpp $(SRCS_PATH)\
-			$(SRCS_PATH)/$(STACK_PATH)\
+			$(SRCS_PATH)/$(STACK_PATH) \
+			$(SRCS_PATH)/$(VECTOR_PATH) \
 
 vpath %.o $(OPATH)
 
