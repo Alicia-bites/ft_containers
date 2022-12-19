@@ -19,6 +19,7 @@ RM				:=	rm -rf
 # STACK_SRCS		:=	main.cpp \
 
 VECTOR_SRCS		:= 	main.cpp \
+					vector.cpp \
 
 SRCS			:=	$(STACK_SRCS) \
 					$(VECTOR_SRCS)
