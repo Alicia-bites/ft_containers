@@ -15,7 +15,9 @@ int main(int argc, char **argv)
 	{
 		if (test_number == 1)
 		{
-			std::cout << DODGERBLUE1 << "TEST #" << test_number << std::endl << std::endl << RESET;
+			std::cout << DODGERBLUE1 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << DODGERBLUE3 << "Testing default constructor" 
+				<< RESET << std::endl << std::endl;
 
 			std::vector<int>	std_vector;
 			ft::vector<int>		ft_vector;
@@ -31,6 +33,8 @@ int main(int argc, char **argv)
 		if (test_number == 2)
 		{
 			std::cout << DODGERBLUE1 << "TEST #" << test_number << std::endl << std::endl << RESET;
+			std::cout << DODGERBLUE3 << "Testing param1 constructor and param 2 constructor" 
+				<< RESET << std::endl << std::endl;
 
 			std::vector<char> std_vector_0 (4);
 			std::cout << "Printing content of std_vector_0 :" << std::endl;
