@@ -1,7 +1,6 @@
 #include "vector.hpp"
 
 #include <vector>
-#include <stdlib.h>
 
 int main(int argc, char **argv)
 {
@@ -36,7 +35,7 @@ int main(int argc, char **argv)
 			std::cout << DODGERBLUE3 << "Testing param1 constructor and param 2 constructor" 
 				<< RESET << std::endl << std::endl;
 
-			std::vector<char> std_vector_0 (4);
+			std::vector<int> std_vector_0 (4);
 			std::cout << "Printing content of std_vector_0 :" << std::endl;
 			std::cout << "- START -" << std::endl;
 			for (size_t i = 0; i < std_vector_0.size(); ++i)
@@ -77,8 +76,14 @@ int main(int argc, char **argv)
 			std::vector<int> std_vector (myints, myints+10);
 			std::cout << "Printing content of std_vector :" << std::endl;
 			for (size_t i = 0; i < std_vector.size(); ++i)
-    		std::cout << std_vector[i] << ' ' << std::endl;
+    			std::cout << std_vector[i] << ' ' << std::endl;
+			std::cout << std::endl;
 
+			ft::vector<int> ft_vector(myints, myints+10);
+			std::cout << "Printing content of ft_vector :" << std::endl;
+			for (size_t i = 0; i < ft_vector.size(); ++i)
+    			std::cout << ft_vector[i] << ' ' << std::endl;
+			std::cout << std::endl;
 			std::cout << std::endl << DODGERBLUE1
 			<< "#########################################################"
 			<< std::endl << RESET;

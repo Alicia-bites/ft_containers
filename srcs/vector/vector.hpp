@@ -1,7 +1,10 @@
 #pragma once
 
 #include <iostream>
-#include <type_traits>
+#include "../../cool_tools/type_traits.hpp"
+#include <stdlib.h>
+#include <iterator>
+
 #include "../../cool_tools/colors/colors.hpp"
 
 // Generalites sur le conteneur Vector :
@@ -74,6 +77,8 @@ namespace ft
 			// constructor with a given number of elements
 			explicit vector(std::size_t size, const Allocator & allocator = Allocator())
 			: size_(size)
+			, capacity_(0)
+			, array_(0)
 			, allocator_(allocator)
 			{
 				std::cout << SPRINGGREEN5 << "Calling param1 constructor " 
@@ -89,13 +94,14 @@ namespace ft
 				{
 					// std::allocator::construct -- > Constructs an element object on the location pointed by p.
 					allocator_.construct(array_ + i, T());
-					size++;
 				}
 			};
 
 			// constructor with a given number of elements and a value to initialize the elements
 			explicit vector(std::size_t size, const T & value, const Allocator & allocator = Allocator())
 			: size_(size)
+			, capacity_(0)
+			, array_(0)
 			, allocator_(allocator)
 			{
 				std::cout << SPRINGGREEN5 << "Calling param2 constructor " 
@@ -111,12 +117,30 @@ namespace ft
 				{
 					// std::allocator::construct -- > Constructs an element object on the location pointed by p.
 					allocator_.construct(array_ + i, value);
-					size++;
 				}
 			};
 
 			template <typename InputIt>
-			vector(typename std::enable_if<!std::is_integral<InputIt>::value, InputIt>::type first, InputIterator last, const Allocator& = Allocator());  //Range Constructor         //DONE
+				vector(typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type first, InputIt last, const Allocator & allocator = Allocator())
+				: size_(0)
+				, capacity_(0)
+				, array_(0)
+				, allocator_(allocator)
+				{
+					std::ptrdiff_t diff = abs(first - last);
+					size_ = diff;
+					if (size_)
+					{
+						array_ = allocator_.allocate(size_);
+						capacity_ = size_;
+					}
+					for (std::size_t i = 0; i < size_; i++)
+					{
+						// std::cout << RED1 << *first << RESET << std::endl;
+						allocator_.construct(array_ + i, *first);
+						first++;
+					}
+				};
 
 	//		DESTRUCTORS ----------------------------------------------------------------------------
 			~vector(){};
