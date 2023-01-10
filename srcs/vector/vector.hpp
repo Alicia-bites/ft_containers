@@ -20,10 +20,10 @@
 // -- 2) On peut effectuer toutes les operations de construc-
 //			tions (construction d'un conteneur vide,
 //			construction d'un conteneur avec un nombre donne
-			// d'elements, construction avec un nombre donne
-			// d'elements initialises a une valeur et cons-
-			// truction a partir d'une sequence + construc-
-			// tion a partir d'un conteneur du meme type.)
+//			d'elements, construction avec un nombre donne
+//			d'elements initialises a une valeur et cons-
+//			truction a partir d'une sequence + construc-
+//			tion a partir d'un conteneur du meme type.)
 //		 On peut effectuer toutes les operations d'affecta-
 // 			tion (on peut affecter un conteneur d'un type
 //			donne a un autre conteneur de meme type avec
@@ -64,13 +64,16 @@ namespace ft
 			// no param constructor --> construct empty container,
 			// we call Allocator() which is the default constructor
 			// for the Allocator class.
+			// "explicit" : Specifies that a constructor is explicit,
+			// that is, it cannot be used for implicit conversions 
+			// and copy-initialization.
 			explicit vector(const Allocator & allocator = Allocator())
 			: size_(0)
 			, capacity_(0)
 			, array_(0)
 			, allocator_(allocator)
 			{
-				std::cout << SPRINGGREEN5 << "Calling default constructor " 
+				std::cout << SPRINGGREEN5 << "Calling default constructor." 
 					<< std::endl << RESET;
 			};
 
@@ -81,7 +84,7 @@ namespace ft
 			, array_(0)
 			, allocator_(allocator)
 			{
-				std::cout << SPRINGGREEN5 << "Calling param1 constructor " 
+				std::cout << SPRINGGREEN5 << "Calling empty conainter constructor." 
 					<< std::endl << RESET;
 				// step 1 : allocate memory
 				if (size_ != 0)
@@ -104,7 +107,7 @@ namespace ft
 			, array_(0)
 			, allocator_(allocator)
 			{
-				std::cout << SPRINGGREEN5 << "Calling param2 constructor " 
+				std::cout << SPRINGGREEN5 << "Calling fill constructor." 
 					<< std::endl << RESET;
 				// step 1 : allocate memory
 				if (size_ != 0)
@@ -120,6 +123,9 @@ namespace ft
 				}
 			};
 
+//			range constructor : Constructs a container with as many elements as
+//				the range [first,last), with each element constructed 
+//				from its corresponding element in that range, in the same order.
 			template <typename InputIt>
 				vector(typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type first, InputIt last, const Allocator & allocator = Allocator())
 				: size_(0)
