@@ -32,7 +32,7 @@ int main(int argc, char **argv)
 		if (test_number == 2)
 		{
 			std::cout << DODGERBLUE1 << "TEST #" << test_number << std::endl << std::endl << RESET;
-			std::cout << DODGERBLUE3 << "Testing param1 constructor and param 2 constructor" 
+			std::cout << DODGERBLUE3 << "Testing empty container constructor and fill constructor" 
 				<< RESET << std::endl << std::endl;
 
 			std::vector<int> std_vector_0 (4);
@@ -71,7 +71,8 @@ int main(int argc, char **argv)
 		if (test_number == 3)
 		{
 			std::cout << DODGERBLUE1 << "TEST #" << test_number << std::endl << std::endl << RESET;
-
+			std::cout << DODGERBLUE3 << "Testing range constructor" 
+				<< RESET << std::endl << std::endl;
 			int myints[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 			std::vector<int> std_vector (myints, myints+10);
 			std::cout << "Printing content of std_vector :" << std::endl;
@@ -83,6 +84,16 @@ int main(int argc, char **argv)
 			std::cout << "Printing content of ft_vector :" << std::endl;
 			for (size_t i = 0; i < ft_vector.size(); ++i)
     			std::cout << ft_vector[i] << ' ' << std::endl;
+			std::cout << std::endl;
+			std::cout << std::endl << DODGERBLUE1
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+	}
+		if (test_number == 4)
+		{
+			std::cout << DODGERBLUE1 << "TEST #" << test_number << std::endl << std::endl << RESET;
+
 			std::cout << std::endl;
 			std::cout << std::endl << DODGERBLUE1
 			<< "#########################################################"
