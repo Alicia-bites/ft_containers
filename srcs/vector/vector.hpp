@@ -73,7 +73,7 @@ namespace ft
 			, array_(0)
 			, allocator_(allocator)
 			{
-				std::cout << SPRINGGREEN5 << "Calling default constructor." 
+				std::cout << OLIVE << "Calling default constructor." 
 					<< std::endl << RESET;
 			};
 
@@ -84,7 +84,7 @@ namespace ft
 			, array_(0)
 			, allocator_(allocator)
 			{
-				std::cout << SPRINGGREEN5 << "Calling empty conainter constructor." 
+				std::cout << OLIVE << "Calling empty conainter constructor." 
 					<< std::endl << RESET;
 				// step 1 : allocate memory
 				if (size_ != 0)
@@ -107,7 +107,7 @@ namespace ft
 			, array_(0)
 			, allocator_(allocator)
 			{
-				std::cout << SPRINGGREEN5 << "Calling fill constructor." 
+				std::cout << OLIVE << "Calling fill constructor." 
 					<< std::endl << RESET;
 				// step 1 : allocate memory
 				if (size_ != 0)
@@ -133,6 +133,8 @@ namespace ft
 				, array_(0)
 				, allocator_(allocator)
 				{
+					std::cout << OLIVE << "Calling range constructor." 
+						<< std::endl << RESET;
 					std::ptrdiff_t diff = abs(first - last);
 					size_ = diff;
 					if (size_)
@@ -148,25 +150,117 @@ namespace ft
 					}
 				};
 
-	//		DESTRUCTORS ----------------------------------------------------------------------------
-			~vector(){};
+	//			Copy constructor : Constructs a container with a copy of each of 
+	//			the elements in x, in the same order.
+				vector(const vector<T,Allocator> & original)
+				: size_(original.size_)
+				, capacity_(original.capacity_)
+				, array_(0)
+				, allocator_(original.allocator_)
+				{
+					std::cout << OLIVE << "Calling copy constructor." 
+						<< std::endl << RESET;
+					if (original.capacity_)
+					{
+						array_ = allocator_.allocate(original.capacity_);
+					}
+					for (size_t i = 0; i < original.size_; i++)
+					{
+						allocator_.construct(array_ + i, original[i]);
+					}
+				};
+
+	//		DESTRUCTORS --------------------------------------------------------------------------------------
+			~vector()
+			{
+				std::cout << OLIVE << "Calling destructor." 
+					<< std::endl << RESET;
+				if (capacity_ == 0)
+					return ;
+				for (size_t i = 0; i < size_; i++)
+				{
+					allocator_.destroy(array_ + i);
+				}
+				allocator_.deallocate(array_, capacity_);
+			};
+
+//			ASSIGNEMENT OPERATOR
+			vector<T,Allocator>& operator=(const vector<T,Allocator>& src)
+			{
+				std::cout << MAGENTA3 << "Calling assignment operator." 
+					<< std::endl << RESET;
+				if (this != &src)
+				{
+					ft::vector<int> unconst_src(src);
+					swap(unconst_src);
+					if (capacity_ > src.capacity_)
+					{
+						for (size_t i = size_; i != src.size_; i--)
+						{
+							std::cout << array_[i] << std::endl;
+							allocator_.destroy(array_ + i);
+						}
+					}
+				}
+				return *this;
+			};
 
 			// GETTERS ---------------------------------------------------------------------------------------
 			std::size_t size()
 			{
 				return size_;
-			}
+			};
 
-	//		ACCESSORS ----------------------------------------------------------------------------
+	//		ACCESSORS ----------------------------------------------------------------------------------------
 			typename vector<T, Allocator>::reference	operator[](std::size_t index)
 			{
 				return (array_[index]);
-			}
+			};
+
+			typename vector<T, Allocator>::reference	operator[](std::size_t index) const
+			{
+				return (array_[index]);
+			};
+
+//			MEMBER FUNCTIONS ---------------------------------------------------------------------------------
+//			Exchanges the content of the container by the content of swapMe,
+//			which is another vector object of the same type. Sizes may differ.
+			void    swap(vector<T, Allocator>& swapMe)
+			{
+				pointer  tmp;
+				size_t   tmp_size;
+
+				std::cout << MAGENTA5 << "Swap member function called."
+					<< std::endl << RESET;
+				// step 1 : swap arrays (aka pointer to the array of elements of type T)
+				if (array_ != swapMe.array_)
+				{
+					tmp = array_;
+					array_ = swapMe.array_;
+					swapMe.array_ = tmp;
+				}
+
+				// step 2 : swap sizes
+				if (size_ != swapMe.size_)
+				{
+					tmp_size = size_;
+					size_ = swapMe.size_;
+					swapMe.size_ = tmp_size;
+				}
+
+				// step 3 : swap capacities
+				if (capacity_ != swapMe.capacity_)
+				{
+					tmp_size = capacity_;
+					capacity_ = swapMe.capacity_;
+					swapMe.capacity_ = tmp_size;
+				}
+			};
 
 		private:
-			// number of elements in tab
+			// number of elements to add in tab
 			std::size_t		size_;
-			// size of tab (how much we need to malloc)
+			// size of tab (total number of elements at instant t)
 			std::size_t		capacity_;
 			// pointer to the array of elements of type T
 			pointer			array_;

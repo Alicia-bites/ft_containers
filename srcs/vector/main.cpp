@@ -14,8 +14,8 @@ int main(int argc, char **argv)
 	{
 		if (test_number == 1)
 		{
-			std::cout << DODGERBLUE1 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << DODGERBLUE3 << "Testing default constructor" 
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing default constructor" 
 				<< RESET << std::endl << std::endl;
 
 			std::vector<int>	std_vector;
@@ -24,15 +24,15 @@ int main(int argc, char **argv)
 			std::cout << ORANGE1 << sizeof(ft_vector) << RESET << std::endl;
 
 
-			std::cout << std::endl << DODGERBLUE1
+			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
 			<< std::endl << RESET;
 		}
 
 		if (test_number == 2)
 		{
-			std::cout << DODGERBLUE1 << "TEST #" << test_number << std::endl << std::endl << RESET;
-			std::cout << DODGERBLUE3 << "Testing empty container constructor and fill constructor" 
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing empty container constructor and fill constructor" 
 				<< RESET << std::endl << std::endl;
 
 			std::vector<int> std_vector_0 (4);
@@ -63,39 +63,155 @@ int main(int argc, char **argv)
 			for (size_t i = 0; i < ft_vector.size(); ++i)
     			std::cout << i << " : " << ft_vector[i] << std::endl;
 			std::cout << "- END -" << std::endl;
-			std::cout << std::endl << DODGERBLUE1
+			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
 			<< std::endl << RESET;
 		}
 
 		if (test_number == 3)
 		{
-			std::cout << DODGERBLUE1 << "TEST #" << test_number << std::endl << std::endl << RESET;
-			std::cout << DODGERBLUE3 << "Testing range constructor" 
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing range constructor" 
 				<< RESET << std::endl << std::endl;
 			int myints[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 			std::vector<int> std_vector (myints, myints+10);
 			std::cout << "Printing content of std_vector :" << std::endl;
 			for (size_t i = 0; i < std_vector.size(); ++i)
-    			std::cout << std_vector[i] << ' ' << std::endl;
+    			std::cout << std_vector[i] << std::endl;
 			std::cout << std::endl;
 
 			ft::vector<int> ft_vector(myints, myints+10);
 			std::cout << "Printing content of ft_vector :" << std::endl;
 			for (size_t i = 0; i < ft_vector.size(); ++i)
-    			std::cout << ft_vector[i] << ' ' << std::endl;
+    			std::cout << ft_vector[i] << std::endl;
 			std::cout << std::endl;
-			std::cout << std::endl << DODGERBLUE1
+			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
 			<< std::endl << RESET;
 		}
-	}
 		if (test_number == 4)
 		{
-			std::cout << DODGERBLUE1 << "TEST #" << test_number << std::endl << std::endl << RESET;
-
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing copy constructor" 
+				<< RESET << std::endl << std::endl;
+			int myints[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+			ft::vector<int> ft_vector(myints, myints+10);
+			std::cout << "Printing content of ft_vector " << std::endl;
+			for (size_t i = 0; i < ft_vector.size(); ++i)
+				std::cout << ft_vector[i] << std::endl;
+			std::cout << "Creating a copy of ft_vector..." << std::endl;
+			ft::vector<int> copy_ft_vector (ft_vector);
+			std::cout << "Printing content of copy_ft_vector :" << std::endl;
+			for (size_t i = 0; i < copy_ft_vector.size(); i++)
+				std::cout << copy_ft_vector[i] << std::endl;
 			std::cout << std::endl;
-			std::cout << std::endl << DODGERBLUE1
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+		if (test_number == 5)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing swap member function" 
+				<< RESET << std::endl << std::endl;
+
+			int uneven_ints[] = {1, 3, 5};
+			ft::vector<int> gandalf(uneven_ints, uneven_ints+3);
+			int even_ints[] = {2, 4, 6};
+			ft::vector<int> galadriel(even_ints, even_ints+3);
+			std::cout << "gandalf" << " | " << "galadriel" << std::endl;
+			for (size_t i = 0, j = 0; i < gandalf.size() && j < galadriel.size(); i++, j++)
+				std::cout << gandalf[i] << "       | " << galadriel[j] << std::endl;
+			gandalf.swap(galadriel);
+			std::cout << "gandalf" << " | " << "galadriel" << std::endl;
+			for (size_t i = 0, j = 0; i < gandalf.size() && j < galadriel.size(); i++, j++)
+				std::cout << gandalf[i] << "       | " << galadriel[j] << std::endl;
+			std::cout << std::endl;
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		if (test_number == 6)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing assignement operator, with 2 vectors of the same size" 
+				<< RESET << std::endl << std::endl;
+
+			int uneven_ints[] = {1, 3, 5};
+			ft::vector<int> gandalf(uneven_ints, uneven_ints+3);
+			int even_ints[] = {2, 4, 6};
+			ft::vector<int> galadriel(even_ints, even_ints+3);
+			std::cout << "gandalf" << " | " << "galadriel" << std::endl;
+			for (size_t i = 0, j = 0; i < gandalf.size() && j < galadriel.size(); i++, j++)
+				std::cout << gandalf[i] << "       | " << galadriel[j] << std::endl;
+			gandalf = galadriel;
+			std::cout << "gandalf" << " | " << "galadriel" << std::endl;
+			for (size_t i = 0, j = 0; i < gandalf.size() && j < galadriel.size(); i++, j++)
+				std::cout << gandalf[i] << "       | " << galadriel[j] << std::endl;
+			
+			std::cout << std::endl;
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+		if (test_number == 7)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing assignement operator, with the src smaller than the recever" 
+				<< RESET << std::endl << std::endl;
+
+			int bigger[] = {1, 3, 5};
+			ft::vector<int> gandalf(bigger, bigger+3);
+			int smaller[] = {2};
+			ft::vector<int> galadriel(smaller, smaller+1);
+			std::cout << "gandalf" << " | " << "galadriel" << std::endl;
+			for (size_t i = 0, j = 0; i < gandalf.size() || j < galadriel.size(); i++, j++)
+			{
+				if (i >= gandalf.size())
+					std::cout << "N" << "       | " << galadriel[j] << std::endl;
+				else if (j >= galadriel.size())
+					std::cout << gandalf[i] << "       | " << "N" << std::endl;
+				else
+					std::cout << gandalf[i] << "       | " << galadriel[j] << std::endl;
+			}
+			gandalf = galadriel;
+			std::cout << "gandalf" << " | " << "galadriel" << std::endl;
+			for (size_t i = 0, j = 0; i < gandalf.size() || j < galadriel.size(); i++, j++)
+				std::cout << gandalf[i] << "       | " << galadriel[j] << std::endl;
+			
+			std::cout << std::endl;
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+		if (test_number == 8)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing assignement operator, with the src bigger than the recever"
+				<< RESET << std::endl << std::endl;
+
+			int bigger[] = {1, 3, 5};
+			int smaller[] = {2};
+			ft::vector<int> gandalf(smaller, smaller+1);
+			ft::vector<int> galadriel(bigger, bigger+3);
+			std::cout << "gandalf" << " | " << "galadriel" << std::endl;
+			for (size_t i = 0, j = 0; i < gandalf.size() || j < galadriel.size(); i++, j++)
+			{
+				if (i >= gandalf.size())
+					std::cout << "N" << "       | " << galadriel[j] << std::endl;
+				else if (j >= galadriel.size())
+					std::cout << gandalf[i] << "       | " << "N" << std::endl;
+				else
+					std::cout << gandalf[i] << "       | " << galadriel[j] << std::endl;
+			}
+			gandalf = galadriel;
+			std::cout << "gandalf" << " | " << "galadriel" << std::endl;
+			for (size_t i = 0, j = 0; i < gandalf.size() || j < galadriel.size(); i++, j++)
+				std::cout << gandalf[i] << "       | " << galadriel[j] << std::endl;
+			
+			std::cout << std::endl;
+			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
 			<< std::endl << RESET;
 		}
@@ -103,6 +219,7 @@ int main(int argc, char **argv)
 	catch(const std::exception& e)
 	{
 		std::cerr << e.what() << '\n';
-	}	
+	}
+	std::cout << STEELBLUE2 << "All tests done!" << RESET << std::endl;
 	return 0;
 }
