@@ -56,8 +56,18 @@ namespace ft
 	{
 		public:
 			// HOMEMADE TYPE DEFINITION
-			typedef typename Allocator::pointer		pointer;
-			typedef typename Allocator::reference	reference;
+			typedef typename Allocator::reference			reference;
+			typedef typename Allocator::const_reference		const_reference;
+			// typedef implementation defined				iterator;
+			// typedef implementation defined				const_iterator;
+			// typedef implementation defined				size_type;
+			// typedef implementation defined				difference_type;
+			typedef T										value_type;
+			typedef Allocator								allocator_type;
+			typedef typename Allocator::pointer				pointer;
+			typedef typename Allocator::const_pointer		const_pointer;
+			// typedef ft::reverse_iterator<iterator>			reverse_iterator;
+			// typedef ft::reverse_iterator<const_iterator> 	const_reverse_iterator;
 
 	//		CONSTRUCTORS ----------------------------------------------------------------------------
 
@@ -190,6 +200,16 @@ namespace ft
 				allocator_.deallocate(array_, capacity_);
 			};
 
+	//		ITERATORS --------------------------------------------------------------------------------------
+			iterator				begin();
+			// const_iterator			begin() const;
+			// iterator				end();
+			// const_iterator			end() const;
+			// reverse_iterator		rbegin();
+			// const_reverse_iterator 	rbegin() const;
+			// reverse_iterator		rend();
+			// const_reverse_iterator 	rend() const;
+
 //			ASSIGNEMENT
 			vector<T,Allocator>& operator=(const vector<T,Allocator>& src)
 			{
@@ -269,6 +289,12 @@ namespace ft
 					swapMe.capacity_ = tmp_size;
 				}
 			};
+
+			// void    clear()
+			// {
+			// 	while (!empty())
+			// 		pop_back();
+			// };
 
 		private:
 			// number of elements to add in tab

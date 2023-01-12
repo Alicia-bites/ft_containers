@@ -235,6 +235,45 @@ int main(int argc, char **argv)
 			<< "#########################################################"
 			<< std::endl << RESET;
 		}
+		if (test_number == 9)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing ft::vector::assign, with 2 vectors of the same size" 
+				<< RESET << std::endl << std::endl;
+
+			int uneven_ints[] = {1, 3, 5};
+			int even_ints[] = {2, 4, 6};
+
+			ft::vector<int> gandalf(uneven_ints, uneven_ints+3);
+			ft::vector<int> galadriel(even_ints, even_ints+3);
+
+			std::vector<int> sauron(uneven_ints, uneven_ints+3);
+			std::vector<int> saruman(even_ints, even_ints+3);
+
+			std::cout << "sauron" << " | " << "saruman" << std::endl;
+			for (size_t i = 0, j = 0; i < sauron.size() && j < saruman.size(); i++, j++)
+				std::cout << sauron[i] << "      | " << saruman[j] << std::endl;
+			sauron.assign(saruman.begin(), saruman.end());
+			std::cout << std::endl;
+			std::cout << "sauron" << " | " << "saruman" << std::endl;
+			for (size_t i = 0, j = 0; i < sauron.size() && j < saruman.size(); i++, j++)
+				std::cout << sauron[i] << "      | " << saruman[j] << std::endl;
+
+			// std::cout << "gandalf" << " | " << "galadriel" << std::endl;
+			// for (size_t i = 0, j = 0; i < gandalf.size() && j < galadriel.size(); i++, j++)
+				// std::cout << gandalf[i] << "       | " << galadriel[j] << std::endl;
+// 
+			// gandalf.assign(galadriel.begin(), galadriel.end());
+			// std::cout << "gandalf" << " | " << "galadriel" << std::endl;
+			// for (size_t i = 0, j = 0; i < gandalf.size() && j < galadriel.size(); i++, j++)
+				// std::cout << gandalf[i] << "       | " << galadriel[j] << std::endl;
+			
+			std::cout << std::endl;
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+		
 	}
 	catch(const std::exception& e)
 	{
