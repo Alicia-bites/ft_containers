@@ -73,6 +73,7 @@ int main(int argc, char **argv)
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
 			std::cout << STEELBLUE3 << "Testing range constructor" 
 				<< RESET << std::endl << std::endl;
+			std::cout << "Constructing a vector with range using vectors" << std::endl;
 			int myints[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 			std::vector<int> std_vector (myints, myints+10);
 			std::cout << "Printing content of std_vector :" << std::endl;
@@ -84,6 +85,25 @@ int main(int argc, char **argv)
 			std::cout << "Printing content of ft_vector :" << std::endl;
 			for (size_t i = 0; i < ft_vector.size(); ++i)
     			std::cout << ft_vector[i] << std::endl;
+			std::cout << std::endl;
+
+			std::cout << "Constructing a vector with range using iterators" << std::endl;
+			ft::vector<int> ft_vector_it_test (std_vector.begin(), std_vector.end());
+			std::cout << "Printing content of ft_vector_it_test :" << std::endl;
+			for (size_t i = 0; i < ft_vector_it_test.size(); ++i)
+    			std::cout << ft_vector_it_test[i] << std::endl;
+			std::cout << std::endl;
+
+			std::cout << "Constructing a vector with range using front() and end()" << std::endl;
+			std::vector<int> gandalf (std_vector.front(), std_vector.back());
+			std::cout << "Printing content of gandalf :" << std::endl;
+			for (size_t i = 0; i < gandalf.size(); ++i)
+    			std::cout << gandalf[i] << std::endl;
+			
+			ft::vector<int> frodo (std_vector.front(), std_vector.back());
+			std::cout << "Printing content of frodo :" << std::endl;
+			for (size_t i = 0; i < frodo.size(); ++i)
+    			std::cout << frodo[i] << std::endl;
 			std::cout << std::endl;
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"

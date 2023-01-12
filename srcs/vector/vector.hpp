@@ -123,32 +123,38 @@ namespace ft
 				}
 			};
 
-//			range constructor : Constructs a container with as many elements as
-//				the range [first,last), with each element constructed 
-//				from its corresponding element in that range, in the same order.
-			template <typename InputIt>
-				vector(typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type first, InputIt last, const Allocator & allocator = Allocator())
-				: size_(0)
-				, capacity_(0)
-				, array_(0)
-				, allocator_(allocator)
-				{
-					std::cout << OLIVE << "Calling range constructor." 
-						<< std::endl << RESET;
-					std::ptrdiff_t diff = abs(first - last);
-					size_ = diff;
-					if (size_)
+//				range constructor : Constructs a container with as many elements as
+//					the range [first,last), with each element constructed 
+//					from its corresponding element in that range, in the same order.
+//				type of the first argument will only be defined as input iterator if 
+//					this argument is not an integer (iow scalars --> native types with 
+//					a simple value, like int, char, long, bool...).
+				template <typename InputIt>
+					vector(typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type first, InputIt last, const Allocator & allocator = Allocator())
+					: size_(0)
+					, capacity_(0)
+					, array_(0)
+					, allocator_(allocator)
 					{
-						array_ = allocator_.allocate(size_);
-						capacity_ = size_;
-					}
-					for (std::size_t i = 0; i < size_; i++)
-					{
-						// std::cout << RED1 << *first << RESET << std::endl;
-						allocator_.construct(array_ + i, *first);
-						first++;
-					}
-				};
+						std::cout << OLIVE << "Calling range constructor." 
+							<< std::endl << RESET;
+						InputIt remember_first = first;
+						for (; first != last; first++)
+						{
+							size_++;
+						}
+						first = remember_first;
+						if (size_)
+						{
+							array_ = allocator_.allocate(size_);
+							capacity_ = size_;
+						}
+						for (std::size_t i = 0; i < size_; i++)
+						{
+							allocator_.construct(array_ + i, *first);
+							first++;
+						}
+					};
 
 	//			Copy constructor : Constructs a container with a copy of each of 
 	//			the elements in x, in the same order.
@@ -184,7 +190,7 @@ namespace ft
 				allocator_.deallocate(array_, capacity_);
 			};
 
-//			ASSIGNEMENT OPERATOR
+//			ASSIGNEMENT
 			vector<T,Allocator>& operator=(const vector<T,Allocator>& src)
 			{
 				std::cout << MAGENTA3 << "Calling assignment operator." 
@@ -204,6 +210,13 @@ namespace ft
 				}
 				return *this;
 			};
+
+			// Assigns new contents to the vector, replacing its current contents, and modifying its size accordingly.
+			// template <class InputIt>
+			// 	void assign(InputIt first, InputIt last)
+			// 	{
+					
+			// 	};
 
 			// GETTERS ---------------------------------------------------------------------------------------
 			std::size_t size()
