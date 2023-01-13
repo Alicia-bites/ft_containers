@@ -21,8 +21,7 @@ namespace ft
     typedef integral_constant<bool,false>	false_type;
     
     template<typename T>
-	struct is_integral : public false_type
-	{};
+	struct is_integral : public false_type {};
     
     template<>	struct is_integral<unsigned char>			: public true_type {};
     template<>	struct is_integral<unsigned short int>		: public true_type {};
@@ -39,10 +38,15 @@ namespace ft
     template<>	struct is_integral<bool>					: public true_type {};
 
 
+    // The template parameter "T" is only enabled (= validayy) if the boolean
+    // template parameter "B" is true. The second parameter T is set to void by default.
     template<bool B, typename T = void>
         struct enable_if
 		{};
  
+    // Member typedef called "type" will be set to "T" when 
+    // the template parameter "true" is passed as the first 
+    // template parameter to "enable_if".
     template<typename T>
         struct enable_if<true, T>
 		{ 

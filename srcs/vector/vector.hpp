@@ -205,10 +205,26 @@ namespace ft
 			};
 
 	//		ITERATORS --------------------------------------------------------------------------------------
-			iterator					begin();
-			// const_iterator			begin() const;
-			// iterator					end();
-			// const_iterator			end() const;
+			iterator					begin()
+			{
+				return array_;
+			};
+
+			const_iterator				begin() const
+			{
+				return array_;
+			};
+
+			iterator					end()
+			{
+				return array_ + size_;
+			};
+
+			const_iterator				end() const
+			{
+				return array_ + size_;
+			};
+			
 			// reverse_iterator			rbegin();
 			// const_reverse_iterator 	rbegin() const;
 			// reverse_iterator			rend();

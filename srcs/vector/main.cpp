@@ -273,6 +273,72 @@ int main(int argc, char **argv)
 			<< "#########################################################"
 			<< std::endl << RESET;
 		}
+		if (test_number == 10)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing ft::vector::iterator" 
+				<< RESET << std::endl << std::endl;
+
+			int myints[] = {1, 3, 5};
+
+			std::vector<int> std_vector(myints, myints+3);
+			ft::vector<int> ft_vector(myints, myints+3);
+
+			std::vector<int>::iterator std_it;
+			std_it = std_vector.begin();
+			std::cout << "std : " << *std_it << std::endl;
+
+			ft::vector<int>::iterator ft_it;
+			ft_it = ft_vector.begin();
+			std::cout << "ft  : " << *ft_it << std::endl << std::endl;
+
+			std_it = std_vector.end();
+			std::cout << "std : " << *std_it << std::endl;
+
+			ft_it = ft_vector.end();
+			std::cout << "ft  : " << *ft_it << std::endl << std::endl;
+
+			std_it = std_vector.begin() + 1;
+			std::cout << "std : " << *std_it << std::endl;
+
+			ft_it = ft_vector.begin() + 1;
+			std::cout << "ft  : " << *ft_it << std::endl << std::endl;
+
+			std_it = std_vector.end() - 2;
+			std::cout << "std : " << *std_it << std::endl;
+
+			ft_it = ft_vector.end() - 2;
+			std::cout << "ft  : " << *ft_it << std::endl << std::endl;
+
+			std_it = std_vector.end()--;
+			std::cout << "std : " << *std_it << std::endl;
+
+			ft_it = ft_vector.end()--;
+			std::cout << "ft  : " << *ft_it << std::endl << std::endl;
+
+			std_it = --std_vector.end();
+			std::cout << "std : " << *std_it << std::endl;
+
+			ft_it = --ft_vector.end();
+			std::cout << "ft  : " << *ft_it << std::endl << std::endl;
+
+			std_it = std_vector.begin()++;
+			std::cout << "std : " << *std_it << std::endl;
+
+			ft_it = ft_vector.begin()++;
+			std::cout << "ft  : " << *ft_it << std::endl << std::endl;
+
+			std_it = ++std_vector.begin();
+			std::cout << "std : " << *std_it << std::endl;
+
+			ft_it = ++ft_vector.begin();
+			std::cout << "ft  : " << *ft_it << std::endl << std::endl;
+
+			std::cout << std::endl;
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
 		
 	}
 	catch(const std::exception& e)
