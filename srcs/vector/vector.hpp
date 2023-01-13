@@ -1,11 +1,15 @@
 #pragma once
 
 #include <iostream>
-#include "../../cool_tools/type_traits.hpp"
 #include <stdlib.h>
 #include <iterator>
+#include <cstddef>
 
 #include "../../cool_tools/colors/colors.hpp"
+#include "../../cool_tools/iterator.hpp"
+#include "../../cool_tools/type_traits.hpp"
+
+#include "vectorIterator.hpp"
 
 // Generalites sur le conteneur Vector :
 // Il reprend la notion usuelle de tableau en autorisant un
@@ -46,7 +50,7 @@
 // used by all standard library containers if no user-specified
 // allocator is provided.
 
-// std::size_t can store the maximum size of a theoretically 
+// size_type can store the maximum size of a theoretically 
 // possible object of any type (including array)
 
 namespace ft 
@@ -58,10 +62,10 @@ namespace ft
 			// HOMEMADE TYPE DEFINITION
 			typedef typename Allocator::reference			reference;
 			typedef typename Allocator::const_reference		const_reference;
-			// typedef implementation defined				iterator;
-			// typedef implementation defined				const_iterator;
-			// typedef implementation defined				size_type;
-			// typedef implementation defined				difference_type;
+			typedef vectorIterator<T>						iterator;
+			typedef vectorIterator<const T>					const_iterator;
+			typedef std::size_t								size_type;
+			typedef std::ptrdiff_t 							difference_type;
 			typedef T										value_type;
 			typedef Allocator								allocator_type;
 			typedef typename Allocator::pointer				pointer;
@@ -88,7 +92,7 @@ namespace ft
 			};
 
 			// constructor with a given number of elements
-			explicit vector(std::size_t size, const Allocator & allocator = Allocator())
+			explicit vector(size_type size, const Allocator & allocator = Allocator())
 			: size_(size)
 			, capacity_(0)
 			, array_(0)
@@ -103,7 +107,7 @@ namespace ft
 					capacity_ = size_;
 				}
 				// step 2 : initialisation
-				for (std::size_t i = 0; i < size_; i++)
+				for (size_type i = 0; i < size_; i++)
 				{
 					// std::allocator::construct -- > Constructs an element object on the location pointed by p.
 					allocator_.construct(array_ + i, T());
@@ -111,7 +115,7 @@ namespace ft
 			};
 
 			// constructor with a given number of elements and a value to initialize the elements
-			explicit vector(std::size_t size, const T & value, const Allocator & allocator = Allocator())
+			explicit vector(size_type size, const T & value, const Allocator & allocator = Allocator())
 			: size_(size)
 			, capacity_(0)
 			, array_(0)
@@ -126,7 +130,7 @@ namespace ft
 					capacity_ = size_;
 				}
 				// step 2 : initialisation
-				for (std::size_t i = 0; i < size_; i++)
+				for (size_type i = 0; i < size_; i++)
 				{
 					// std::allocator::construct -- > Constructs an element object on the location pointed by p.
 					allocator_.construct(array_ + i, value);
@@ -159,7 +163,7 @@ namespace ft
 							array_ = allocator_.allocate(size_);
 							capacity_ = size_;
 						}
-						for (std::size_t i = 0; i < size_; i++)
+						for (size_type i = 0; i < size_; i++)
 						{
 							allocator_.construct(array_ + i, *first);
 							first++;
@@ -180,7 +184,7 @@ namespace ft
 					{
 						array_ = allocator_.allocate(original.capacity_);
 					}
-					for (size_t i = 0; i < original.size_; i++)
+					for (size_type i = 0; i < original.size_; i++)
 					{
 						allocator_.construct(array_ + i, original[i]);
 					}
@@ -193,7 +197,7 @@ namespace ft
 					<< std::endl << RESET;
 				if (capacity_ == 0)
 					return ;
-				for (size_t i = 0; i < size_; i++)
+				for (size_type i = 0; i < size_; i++)
 				{
 					allocator_.destroy(array_ + i);
 				}
@@ -201,13 +205,13 @@ namespace ft
 			};
 
 	//		ITERATORS --------------------------------------------------------------------------------------
-			iterator				begin();
+			iterator					begin();
 			// const_iterator			begin() const;
-			// iterator				end();
+			// iterator					end();
 			// const_iterator			end() const;
-			// reverse_iterator		rbegin();
+			// reverse_iterator			rbegin();
 			// const_reverse_iterator 	rbegin() const;
-			// reverse_iterator		rend();
+			// reverse_iterator			rend();
 			// const_reverse_iterator 	rend() const;
 
 //			ASSIGNEMENT
@@ -221,7 +225,7 @@ namespace ft
 					swap(unconst_src);
 					if (capacity_ > src.capacity_)
 					{
-						for (size_t i = size_; i != src.size_; i--)
+						for (size_type i = size_; i != src.size_; i--)
 						{
 							std::cout << array_[i] << std::endl;
 							allocator_.destroy(array_ + i);
@@ -239,18 +243,18 @@ namespace ft
 			// 	};
 
 			// GETTERS ---------------------------------------------------------------------------------------
-			std::size_t size()
+			size_type size()
 			{
 				return size_;
 			};
 
 	//		ACCESSORS ----------------------------------------------------------------------------------------
-			typename vector<T, Allocator>::reference	operator[](std::size_t index)
+			typename vector<T, Allocator>::reference	operator[](size_type index)
 			{
 				return (array_[index]);
 			};
 
-			typename vector<T, Allocator>::reference	operator[](std::size_t index) const
+			typename vector<T, Allocator>::reference	operator[](size_type index) const
 			{
 				return (array_[index]);
 			};
@@ -261,7 +265,7 @@ namespace ft
 			void    swap(vector<T, Allocator>& swapMe)
 			{
 				pointer  tmp;
-				size_t   tmp_size;
+				size_type   tmp_size;
 
 				std::cout << MAGENTA5 << "Swap member function called."
 					<< std::endl << RESET;
@@ -298,9 +302,9 @@ namespace ft
 
 		private:
 			// number of elements to add in tab
-			std::size_t		size_;
+			size_type		size_;
 			// size of tab (total number of elements at instant t)
-			std::size_t		capacity_;
+			size_type		capacity_;
 			// pointer to the array of elements of type T
 			pointer			array_;
 			// the tool used to allocate memory
