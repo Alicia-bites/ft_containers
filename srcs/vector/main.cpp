@@ -1,4 +1,6 @@
 #include "vector.hpp"
+#include <string>
+#include <algorithm>
 
 #include <vector>
 
@@ -389,6 +391,35 @@ int main(int argc, char **argv)
 			ft::reverse_iterator<std::vector<int>::iterator> it7(v.end());
 			std::cout << "it[0] = " << it7[0] << std::endl;
 			std::cout << "it[1] = " << it7[1] << std::endl;
+
+			std::cout << std::endl;
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+		if (test_number == 12)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing ft::reverse_iterator" 
+				<< RESET << std::endl << std::endl;
+
+			std::string init[] = {"another","brick","on", "the", "wall"};
+			ft::vector<std::string> pinkFloyd(init, init + sizeof(init) / sizeof(init[0]));
+			std::vector<std::string> std_pinkFloyd(init, init + sizeof(init) / sizeof(init[0]));
+
+			ft::vector<std::string>::reverse_iterator rit = pinkFloyd.rbegin();
+			std::cout << "rit is : " << *rit << std::endl;
+			std::cout << "rit + 1 is : " << *(rit + 1) << std::endl;
+			ft::vector<std::string>::reverse_iterator rit_rend = pinkFloyd.rend();
+			std::cout << "rit_rend - 1 is : " << *(rit_rend - 1) << std::endl;
+
+			std::cout << std::endl;
+			
+			std::vector<std::string>::reverse_iterator std_rit = std_pinkFloyd.rbegin();
+			std::cout << "std_rit is : " << *std_rit << std::endl;
+			std::cout << "std_rit + 1 is : " << *(std_rit + 1) << std::endl;
+			std::vector<std::string>::reverse_iterator std_rit_rend = std_pinkFloyd.rend();
+			std::cout << "std_rit_rend - 1 is : " << *(std_rit_rend - 1) << std::endl;
 
 			std::cout << std::endl;
 			std::cout << std::endl << STEELBLUE2

@@ -70,8 +70,8 @@ namespace ft
 			typedef Allocator								allocator_type;
 			typedef typename Allocator::pointer				pointer;
 			typedef typename Allocator::const_pointer		const_pointer;
-			// typedef ft::reverse_iterator<iterator>			reverse_iterator;
-			// typedef ft::reverse_iterator<const_iterator> 	const_reverse_iterator;
+			typedef ft::reverse_iterator<iterator>			reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator> 	const_reverse_iterator;
 
 	//		CONSTRUCTORS ----------------------------------------------------------------------------
 
@@ -205,29 +205,44 @@ namespace ft
 			};
 
 	//		ITERATORS --------------------------------------------------------------------------------------
-			iterator					begin()
+			// returns an iterator pointing to the first element in the vector.
+			iterator	begin()
 			{
 				return array_;
 			};
 
-			const_iterator				begin() const
+			const_iterator	begin() const
 			{
 				return array_;
 			};
 
-			iterator					end()
+			// returns an iterator referring to the past-the-end element in the vector container.
+			iterator	end()
 			{
 				return array_ + size_;
 			};
 
-			const_iterator				end() const
+			const_iterator	end() const
 			{
 				return array_ + size_;
 			};
 			
-			// reverse_iterator			rbegin();
-			// const_reverse_iterator 	rbegin() const;
-			// reverse_iterator			rend();
+			// returns a reverse iterator pointing to the last element in the vector
+			reverse_iterator	rbegin()
+			{
+				return reverse_iterator(end());
+			};
+
+			const_reverse_iterator	rbegin() const
+			{
+				return reverse_iterator(end());
+			};
+
+			reverse_iterator	rend()
+			{
+				return reverse_iterator(begin());
+			};
+
 			// const_reverse_iterator 	rend() const;
 
 //			ASSIGNEMENT
