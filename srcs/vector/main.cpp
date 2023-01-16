@@ -339,6 +339,62 @@ int main(int argc, char **argv)
 			<< "#########################################################"
 			<< std::endl << RESET;
 		}
+		if (test_number == 11)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing ft::reverse_iterator" 
+				<< RESET << std::endl << std::endl;
+
+			std::cout << "Testing that ft::reverse_iterator correctly iterates over a container in reverse order." << std::endl;
+			int myints[] = { 1, 2, 3, 4, 5 };
+			std::vector<int> v(myints, myints+5);
+
+			ft::reverse_iterator<std::vector<int>::iterator> it(v.end());
+			
+			for (int i = 5; i > 0; --i)
+			{
+				std::cout << "*it = " << *it << std::endl;
+				std::cout << "i  = " << i << std::endl;
+				++it;
+			}
+			std::cout << std::endl;
+
+			std::cout << "Testing that the reverse_iterator supports comparison with the == operator" << std::endl;
+			ft::reverse_iterator<std::vector<int>::iterator> it1(v.end());
+			ft::reverse_iterator<std::vector<int>::iterator> it2(v.end());
+			int res = it1 == it2;
+			std::cout << "Is it1 == to it2 ? 1 for yes, 0 for no. --> " << std::endl;
+			std::cout << "ANSWER = " << res << std::endl;
+			std::cout << std::endl;
+
+			std::cout << "Testing that the reverse_iterator supports the + and - operators for arithmetic operations" << std::endl;
+			ft::reverse_iterator<std::vector<int>::iterator> it3(v.end());
+			ft::reverse_iterator<std::vector<int>::iterator> it4 = it3 + 2;
+			std:: cout << "*it4 + 2 --> *it4 should be equal to 3"
+				<< std::endl << " *it4 = " << *it4 << std::endl;
+			it4 = it4 - 1;
+			std:: cout << "it4 = it4 - 1 --> *it4 should be equal to 4"
+				<< std::endl << " *it4 = " << *it4 << std::endl;
+			std::cout << std::endl;
+
+			std::cout << "Testing that the reverse_iterator supports the < operator for comparison" << std::endl;
+			ft::reverse_iterator<std::vector<int>::iterator> it5(v.end());
+			ft::reverse_iterator<std::vector<int>::iterator> it6 = it5 + 2;
+			std::cout << "*it5 is pointing at the last element" << std::endl;
+			std::cout << "it6 is it5 + 2 " << std::endl;
+			std::cout << " Is it5 < it6 ? The answer should be 1 --> " << (it5 < it6) << std::endl;
+			std::cout << std::endl;
+
+			std::cout << "Testing that the reverse_iterator works correctly with the [] operator" << std::endl;
+			ft::reverse_iterator<std::vector<int>::iterator> it7(v.end());
+			std::cout << "it[0] = " << it7[0] << std::endl;
+			std::cout << "it[1] = " << it7[1] << std::endl;
+
+			std::cout << std::endl;
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
 		
 	}
 	catch(const std::exception& e)
