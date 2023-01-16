@@ -238,12 +238,30 @@ namespace ft
 				return reverse_iterator(end());
 			};
 
+			// returns a reverse iterator pointing to the theoretical element
+			// preceding the first element in the vector 
+			// (which is considered its reverse end).
 			reverse_iterator	rend()
 			{
 				return reverse_iterator(begin());
 			};
 
-			// const_reverse_iterator 	rend() const;
+			const_reverse_iterator 	rend() const
+			{
+				return reverse_iterator(begin());
+			};
+
+	//		CAPACITY --------------------------------------------------------------------------------------
+
+			size_type size() const;
+			size_type max_size() const;
+			void
+			resize(size_type sz, T c = T());
+			size_type capacity() const;
+			bool
+			empty() const;
+			void
+			reserve(size_type n);
 
 //			ASSIGNEMENT
 			vector<T,Allocator>& operator=(const vector<T,Allocator>& src)
