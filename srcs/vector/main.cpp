@@ -4,7 +4,24 @@
 
 #include <vector>
 
-int main(int argc, char **argv)
+// void	exit_if_EOF_detected()
+// {
+// 	if (!std::cin)
+// 	{
+// 		std::cout << "failure\n";
+// 		exit(-1);
+// 	}
+// }
+
+template <typename T>
+	void	print_vector(T vector)
+	{
+		for (size_t i = 0; i < vector.size(); i++)
+			std::cout << vector[i] << " | ";
+		std::cout << std::endl;
+	}
+
+int	main(int argc, char **argv)
 {
 	if (argc != 2)
 	{
@@ -22,8 +39,8 @@ int main(int argc, char **argv)
 
 			std::vector<int>	std_vector;
 			ft::vector<int>		ft_vector;
-			std::cout << OLIVE << sizeof(std_vector) << RESET << std::endl;
-			std::cout << ORANGE1 << sizeof(ft_vector) << RESET << std::endl;
+			std::cout << MEDIUMORCHID3 << sizeof(std_vector) << RESET << std::endl;
+			std::cout << MEDIUMPURPLE << sizeof(ft_vector) << RESET << std::endl;
 
 
 			std::cout << std::endl << STEELBLUE2
@@ -400,7 +417,7 @@ int main(int argc, char **argv)
 		if (test_number == 12)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing ft::reverse_iterator" 
+			std::cout << STEELBLUE3 << "Testing rbegin() and rend()" 
 				<< RESET << std::endl << std::endl;
 
 			std::string init[] = {"another","brick","on", "the", "wall"};
@@ -426,7 +443,257 @@ int main(int argc, char **argv)
 			<< "#########################################################"
 			<< std::endl << RESET;
 		}
-		
+		if (test_number == 13)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing ft::vector::size and ft::vector::capacity" 
+				<< RESET << std::endl << std::endl;
+
+			std::string init[] = {"another","brick","on", "the", "wall"};
+			ft::vector<std::string> ft_pinkFloyd(init, init + sizeof(init) / sizeof(init[0]));
+			std::vector<std::string> std_pinkFloyd(init, init + sizeof(init) / sizeof(init[0]));
+
+			std::cout << "In ft_pinkFloyd : " << std::endl;
+			for(size_t i = 0; i <= 4; i++)
+				std::cout << ft_pinkFloyd[i] << " | ";
+			std::cout << std::endl;
+
+			std::cout << "In std_pinkFloyd : " << std::endl;
+			for(size_t i = 0; i <= 4; i++)
+				std::cout << ft_pinkFloyd[i] << " | ";
+			std::cout << std::endl;
+
+			std::cout << "std_pinkFloyd.size() = " << std_pinkFloyd.size() << std::endl;
+			std::cout << "ft_pinkFloyd.size() = " << ft_pinkFloyd.size() << std::endl;
+
+			std::cout << "std_pinkFloyd.capacity() = " << std_pinkFloyd.capacity() << std::endl;
+			std::cout << "ft_pinkFloyd.capacity() = " << ft_pinkFloyd.capacity() << std::endl;
+
+			std::cout << "---------------------------------------------------" << std::endl;
+
+			std::vector<int> std_gandalf(10);
+			std::cout << "In std_gandalf : " << std::endl;
+			for(size_t i = 0; i < std_gandalf.size(); i++)
+				std::cout << std_gandalf[i] << " | ";
+			std::cout << std::endl;
+			std_gandalf.push_back(2);
+			std_gandalf.push_back(3);
+			std_gandalf.push_back(4);
+			std::cout << "std_gandalf size is : " << std_gandalf.size() << std::endl;
+			std::cout << "std_gandalf capacity is : " << std_gandalf.capacity() << std::endl;
+
+
+			std::cout << std::endl;
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+		if (test_number == 14)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing ft::vector::resize and ft::vector::reserve" 
+				<< RESET << std::endl << std::endl;
+
+			std::vector<int> std_vector(10, 1);
+			std::cout << "In std_vector : " << std::endl;
+			for(size_t i = 0; i < std_vector.size(); i++)
+				std::cout << std_vector[i] << " | ";
+			std::cout << std::endl;
+			std::cout << NAVY << "resizing to 15" << RESET << std::endl;
+			std_vector.resize(15);
+			std::cout << "In std_vector : " << std::endl;
+			for(size_t i = 0; i < std_vector.size(); i++)
+				std::cout << std_vector[i] << " | ";
+			std::cout << std::endl;
+			std::cout << "std_vector size is : " << std_vector.size() << std::endl;
+			std::cout << "std_vector capacity is : " << std_vector.capacity() << std::endl;
+			std::cout << NAVY << "resizing to 5" << RESET << std::endl;
+			std_vector.resize(5);
+			for(size_t i = 0; i < std_vector.size(); i++)
+				std::cout << std_vector[i] << " | ";
+			std::cout << std::endl;
+			std::cout << "std_vector size is : " << std_vector.size() << std::endl;
+			std::cout << "std_vector capacity is : " << std_vector.capacity() << std::endl;
+			std::cout << NAVY << "resizing to 5 again" << RESET << std::endl;
+			std_vector.resize(5);
+			for(size_t i = 0; i < std_vector.size(); i++)
+				std::cout << std_vector[i] << " | ";
+			std::cout << std::endl;
+			std::cout << "std_vector size is : " << std_vector.size() << std::endl;
+			std::cout << "std_vector capacity is : " << std_vector.capacity() << std::endl;
+
+			std::cout << std::endl;
+
+			ft::vector<int> ft_vector(10, 1);
+			std::cout << "In ft_vector : " << std::endl;
+			for(size_t i = 0; i < ft_vector.size(); i++)
+				std::cout << ft_vector[i] << " | ";
+			std::cout << std::endl;
+			std::cout << NAVY << "resizing to 15" << RESET << std::endl;
+			ft_vector.resize(15);
+			std::cout << "In ft_vector : " << std::endl;
+			for(size_t i = 0; i < ft_vector.size(); i++)
+				std::cout << ft_vector[i] << " | ";
+			std::cout << std::endl;
+			std::cout << "ft_vector size is : " << ft_vector.size() << std::endl;
+			std::cout << "ft_vector capacity is : " << ft_vector.capacity() << std::endl;
+			std::cout << NAVY << "resizing to 5" << RESET << std::endl;
+			ft_vector.resize(5);
+			for(size_t i = 0; i < ft_vector.size(); i++)
+				std::cout << ft_vector[i] << " | ";
+			std::cout << std::endl;
+			std::cout << "ft_vector size is : " << ft_vector.size() << std::endl;
+			std::cout << "ft_vector capacity is : " << ft_vector.capacity() << std::endl;
+			std::cout << NAVY << "resizing to 5 again" << RESET << std::endl;
+			ft_vector.resize(5);
+			for(size_t i = 0; i < ft_vector.size(); i++)
+				std::cout << ft_vector[i] << " | ";
+			std::cout << std::endl;
+			std::cout << "ft_vector size is : " << ft_vector.size() << std::endl;
+			std::cout << "ft_vector capacity is : " << ft_vector.capacity() << std::endl;
+			std::cout << std::endl;
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		if (test_number == 15)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing ft::vector::empty"
+				<< RESET << std::endl << std::endl;
+
+			std::cout << NAVY << "Creating std_vector with one element." << RESET << std::endl;
+			std::vector<int> std_vector(1, 5);
+			std::cout << "Is empty? 1 for yes, 0 for no --> " << std_vector.empty() << std::endl;
+			std::cout << NAVY << "removing that element with pop_back()" << RESET << std::endl;
+			std_vector.pop_back();
+			std::cout << "Is empty? 1 for yes, 0 for no --> " << std_vector.empty()  << std::endl;
+
+			std::cout << NAVY << "Creating std_vector with one element." << RESET << std::endl;
+			ft::vector<int> ft_vector(1, 5);
+			std::cout << "Is empty? 1 for yes, 0 for no --> " << ft_vector.empty() << std::endl;
+			std::cout << NAVY << "removing that element with pop_back()" << RESET << std::endl;
+			ft_vector.pop_back();
+			std::cout << "Is empty? 1 for yes, 0 for no --> " << ft_vector.empty() << std::endl;
+
+			std::cout << std::endl;
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		if (test_number == 16)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing at(), front() and back()"
+				<< RESET << std::endl << std::endl;
+
+			std::string init[] = {"another", "brick", "on", "the", "wall"};
+			ft::vector<std::string> ft_pinkFloyd(init, init + sizeof(init) / sizeof(init[0]));
+			std::vector<std::string> std_pinkFloyd(init, init + sizeof(init) / sizeof(init[0]));
+
+			std::cout << "In std_pinkFloyd :";
+			for (size_t i = 0; i < std_pinkFloyd.size(); i++)
+				std::cout << std_pinkFloyd[i] << " | ";
+			std::cout << std::endl;
+
+			std::cout << "In ft_pinkFloyd  :";
+			for (size_t i = 0; i < ft_pinkFloyd.size(); i++)
+				std::cout << ft_pinkFloyd[i] << " | ";
+			std::cout << std::endl;
+
+			std::cout << std::endl;
+
+			std::cout << NAVY << "This is how std_vector behaves : " << RESET << std::endl;
+			std::cout << "front() --> " << std_pinkFloyd.front() << std::endl;
+			std::cout << "back() --> " << std_pinkFloyd.back() << std::endl;
+			std::cout << "at(4) --> " << std_pinkFloyd.at(4) << std::endl;
+			// std::cout << "at(5) --> " << std_pinkFloyd.at(5) << std::endl;
+			std::cout << std::endl;
+
+			std::cout << NAVY << "Let's see for our ft_vector now : " << RESET << std::endl;
+			std::cout << "front() --> " << ft_pinkFloyd.front() << std::endl;
+			std::cout << "back() --> " << ft_pinkFloyd.back() << std::endl;
+			std::cout << "at(4) --> " << ft_pinkFloyd.at(4) << std::endl;
+			std::cout << "at(5) --> " << ft_pinkFloyd.at(5) << std::endl;
+			std::cout << "YOU SHOULD NOT SEE ME (0____0)";
+
+			std::cout << std::endl;
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+
+		if (test_number == 17)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing push_back()"
+				<< RESET << std::endl << std::endl;
+
+			std::string init[] = {"another", "brick", "on", "the"};
+			ft::vector<std::string> ft_pinkFloyd(init, init + sizeof(init) / sizeof(init[0]));
+			std::vector<std::string> std_pinkFloyd(init, init + sizeof(init) / sizeof(init[0]));
+
+			std::cout << "In std_pinkFloyd :";
+			print_vector(std_pinkFloyd);
+			std::cout << std::endl;
+			std::cout << NAVY << "This is how std_pinkFloyd behaves : " << RESET << std::endl << std::endl;
+			std::cout << "std_pinkFloyd size is : " << std_pinkFloyd.size() << std::endl;
+			std::cout << "std_pinkFloyd capacity is : " << std_pinkFloyd.capacity() << std::endl << std::endl;
+			std::cout << NAVY << "using push_back() --> " << RESET << std::endl;
+			std_pinkFloyd.push_back("wall");
+			print_vector(std_pinkFloyd);
+			std::cout << std::endl;
+			std::cout << "std_pinkFloyd size is : " << std_pinkFloyd.size() << std::endl;
+			std::cout << "std_pinkFloyd capacity is : " << std_pinkFloyd.capacity() << std::endl << std::endl;
+
+			std::cout << "------------------------------------------" << std::endl << std::endl;
+			std::cout << "In ft_pinkFloyd :";
+			print_vector(ft_pinkFloyd);
+			std::cout << std::endl;
+			std::cout << NAVY << "This is how ft_pinkFloyd behaves : " << RESET << std::endl << std::endl;
+			std::cout << "ft_pinkFloyd size is : " << ft_pinkFloyd.size() << std::endl;
+			std::cout << "ft_pinkFloyd capacity is : " << ft_pinkFloyd.capacity() << std::endl << std::endl;
+			std::cout << NAVY << "using push_back() --> " << RESET << std::endl;
+			ft_pinkFloyd.push_back("wall");
+			print_vector(ft_pinkFloyd);
+			std::cout << std::endl;
+			std::cout << "ft_pinkFloyd size is : " << ft_pinkFloyd.size() << std::endl;
+			std::cout << "ft_pinkFloyd capacity is : " << ft_pinkFloyd.capacity() << std::endl << std::endl;
+
+			std::cout << "------------------------------------------" << std::endl << std::endl;
+			
+			std::cout << NAVY << "Let's check how push_back() behaves when starting from an empty vector." << std::endl;
+
+			std::cout << NAVY << "This is how std_pinkFloyd behaves : " << RESET << std::endl;
+			std::vector<int> std_vector(1, 5);
+			std_vector.pop_back();
+			std::cout << "In std_pinkFloyd :";
+			print_vector(std_vector);
+			std::cout << "In std_pinkFloyd :";
+			std_vector.push_back(42);
+			print_vector(std_vector);
+			std::cout << "std_vector size is : " << std_vector.size() << std::endl;
+			std::cout << "std_vector capacity is : " << std_vector.capacity() << std::endl << std::endl;
+			
+			std::cout << NAVY << "This is how ft_pinkFloyd behaves : " << RESET << std::endl;
+			ft::vector<int> ft_vector(1, 5);
+			ft_vector.pop_back();
+			std::cout << "In ft_pinkFloyd :";
+			print_vector(ft_vector);
+			ft_vector.push_back(42);
+			std::cout << "In ft_pinkFloyd :";
+			print_vector(ft_vector);
+			std::cout << "ft_vector size is : " << ft_vector.size() << std::endl;
+			std::cout << "ft_vector capacity is : " << ft_vector.capacity() << std::endl;
+
+			std::cout << std::endl;
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
 	}
 	catch(const std::exception& e)
 	{

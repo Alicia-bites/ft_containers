@@ -13,12 +13,12 @@ Test guide
 |9 				| Testing ft::vector::assign, with 2 vectors of the same size
 |10				| Testing ft::vector::iterator
 |11				| Testing ft::reverse_iterator
-|12				| Testing that the reverse_iterator supports comparison with the == operator
-|13				| Testing ft::reverse_iterator
-|14				| 
-|15				| 
-|16				| 
-|17				| 
+|12				| Testing rbegin() and rend()
+|13				| Testing ft::vector::size and ft::vector::capacity
+|14				| Testing ft::vector::resize and ft::vector::reserve
+|15				| Testing ft::vector::empty
+|16				| Testing at(), front() and back()
+|17				| Testing push_back()
 |18				| 
 |19				| 
 |20				| 
