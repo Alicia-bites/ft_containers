@@ -87,8 +87,8 @@ namespace ft
 			, array_(0)
 			, allocator_(allocator)
 			{
-				std::cout << OLIVE << "Calling default constructor." 
-					<< std::endl << RESET;
+				// std::cout << OLIVE << "Calling default constructor." 
+				// 	<< std::endl << RESET;
 			};
 
 			// constructor with a given number of elements
@@ -98,8 +98,9 @@ namespace ft
 			, array_(0)
 			, allocator_(allocator)
 			{
-				std::cout << OLIVE << "Calling empty conainter constructor." 
-					<< std::endl << RESET;
+				// std::cout << OLIVE << "Calling empty conainter constructor." 
+				// 	<< std::endl << RESET;
+
 				// step 1 : allocate memory
 				if (size_ != 0)
 				{
@@ -121,8 +122,9 @@ namespace ft
 			, array_(0)
 			, allocator_(allocator)
 			{
-				std::cout << OLIVE << "Calling fill constructor." 
-					<< std::endl << RESET;
+				// std::cout << OLIVE << "Calling fill constructor." 
+					// << std::endl << RESET;
+
 				// step 1 : allocate memory
 				if (size_ != 0)
 				{
@@ -150,13 +152,12 @@ namespace ft
 					, array_(0)
 					, allocator_(allocator)
 					{
-						std::cout << OLIVE << "Calling range constructor." 
-							<< std::endl << RESET;
+						// std::cout << OLIVE << "Calling range constructor." 
+						// 	<< std::endl << RESET;
+
 						InputIt remember_first = first;
 						for (; first != last; first++)
-						{
 							size_++;
-						}
 						first = remember_first;
 						if (size_)
 						{
@@ -178,8 +179,9 @@ namespace ft
 				, array_(0)
 				, allocator_(original.allocator_)
 				{
-					std::cout << OLIVE << "Calling copy constructor." 
-						<< std::endl << RESET;
+					// std::cout << OLIVE << "Calling copy constructor." 
+					// 	<< std::endl << RESET;
+
 					if (original.capacity_)
 					{
 						array_ = allocator_.allocate(original.capacity_);
@@ -193,8 +195,9 @@ namespace ft
 	//		DESTRUCTORS --------------------------------------------------------------------------------------
 			~vector()
 			{
-				std::cout << OLIVE << "Calling destructor." 
-					<< std::endl << RESET;
+				// std::cout << OLIVE << "Calling destructor." 
+				// 	<< std::endl << RESET;
+
 				if (capacity_ == 0)
 					return ;
 				for (size_type i = 0; i < size_; i++)
@@ -252,16 +255,204 @@ namespace ft
 			};
 
 	//		CAPACITY --------------------------------------------------------------------------------------
+			
+			// returns the number of elements in the vector.
+			size_type size() const
+			{
+				return size_;
+			};
 
-			size_type size() const;
-			size_type max_size() const;
-			void
-			resize(size_type sz, T c = T());
-			size_type capacity() const;
-			bool
-			empty() const;
-			void
-			reserve(size_type n);
+			// Returns the maximum number of elements that the vector can hold.
+			size_type max_size() const
+			{
+				// max_size() returns the maximum size possible to allocate
+				return allocator_.max_size();
+			};
+
+			// if n is greater than the current vector capacity, the function 
+			// causes the container to reallocate its storage increasing its
+			// capacity to n (or greater).
+			void reserve(size_type new_capacity)
+			{
+				if (new_capacity < capacity_)
+					return ;
+				if (new_capacity > max_size())
+					throw (std::length_error("Can´t reserve more space than max_size() allows. Try with a number smaller than max_size()"));
+				// step 1, we create a new pointer and allocate as much space as new_capacity indicates
+				pointer new_array;
+				new_array = allocator_.allocate(new_capacity);
+				// step 2, we copy each element of the old array in new_array
+				for (size_t i = 0; i < size_; i++)
+					allocator_.construct(new_array + i, array_[i]);
+				capacity_ = new_capacity;
+				// step 3, we destroy old array
+				for (size_t i = 0; i < capacity_; i++)
+					allocator_.destroy(array_ + i);
+				allocator_.deallocate(array_, capacity_);
+				array_ = new_array;
+			};
+
+
+			// resizes the container so that it contains n elements.
+			void resize(size_type newsize, T val = T())
+			{
+				if (newsize <= size_)
+				{
+					for (size_t i = newsize; i < capacity_; i++)
+						allocator_.destroy(array_ + i);
+					size_ = newsize;
+				}
+				else if (newsize > size_)
+				{
+					// step 1 : we increase the allocated space of our vector with reserve() 
+					try
+					{
+						if (newsize > capacity_)
+							reserve(newsize);
+					}
+					catch(const std::exception& e)
+					{
+						throw (std::bad_alloc());
+						return ;
+					}
+					// step 2 : we add elements until newsize is satisfied
+					// if val is not specified, val will automatically be set to 0
+					for(size_t i = size_; i < newsize; i++)
+						allocator_.construct(array_ + i, val);
+					size_ = newsize;
+				}
+			};
+
+			// returns the size of the storage space currently allocated for the vector, expressed in terms of elements.
+			size_type capacity() const
+			{
+				return capacity_;
+			};
+
+			// Returns whether the vector is empty (i.e. whether its size is 0).
+			bool empty() const
+			{
+				return (size_ == 0 ? true : false);
+			};
+
+	//		ELEMENT ACCESS --------------------------------------------------------------------------------------
+			
+			reference	operator[](size_type index)
+			{
+				return (array_[index]);
+			};
+
+			reference	operator[](size_type index) const
+			{
+				return (array_[index]);
+			};
+			
+			const_reference at(size_type index) const
+			{
+				if (index >= size_)
+					throw (std::out_of_range("Error! You are trying to access an element outside our range."));
+				return (array_[index]);
+			};
+
+			reference at(size_type index)
+			{
+				if (index >= size_)
+					throw (std::out_of_range("Error! You are trying to access an element outside our range."));
+				return (array_[index]);
+			};
+
+			reference front()
+			{
+				return array_[0];
+			};
+
+			const_reference front() const
+			{
+				return array_[0];
+			};
+
+			reference back()
+			{
+				return array_[size_ - 1];
+			};
+
+			const_reference back() const
+			{
+				return array_[size_ - 1];
+			};
+
+
+//			MODIFIERS --------------------------------------------------------------------------------------------------------------------
+
+			// Removes the last element in the vector, effectively reducing the container size by one.
+
+			// Adds a new element at the end of the vector, after its current 
+			// last element. The content of new_elt is copied (or moved) to the new element.
+			void	push_back(const T& new_element)
+			{
+				if (capacity_ * 2 > max_size())
+					throw (std::length_error("Cannot allocate anymore. Maximum size reached"));
+				else if (capacity_ > size_)
+					allocator_.construct(array_ + size_, new_element);
+				else
+				{
+					capacity_ = capacity_ == 0 ? 1 : capacity_ * 2;
+					try
+					{
+						allocator_.allocate(capacity_);
+					}
+					catch(const std::exception& e)
+					{
+						std::cerr << e.what() << '\n';
+						return ;
+					}
+					allocator_.construct(array_ + size_, new_element);
+				}
+				size_++;
+			};
+
+			void	pop_back()
+			{
+				allocator_.destroy(array_ + size_ - 1);
+        		size_--;
+			};
+
+			// iterator	insert(iterator position, const T& x)
+			// {
+
+			// };
+
+			// void	insert(iterator position, size_type n, const T& x)
+			// {
+
+			// };
+
+			// template <class InputIterator>
+			// 	void	insert(iterator position, InputIterator first, InputIterator last)
+			// 	{
+
+			// 	};
+				
+			// iterator	erase(iterator position)
+			// {
+
+			// };
+
+			// iterator	erase(iterator first, iterator last)
+			// {
+
+			// };
+
+			// void	swap(vector<T,Allocator>&)
+			// {
+
+			// };
+
+			// void	clear()
+			// {
+
+			// };
+
 
 //			ASSIGNEMENT
 			vector<T,Allocator>& operator=(const vector<T,Allocator>& src)
@@ -292,21 +483,6 @@ namespace ft
 			// 	};
 
 			// GETTERS ---------------------------------------------------------------------------------------
-			size_type size()
-			{
-				return size_;
-			};
-
-	//		ACCESSORS ----------------------------------------------------------------------------------------
-			typename vector<T, Allocator>::reference	operator[](size_type index)
-			{
-				return (array_[index]);
-			};
-
-			typename vector<T, Allocator>::reference	operator[](size_type index) const
-			{
-				return (array_[index]);
-			};
 
 //			MEMBER FUNCTIONS ---------------------------------------------------------------------------------
 //			Exchanges the content of the container by the content of swapMe,
@@ -316,8 +492,6 @@ namespace ft
 				pointer  tmp;
 				size_type   tmp_size;
 
-				std::cout << MAGENTA5 << "Swap member function called."
-					<< std::endl << RESET;
 				// step 1 : swap arrays (aka pointer to the array of elements of type T)
 				if (array_ != swapMe.array_)
 				{
@@ -350,9 +524,14 @@ namespace ft
 			// };
 
 		private:
-			// number of elements to add in tab
+			// number of elements in the vector.
 			size_type		size_;
-			// size of tab (total number of elements at instant t)
+			// size of the storage space currently allocated for the vector, 
+			// expressed in terms of elements.
+			// capacity_ is not necessarily equal to the size_.
+			// It can be equal or greater, with the extra space
+			// allowing to accommodate for growth without the
+			// need to reallocate on each insertion.
 			size_type		capacity_;
 			// pointer to the array of elements of type T
 			pointer			array_;
