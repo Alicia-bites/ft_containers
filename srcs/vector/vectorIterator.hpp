@@ -145,7 +145,7 @@ namespace ft
 	template <typename T>
 		std::ostream &  operator<<(std::ostream & o, const vectorIterator<T> & gandalf)
 		{
-			o << gandalf.pointer_;
+			o << gandalf.getPointer();
 			return (o);
 		};
 
@@ -154,13 +154,13 @@ namespace ft
 	template <typename T>
 		vectorIterator<T> operator+(typename vectorIterator<T>::difference_type x, const vectorIterator<T> & y)
 		{
-			return x + y.pointer_;
+			return x + y.getPointer();
 		};
 
 	template <typename T>
 		typename vectorIterator<T>::difference_type operator-(const vectorIterator<T>& x, const vectorIterator<T> & y)
 		{
-			return x.pointer_ - y.pointer_;
+			return x.getPointer() - y.getPointer();
 		};
 
 	template <typename T, typename U>
