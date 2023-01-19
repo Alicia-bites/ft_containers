@@ -284,11 +284,11 @@ namespace ft
 				// step 2, we copy each element of the old array in new_array
 				for (size_t i = 0; i < size_; i++)
 					allocator_.construct(new_array + i, array_[i]);
-				capacity_ = new_capacity;
 				// step 3, we destroy old array
 				for (size_t i = 0; i < capacity_; i++)
 					allocator_.destroy(array_ + i);
 				allocator_.deallocate(array_, capacity_);
+				capacity_ = new_capacity;
 				array_ = new_array;
 			};
 
@@ -417,15 +417,75 @@ namespace ft
         		size_--;
 			};
 
-			// iterator	insert(iterator position, const T& x)
-			// {
+			// Inserts element at the specified location in the container. 
+			iterator	insert(iterator position, const T & new_guy)
+			{
+				// step 1 : allocate. If size_ is stritcly inferior to capacity_,
+				// it's cool, nothing to allocate. But if size_ is equal to capacity_,
+				// we need to allocate one more block for our new guy.
+				if (size_ == capacity_)
+					allocator_.allocate(size_ + 1);
 
-			// };
+				// step 2 : translate position from iterator to integer so we can
+				// add it to our pointer array_ and place our new guy
+				size_type where_to_insert = std::distance(begin(), position);
+				position = begin() + where_to_insert;
+				if (position == end())
+				{
+					// it's cool, just need to insert at the end
+					allocator_.construct(array_ + size_, new_guy);
+				}
+				else
+				{
+					// step 3 : we just construct one more object at the end()
+					// and place their our last element.
+					allocator_.construct(array_ + size_, array_[size_ - 1]);
+					// step 4 : we replace every value by the one before until
+					// we reach where we want to add our new guy.
+					for (iterator itEnd = end() - 2; itEnd > position; itEnd--)
+						*itEnd = *(itEnd - 1);
+					// step 5 : we copy the value of our new_guy at index position
+					*position = new_guy;
+				}
+				size_++;
+				capacity_ = size_;
+				return position;
+			};
 
-			// void	insert(iterator position, size_type n, const T& x)
-			// {
+			void	insert(iterator position, size_type n, const T& new_guy)
+			{
+				// step 1 : allocation
+				if (size_ + n >= capacity_)
+					reserve(size_ + n);
+				size_ += n;
+				capacity_ = size_;
 
-			// };
+				// step 2 : insertion
+				std::cout << "position is pointing to " << *position << std::endl;
+				std::cout << "begin() is pointing to " << *(begin()) << std::endl;
+
+				size_type where_to_insert = std::distance(begin(), position);
+				std::cout << "where_to_insert is " << where_to_insert << std::endl;
+				position = begin() + where_to_insert;
+
+				if (position == end())
+				{
+					for (size_type i = size_; i < size_ + n; i++)
+						allocator_.construct(array_ + i, new_guy);
+				}
+				else
+				{
+					// every elements after 'position' must be shifted 'n' times
+					// step 1 : place the last element at the end
+					allocator_.construct(array_ + size_, array_[size_ - 1]);
+					// shift all the other elements
+					for (iterator itEnd = end() - 2; itEnd > position; itEnd--)
+						*itEnd = *(itEnd - n);
+					// insert new_guys
+					for (size_type i = where_to_insert; i < n; i++)
+						allocator_.construct(array_ + i, new_guy);
+				}
+			};
 
 			// template <class InputIterator>
 			// 	void	insert(iterator position, InputIterator first, InputIterator last)

@@ -19,7 +19,7 @@ Test guide
 |15				| Testing ft::vector::empty
 |16				| Testing at(), front() and back()
 |17				| Testing push_back()
-|18				| 
-|19				| 
+|18				| Testing insert() with one element
+|19				| Testing insert() with n elements
 |20				| 
 |21				| 
