@@ -431,10 +431,7 @@ namespace ft
 				size_type where_to_insert = std::distance(begin(), position);
 				position = begin() + where_to_insert;
 				if (position == end())
-				{
-					// it's cool, just need to insert at the end
 					allocator_.construct(array_ + size_, new_guy);
-				}
 				else
 				{
 					// step 3 : we just construct one more object at the end()
@@ -452,22 +449,15 @@ namespace ft
 				return position;
 			};
 
-			void	insert(iterator position, size_type n, const T& new_guy)
+			void	insert(iterator position, size_type n, const T & new_guy)
 			{
+				size_type where_to_insert = std::distance(begin(), position);
+				
 				// step 1 : allocation
 				if (size_ + n >= capacity_)
 					reserve(size_ + n);
-				size_ += n;
-				capacity_ = size_;
 
 				// step 2 : insertion
-				std::cout << "position is pointing to " << *position << std::endl;
-				std::cout << "begin() is pointing to " << *(begin()) << std::endl;
-
-				size_type where_to_insert = std::distance(begin(), position);
-				std::cout << "where_to_insert is " << where_to_insert << std::endl;
-				position = begin() + where_to_insert;
-
 				if (position == end())
 				{
 					for (size_type i = size_; i < size_ + n; i++)
@@ -478,12 +468,27 @@ namespace ft
 					// every elements after 'position' must be shifted 'n' times
 					// step 1 : place the last element at the end
 					allocator_.construct(array_ + size_, array_[size_ - 1]);
+					
 					// shift all the other elements
+					position = begin() + where_to_insert;
+					std::cout << "before for loop = " << *(end() - 6) << std::endl;
 					for (iterator itEnd = end() - 2; itEnd > position; itEnd--)
+					{
+						std::cout << *itEnd << std::endl;
+						std::cout << *(itEnd - n) << std::endl;
 						*itEnd = *(itEnd - n);
+					}
 					// insert new_guys
-					for (size_type i = where_to_insert; i < n; i++)
-						allocator_.construct(array_ + i, new_guy);
+					std::cout << "where_to_insert = " << *(array_ + where_to_insert - 1) << std::endl;
+					for (size_type i = 0; i < n; i++)
+					{
+						allocator_.construct(array_ + where_to_insert, new_guy);
+						where_to_insert++;
+					}
+
+					// updates
+					size_ += n;
+					capacity_ = size_;
 				}
 			};
 
