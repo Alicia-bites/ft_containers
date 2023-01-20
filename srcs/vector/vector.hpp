@@ -417,7 +417,7 @@ namespace ft
         		size_--;
 			};
 
-			// Inserts element at the specified location in the container. 
+			// Inserts element of value new_guy at the specified location in the container. 
 			iterator	insert(iterator position, const T & new_guy)
 			{
 				// step 1 : allocate. If size_ is stritcly inferior to capacity_,
@@ -449,6 +449,7 @@ namespace ft
 				return position;
 			};
 
+			// Inserts n elements of value new_guy at the specified location (position) in the container. 
 			void	insert(iterator position, size_type n, const T & new_guy)
 			{
 				size_type where_to_insert = std::distance(begin(), position);
@@ -470,14 +471,9 @@ namespace ft
 					allocator_.construct(array_ + size_, array_[size_ - 1]);
 					
 					// shift all the other elements
-					position = begin() + where_to_insert;
-					std::cout << "before for loop = " << *(end() - 6) << std::endl;
+					position = begin() + where_to_insert; // our reserve relocate begin() so we must rellocate position as well
 					for (iterator itEnd = end() - 2; itEnd > position; itEnd--)
-					{
-						std::cout << *itEnd << std::endl;
-						std::cout << *(itEnd - n) << std::endl;
 						*itEnd = *(itEnd - n);
-					}
 					// insert new_guys
 					std::cout << "where_to_insert = " << *(array_ + where_to_insert - 1) << std::endl;
 					for (size_type i = 0; i < n; i++)
@@ -492,11 +488,49 @@ namespace ft
 				}
 			};
 
-			// template <class InputIterator>
-			// 	void	insert(iterator position, InputIterator first, InputIterator last)
-			// 	{
+			template <class InputIterator>
+				void	insert(iterator position, typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
+				{
+					// n is the number of elements to insert
+					size_type n = std::distance(first, last);
+					size_type where_to_insert = std::distance(begin(), first)
+				
+					// step 1 : allocation
+					if (size_ + n >= capacity_)
+						reserve(size_ + n);
 
-			// 	};
+					// step 2 : insertion
+					if (position == end())
+					{
+						for (size_type i = size_; i < size_ + n; i++)
+							allocator_.construct(array_ + i, new_guy);
+					}
+					else
+					{
+						// every elements after 'position' must be shifted 'n' times
+						// step 1 : place the last element at the end
+						allocator_.construct(array_ + size_, array_[size_ - 1]);
+						
+						// shift all the other elements
+						iterator new_first = begin() + where_to_insert;
+						iterator new_end = begin() + n;
+						for (iterator itEnd = end() - 2; itEnd > position; itEnd--)
+						{
+							*itEnd = *(itEnd - n);
+						}
+						// insert new_guys
+						std::cout << "where_to_insert = " << *(array_ + where_to_insert - 1) << std::endl;
+						for (size_type i = 0; i < n; i++)
+						{
+							allocator_.construct(array_ + where_to_insert, new_guy);
+							where_to_insert++;
+						}
+
+						// updates
+						size_ += n;
+						capacity_ = size_;
+					}
+				};
 				
 			// iterator	erase(iterator position)
 			// {
