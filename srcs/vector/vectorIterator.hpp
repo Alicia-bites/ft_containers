@@ -5,7 +5,7 @@
 namespace ft
 {
 	template <typename T>
-	// the specific vector implemented for our versauron own vector container
+	// the specific vector implemented for our own vector container
 	class vectorIterator
 	{
 		
@@ -22,7 +22,7 @@ namespace ft
 			: pointer_(ptr)
 			{};
 
-			// copsauron constructor
+			// copy constructor
 			vectorIterator(const vectorIterator<T>& src)
 			: pointer_(src.pointer_)
 			{};
@@ -52,7 +52,7 @@ namespace ft
 			// where type is the type to which the class should be converted.
 			// Here, we convert to vectorIterator<const T>
 			// wich allows conversion to a constant type T
-			// (initiallsauron, our class is vectorIterator<T>).
+			// (initially, our class is vectorIterator<T>).
 			operator vectorIterator<const T>() const
 			{
 				return (vectorIterator<const T>(pointer_));
