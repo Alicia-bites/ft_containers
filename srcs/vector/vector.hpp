@@ -517,16 +517,39 @@ namespace ft
 			// Removes from the vector a single element at position.
 			iterator	erase(iterator position)
 			{
+				if (position == end())
+				{
+					allocator_.destroy(array_ + (size_ - 1));
+					size_--;
+					return position;
+				}
+
+				// add try catch here
 				size_type where_to_erase = std::distance(begin(), position);
+
 				allocator_.destroy(array_ + where_to_erase);
+				// shift all elements to the left
+			    for (iterator i = position; i != end() - 1; i++)
+    			    *i = *(i + 1);
 				size_--;
+				return position;
 			};
 // 
 			// Removes fromt the vector a range of elements ([first,last))
-			// iterator	erase(iterator first, iterator last)
-			// {
+			iterator	erase(iterator first, iterator last)
+			{
+				size_t n = std::distance(first, last);
+				size_t where_to_erase = std::distance(begin(), last) - 1;
 
-			// };
+				for (; where_to_erase < n; where_to_erase++)
+					allocator_.destroy(array_+ where_to_erase);
+
+				// shift all elements n times to the left
+			    for (; first != end() - n; first++)
+    			    *first = *(first + n);
+				size_ -= n;
+				return first;
+			};
 
 			// void	swap(vector<T,Allocator>&)
 			// {

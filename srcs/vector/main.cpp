@@ -802,6 +802,80 @@ int	main(int argc, char **argv)
 			<< "#########################################################"
 			<< std::endl << RESET;
 		}
+
+		if (test_number == 21)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing erase() with one element"
+				<< RESET << std::endl << std::endl;
+		
+			std::string init[] = {"gonna", "make", "you", "groove"};
+			ft::vector<std::string> ft_ledzep(init, init + sizeof(init) / sizeof(init[0]));
+			std::vector<std::string> std_ledzep(init, init + sizeof(init) / sizeof(init[0]));
+
+			std::cout << "In std_ledzep : " << std::endl;
+			print_vector(std_ledzep);
+			std::vector<std::string>::iterator std_pos = std_ledzep.begin() + 5;
+			std::vector<std::string>::iterator std_output = std_ledzep.erase(std_pos);
+			std::cout << ORANGERED1 << "In std_ledzep : " << std::endl;
+			print_vector(std_ledzep);
+			std::cout << RESET << std::endl;
+			std::cout << "std_output = " << *std_output << std::endl;
+
+			std::cout << std::endl;
+
+			std::cout << "In ft_ledzep : " << std::endl;
+			print_vector(ft_ledzep);
+			ft::vector<std::string>::iterator ft_pos = ft_ledzep.begin() + 5;
+			ft::vector<std::string>::iterator output = ft_ledzep.erase(ft_pos);
+			std::cout << ORANGERED1 << "In ft_ledzep : " << std::endl;
+			print_vector(ft_ledzep);
+			std::cout <<RESET << std::endl;
+			std::cout << "output = " << *output << std::endl;
+
+			std::cout << std::endl;
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		if (test_number == 22)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing erase() with sequence"
+				<< RESET << std::endl << std::endl;
+		
+			std::string init[] = {"gonna", "make", "you", "groove"};
+			ft::vector<std::string> ft_ledzep(init, init + sizeof(init) / sizeof(init[0]));
+			std::vector<std::string> std_ledzep(init, init + sizeof(init) / sizeof(init[0]));
+
+			std::cout << "In std_ledzep : " << std::endl;
+			print_vector(std_ledzep);
+			std::vector<std::string>::iterator std_first = std_ledzep.begin() + 1;
+			std::vector<std::string>::iterator std_last = std_ledzep.begin() + 3;
+			std::vector<std::string>::iterator std_output = std_ledzep.erase(std_first, std_last);
+			std::cout << "In std_ledzep : " << std::endl;
+			print_vector(std_ledzep);
+			std::cout << std::endl;
+			std::cout << "std_output = " << *std_output << std::endl;
+
+			std::cout << std::endl;
+
+			std::cout << "In ft_ledzep : " << std::endl;
+			print_vector(ft_ledzep);
+			ft::vector<std::string>::iterator ft_first = ft_ledzep.begin() + 1;
+			ft::vector<std::string>::iterator ft_last = ft_ledzep.begin() + 3;
+			ft::vector<std::string>::iterator output = ft_ledzep.erase(ft_first, ft_last);
+			std::cout << "In ft_ledzep : " << std::endl;
+			print_vector(ft_ledzep);
+			std::cout << std::endl;
+			std::cout << "output = " << *output << std::endl;
+
+			std::cout << std::endl;
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
 	}
 	catch(const std::exception& e)
 	{
