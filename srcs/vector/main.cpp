@@ -705,7 +705,7 @@ int	main(int argc, char **argv)
 			std::vector<std::string> std_pinkFloyd(init, init + sizeof(init) / sizeof(init[0]));
 
 			std::cout << AQUAMARINE2 << "This is how std_pinkFloyd behaves :" << RESET << std::endl;
-			std::vector<std::string>::iterator std_position = std_pinkFloyd.begin() + 4;
+			std::vector<std::string>::iterator std_position = std_pinkFloyd.begin() + 2;
 			std_pinkFloyd.insert(std_position, "peanuts");
 			print_vector(std_pinkFloyd);
 			std::cout << "std_pinkFloyd size is : " << std_pinkFloyd.size() << std::endl;
@@ -714,7 +714,7 @@ int	main(int argc, char **argv)
 			std::cout << std::endl;
 
 			std::cout << AQUAMARINE2 << "This is how ft_pinkFloyd behaves :" << RESET << std::endl;
-			ft::vector<std::string>::iterator ft_position = ft_pinkFloyd.begin() + 4;
+			ft::vector<std::string>::iterator ft_position = ft_pinkFloyd.begin() + 2;
 			ft_pinkFloyd.insert(ft_position, "peanuts");
 			print_vector(ft_pinkFloyd);
 			std::cout << "ft_pinkFloyd size is : " << ft_pinkFloyd.size() << std::endl;
@@ -738,7 +738,7 @@ int	main(int argc, char **argv)
 			std::vector<std::string> std_pinkFloyd(init, init + sizeof(init) / sizeof(init[0]));
 
 			std::cout << AQUAMARINE2 << "This is how std_pinkFloyd behaves :" << RESET << std::endl;
-			std::vector<std::string>::iterator std_position = std_pinkFloyd.begin() + 5;
+			std::vector<std::string>::iterator std_position = std_pinkFloyd.begin() + 2;
 			std_pinkFloyd.insert(std_position, 3, "peanuts");
 			print_vector(std_pinkFloyd);
 			std::cout << "std_pinkFloyd size is : " << std_pinkFloyd.size() << std::endl;
@@ -747,7 +747,7 @@ int	main(int argc, char **argv)
 			std::cout << std::endl;
 
 			std::cout << AQUAMARINE2 << "This is how ft_pinkFloyd behaves :" << RESET << std::endl;
-			ft::vector<std::string>::iterator ft_position = ft_pinkFloyd.begin() + 5;
+			ft::vector<std::string>::iterator ft_position = ft_pinkFloyd.begin() + 2;
 			ft_pinkFloyd.insert(ft_position, 3, "peanuts");
 			print_vector(ft_pinkFloyd);
 			std::cout << "ft_pinkFloyd size is : " << ft_pinkFloyd.size() << std::endl;
@@ -762,13 +762,40 @@ int	main(int argc, char **argv)
 		if (test_number == 20)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing "
+			std::cout << STEELBLUE3 << "Testing insert() with sequence"
 				<< RESET << std::endl << std::endl;
+		
 
-			std::string init[] = {"another", "brick", "on", "the", "wall"};
-			ft::vector<std::string> ft_pinkFloyd(init, init + sizeof(init) / sizeof(init[0]));
-			std::vector<std::string> std_pinkFloyd(init, init + sizeof(init) / sizeof(init[0]));
+			std::cout << AQUAMARINE2 << "This is how std_vector behaves : " << RESET << std::endl;
+			std::vector<int> std_vector;
+			std_vector.push_back(1);
+			std_vector.push_back(2);
+			std_vector.push_back(3);
+		
+			std::vector<int> std_toInsert;
+			std_toInsert.push_back(4);
+			std_toInsert.push_back(5);
+		
+			std::vector<int>::iterator std_it = std_vector.begin() + 1;
+			std_vector.insert(std_it, std_toInsert.begin(), std_toInsert.end());
+			print_vector(std_vector);
+			
+			std::cout << std::endl;
 
+			std::cout << AQUAMARINE2 << "This is how ft_vector behaves :" << RESET << std::endl;
+			ft::vector<int> ft_vector;
+			ft_vector.push_back(1);
+			ft_vector.push_back(2);
+			ft_vector.push_back(3);
+		
+			ft::vector<int> toInsert;
+			toInsert.push_back(4);
+			toInsert.push_back(5);
+		
+			ft::vector<int>::iterator it = ft_vector.begin() + 1;
+
+			ft_vector.insert(it, toInsert.begin(), toInsert.end());
+			print_vector(ft_vector);
 
 			std::cout << std::endl;
 			std::cout << std::endl << STEELBLUE2
