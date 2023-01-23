@@ -983,10 +983,29 @@ int	main(int argc, char **argv)
 		if (test_number == 25)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing "
+			std::cout << STEELBLUE3 << "Testing comparators"
 				<< RESET << std::endl << std::endl;
-		
 
+			std::vector<int> std_potatoes(4, 1);
+			std::vector<int> std_carrots(1, 1);
+
+			std::cout << " std_potatoes == std_carrots : " << (std_potatoes == std_carrots) << std::endl;
+			std::cout << " std_potatoes < std_carrots : " << (std_potatoes < std_carrots) << std::endl;
+			std::cout << " std_potatoes != std_carrots : " << (std_potatoes != std_carrots) << std::endl;
+			std::cout << " std_potatoes > std_carrots : " << (std_potatoes > std_carrots) << std::endl;
+			std::cout << " std_potatoes >= std_carrots : " << (std_potatoes >= std_carrots) << std::endl;
+			std::cout << " std_potatoes <= std_carrots : " << (std_potatoes <= std_carrots) << std::endl;
+
+			std::cout << std::endl << CHARTREUSE5 << "Now, our ft::vector --> " << std::endl;
+			ft::vector<int> ft_potatoes(4, 1);
+			ft::vector<int> ft_carrots(1, 1);
+
+			std::cout << " ft_potatoes == ft_carrots : " << (ft_potatoes == ft_carrots) << std::endl;
+			std::cout << " ft_potatoes < ft_carrots : " << (ft_potatoes < ft_carrots) << std::endl;
+			std::cout << " ft_potatoes != ft_carrots : " << (ft_potatoes != ft_carrots) << std::endl;
+			std::cout << " ft_potatoes > ft_carrots : " << (ft_potatoes > ft_carrots) << std::endl;
+			std::cout << " ft_potatoes >= ft_carrots : " << (ft_potatoes >= ft_carrots) << std::endl;
+			std::cout << " ft_potatoes <= ft_carrots : " << (ft_potatoes <= ft_carrots) << std::endl;
 			std::cout << std::endl;
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
@@ -999,6 +1018,7 @@ int	main(int argc, char **argv)
 			std::cout << STEELBLUE3 << "Testing "
 				<< RESET << std::endl << std::endl;
 		
+
 
 			std::cout << std::endl;
 			std::cout << std::endl << STEELBLUE2

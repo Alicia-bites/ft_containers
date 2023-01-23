@@ -8,6 +8,7 @@
 #include "../../cool_tools/colors/colors.hpp"
 #include "../../cool_tools/iterator.hpp"
 #include "../../cool_tools/type_traits.hpp"
+#include "../../cool_tools/algorithms.hpp"
 
 #include "vectorIterator.hpp"
 
@@ -115,6 +116,7 @@ namespace ft
 				}
 			};
 
+
 			// constructor with a given number of elements and a value to initialize the elements
 			explicit vector(size_type size, const T & value, const Allocator & allocator = Allocator())
 			: size_(size)
@@ -206,6 +208,8 @@ namespace ft
 				}
 				allocator_.deallocate(array_, capacity_);
 			};
+
+//	MEMBER FUNCTIONS ---------------------------------------------------------------------------------
 
 	//		ASSIGNEMENT ----------------------------------------------------------------------------------------------------------------------------
 			vector<T,Allocator>& operator=(const vector<T,Allocator>& src) // TO DO -- CHECK SIZE_
@@ -658,13 +662,48 @@ namespace ft
 					pop_back();
 			};
 
+//			COMPARATORS --------------------------------------------------------------------------------------------------------------------
 
-			// GETTERS ---------------------------------------------------------------------------------------
+			bool	operator==(const vector & rhs)
+			{
+				if (this->size_ == rhs.size())
+					return (equal(this->begin(), this->end(), rhs.begin()));
+				return (false);
+			};
 
-//			MEMBER FUNCTIONS ---------------------------------------------------------------------------------
+			bool	operator< (const vector & rhs)
+			{
+				return (lexicographical_compare(this->begin(), this->end(), rhs.begin(), rhs.end()));
+			};
 
+			bool	operator!=(const vector & rhs)
+			{
+				return (!(*this == rhs));
+			};
 
+			bool	operator> (const vector & rhs)
+			{
+				ft::vector<int> unconst_rhs(rhs);
+				return (unconst_rhs < *this);
+			};
 
+			bool	operator>=(const vector & rhs)
+			{
+				ft::vector<int> unconst_rhs(rhs);
+				return (!(*this < unconst_rhs));
+			};
+
+			bool	operator<=(const vector & rhs)
+			{
+				ft::vector<int> unconst_rhs(rhs);
+				return (!(unconst_rhs < *this));
+			};
+
+//			SPECIALIZED ALGORITHM --------------------------------------------------------------------------------------------------------------------
+			void	swap(vector<T, Allocator>& x, vector<T, Allocator>& y)
+			{
+				x.swap(y);
+			};
 
 		private:
 			// number of elements in the vector.
@@ -680,5 +719,8 @@ namespace ft
 			pointer			array_;
 			// the tool used to allocate memory
 			Allocator		allocator_;
+
+			// tmp
+			std::string test;
 	};
 }
