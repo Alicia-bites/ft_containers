@@ -722,12 +722,9 @@ namespace ft
 			// allowing to accommodate for growth without the
 			// need to reallocate on each insertion.
 			size_type		capacity_;
-			// pointer to the array of elements of type T
+			// pointer to the array of the elements of type T
 			pointer			array_;
 			// the tool used to allocate memory
 			Allocator		allocator_;
-
-			// tmp
-			std::string test;
 	};
 }
