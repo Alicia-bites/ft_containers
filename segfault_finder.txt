@@ -1,0 +1,1 @@
+std::cout << DEEPPINK3 << "YOOOOOOOOOUHOOOOOOOOOOOOOOOOOOOO" << RESET << std::endl;
