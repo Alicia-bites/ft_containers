@@ -51,46 +51,54 @@ namespace ft
 				}
 				return *this;
 			};
+		};
 
+		template <typename T1, typename T2>
 			bool operator==(const pair<T1, T2> & x, const pair<T1, T2> & y)
 			{
 				return x.first == y.first && x.second == y.second;
 			};
 
+		template <typename T1, typename T2>
 			bool operator<(const pair<T1, T2>& x, const pair<T1, T2>& y)
 			{
 				return x.first < y.first || (!(y.first < x.first) && x.second < y.second);
 			};
 
+		template <typename T1, typename T2>
 			bool    operator!=(const pair<T1, T2>& x, const pair<T1, T2>& y)
 			{
 				return !(x == y);
 			};
 			
+		template <typename T1, typename T2>
 			bool    operator<=(const pair<T1, T2>& x, const pair<T1, T2>& y)
 			{
 				return !(y < x);
 			};
 			
+		template <typename T1, typename T2>
 			bool    operator>(const pair<T1, T2>& x, const pair<T1, T2>& y)
 			{
 				return y < x;
 			};
 			
+		template <typename T1, typename T2>
 			bool    operator>=(const pair<T1, T2>& x, const pair<T1, T2>& y)
 			{
 				return !(x < y);
 			};
-		
+			
+		template <typename T1, typename T2>
 			void    swap(pair<T1, T2> & x, pair<T1, T2> & y)
 			{
 				x.swap(y);
 			};
 		
 			// Constructs a pair object with its first element set to x and its second element set to y.
+		template <typename T1, typename T2>
 			pair<T1, T2>    make_pair(T1 x, T2 y)
 			{
 				return pair<T1, T2>(x, y);
 			};
-		}
 }

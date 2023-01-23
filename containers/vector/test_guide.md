@@ -27,7 +27,7 @@ Test guide
 |23				| Testing clear() member function
 |24				| Testing assign() member function
 |25				| Testing comparators
-|26				| 
+|26				| Testing pair and make_pair
 |27				| 
 |28				| 
 |30				| 

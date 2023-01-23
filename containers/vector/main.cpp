@@ -1,7 +1,9 @@
 #include "vector.hpp"
+#include "../../tools/pair.hpp"
+
 #include <string>
 #include <algorithm>
-
+#include <utility>
 #include <vector>
 
 // void	exit_if_EOF_detected()
@@ -1015,10 +1017,53 @@ int	main(int argc, char **argv)
 		if (test_number == 26)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing "
+			std::cout << STEELBLUE3 << "Testing pair and make_pair"
 				<< RESET << std::endl << std::endl;
 		
+			std::pair<int, std::string> std_myPair(1, "Aie Aie");
+			std::pair<int, std::string> std_myPair2(2, "Captain");
 
+			std::cout << std_myPair.first << std::endl;
+			std::cout << std_myPair.second << std::endl;
+
+			std::cout << std_myPair2.first << std::endl;
+			std::cout << std_myPair2.second << std::endl;
+
+			std::cout << "std_myPair == std_myPair2 = " << (std_myPair == std_myPair2) << std::endl;
+			std::cout << "std_myPair != std_myPair2 = " << (std_myPair != std_myPair2) << std::endl;
+			std::cout << "std_myPair < std_myPair2 = " << (std_myPair < std_myPair2) << std::endl;
+			std::cout << "std_myPair > std_myPair2 = " << (std_myPair > std_myPair2) << std::endl;
+			std::cout << "std_myPair <= std_myPair2 = " << (std_myPair <= std_myPair2) << std::endl;
+			std::cout << "std_myPair >= std_myPair2 = " << (std_myPair >= std_myPair2) << std::endl;
+			std::cout << std::endl;
+			std::pair<int, std::string> gandalf = std::make_pair<int, std::string>(42, "what's up");
+			std::cout << gandalf.first << std::endl;
+			std::cout << gandalf.second << std::endl;
+
+			std::cout << std::endl << CHARTREUSE5 << "Now, our ft::pair --> " << std::endl;
+			
+			ft::pair<int, std::string> myPair(1, "Aie Aie");
+			ft::pair<int, std::string> myPair2(2, "Captain");
+
+			std::cout << myPair.first << std::endl;
+			std::cout << myPair.second << std::endl;
+
+			std::cout << myPair2.first << std::endl;
+			std::cout << myPair2.second << std::endl;
+
+			std::cout << "myPair == myPair2 = " << (myPair == myPair2) << std::endl;
+			std::cout << "myPair != myPair2 = " << (myPair != myPair2) << std::endl;
+			std::cout << "myPair < myPair2 = " << (myPair < myPair2) << std::endl;
+			std::cout << "myPair > myPair2 = " << (myPair > myPair2) << std::endl;
+			std::cout << "myPair <= myPair2 = " << (myPair <= myPair2) << std::endl;
+			std::cout << "myPair >= myPair2 = " << (myPair >= myPair2) << std::endl;
+
+			std::cout << std::endl;
+
+			ft::pair<int, std::string> bilbo = ft::make_pair<int, std::string>(42, "what's up");
+
+			std::cout << bilbo.first << std::endl;
+			std::cout << bilbo.second << std::endl;
 
 			std::cout << std::endl;
 			std::cout << std::endl << STEELBLUE2
