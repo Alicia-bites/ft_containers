@@ -1,6 +1,6 @@
 
 #include "stack.hpp"
-#include "../../cool_tools/colors/colors.hpp"
+#include "../../tools/colors/colors.hpp"
 #include <stack>
 #include <stdlib.h>
 

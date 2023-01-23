@@ -5,10 +5,10 @@
 #include <iterator>
 #include <cstddef>
 
-#include "../../cool_tools/colors/colors.hpp"
-#include "../../cool_tools/iterator.hpp"
-#include "../../cool_tools/type_traits.hpp"
-#include "../../cool_tools/algorithms.hpp"
+#include "../../tools/colors/colors.hpp"
+#include "../../tools/iterator.hpp"
+#include "../../tools/type_traits.hpp"
+#include "../../tools/algorithms.hpp"
 
 #include "vectorIterator.hpp"
 
@@ -215,7 +215,7 @@ namespace ft
 
 			allocator_type get_allocator() const
 			{
-				return allocator_
+				return allocator_;
 			};
 
 	//		ASSIGNEMENT ----------------------------------------------------------------------------------------------------------------------------
