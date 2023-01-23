@@ -10,7 +10,7 @@ VALGRIND		:=	valgrind -s --leak-check=full --show-leak-kinds=all --track-origins
 IPATH			:=	includes
 OPATH			:=	obj
 
-SRCS_PATH		:=	containers
+SRCS_PATH		:=	mains
 # STACK_PATH		:=	stack
 VECTOR_PATH		:= 	vector
 
@@ -19,7 +19,6 @@ RM				:=	rm -rf
 # STACK_SRCS		:=	main.cpp \
 
 VECTOR_SRCS		:= 	main.cpp \
-					vector.cpp \
 
 SRCS			:=	$(STACK_SRCS) \
 					$(VECTOR_SRCS)
