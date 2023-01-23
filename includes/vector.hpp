@@ -531,15 +531,15 @@ namespace ft
 			void	insert(iterator position, size_type n, const T & new_guy)
 			{
 				size_type where_to_insert = std::distance(begin(), position);
-				
+
 				// step 1 : allocation
 				if (size_ + n >= capacity_)
-					reserve(size_ + n);
+					reserve(size_ + n);				
 				// step 2 : insertion
 				if (position == end())
 				{
 					for (size_type i = size_; i < size_ + n; i++)
-						allocator_.construct(array_ + i, new_guy);
+						allocator_.construct(array_ + i, new_guy);					
 				}
 				else
 				{
@@ -548,8 +548,13 @@ namespace ft
 					size_ += n; // update because end() depends on it
 					// shift all the other elements
 					position = begin() + where_to_insert; // our reserve relocate begin() so we must rellocate position as well
+					size_type i = 0;
 					for (iterator itEnd = end() - 2; itEnd > position; itEnd--)
+					{	
 						*itEnd = *(itEnd - n);
+						std::cout << CHARTREUSE3 << " i = " << i << std::endl;
+						i++;
+					}
 					// insert new_guys
 					for (size_type i = 0; i < n; i++)
 					{

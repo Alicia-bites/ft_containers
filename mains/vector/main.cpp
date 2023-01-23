@@ -1240,6 +1240,13 @@ int	main(int argc, char **argv)
 
 			//INSERT
 			std::cout << "\nINSERT\n";
+
+			// MY STUFF
+			vector<int>::iterator alicia_tmp;
+			vector<int> alicia_insert_int_me(1, 15);
+			print_vector(alicia_insert_int_me);
+			alicia_insert_int_me.insert(alicia_tmp, 8, 42);
+
 			vector<vector<int> >	insert_in_me;
 			for (int i = 0; i < 15; i++)
 			{
@@ -1252,7 +1259,6 @@ int	main(int argc, char **argv)
 					std::cout << insert_in_me.at(i).at(j) << ' ';
 				std::cout << '\n';
 			}
-
 			vector<vector<int> >::iterator	tmp;
 			test.assign(23, 19);
 			tmp = insert_in_me.begin() + 4;
@@ -1267,7 +1273,6 @@ int	main(int argc, char **argv)
 			vector<vector<int> >::const_iterator const_it(insert_in_me.begin());
 			std::cout << "Const it.front() : " << std::endl;
 			std::cout << (*const_it).front() << '\n';
-
 
 			//INSERT
 			std::cout << "\nINSERT\n";
