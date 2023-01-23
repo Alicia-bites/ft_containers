@@ -669,49 +669,6 @@ namespace ft
 					pop_back();
 			};
 
-//			COMPARATORS --------------------------------------------------------------------------------------------------------------------
-
-			bool	operator==(const vector & rhs)
-			{
-				if (this->size_ == rhs.size())
-					return (equal(this->begin(), this->end(), rhs.begin()));
-				return (false);
-			};
-
-			bool	operator< (const vector & rhs)
-			{
-				return (lexicographical_compare(this->begin(), this->end(), rhs.begin(), rhs.end()));
-			};
-
-			bool	operator!=(const vector & rhs)
-			{
-				return (!(*this == rhs));
-			};
-
-			bool	operator> (const vector & rhs)
-			{
-				ft::vector<int> unconst_rhs(rhs);
-				return (unconst_rhs < *this);
-			};
-
-			bool	operator>=(const vector & rhs)
-			{
-				ft::vector<int> unconst_rhs(rhs);
-				return (!(*this < unconst_rhs));
-			};
-
-			bool	operator<=(const vector & rhs)
-			{
-				ft::vector<int> unconst_rhs(rhs);
-				return (!(unconst_rhs < *this));
-			};
-
-//			SPECIALIZED ALGORITHM --------------------------------------------------------------------------------------------------------------------
-			void	swap(vector<T, Allocator>& x, vector<T, Allocator>& y)
-			{
-				x.swap(y);
-			};
-
 		private:
 			// number of elements in the vector.
 			size_type		size_;
@@ -727,4 +684,58 @@ namespace ft
 			// the tool used to allocate memory
 			Allocator		allocator_;
 	};
+
+
+// NON_MEMBER FUNCTION OVERLOADS -------------------------------------------------------------------------------------------------------
+
+	//	COMPARATORS --------------------------------------------------------------------------------------------------------------------
+			
+		template <typename T, typename Allocator>
+			bool	operator==(const vector<T, Allocator> & lhs, const vector<T, Allocator> & rhs)
+			{
+				if (this->size_ == rhs.size())
+					return (equal(this->begin(), this->end(), rhs.begin()));
+				return (false);
+			};
+
+		template <typename T, typename Allocator>
+			bool	operator< (const vector<T, Allocator> & lhs, const vector<T, Allocator> & rhs)
+			{
+				return (lexicographical_compare(this->begin(), this->end(), rhs.begin(), rhs.end()));
+			};
+
+		template <typename T, typename Allocator>
+			bool	operator!=(const vector<T, Allocator> & lhs, const vector<T, Allocator> & rhs)
+			{
+				return (!(*this == rhs));
+			};
+
+		template <typename T, typename Allocator>
+			bool	operator> (const vector<T, Allocator> & lhs, const vector<T, Allocator> & rhs)
+			{
+				ft::vector<int> unconst_rhs(rhs);
+				return (unconst_rhs < *this);
+			};
+
+		template <typename T, typename Allocator>
+			bool	operator>=(const vector<T, Allocator> & lhs, const vector<T, Allocator> & rhs)
+			{
+				ft::vector<int> unconst_rhs(rhs);
+				return (!(*this < unconst_rhs));
+			};
+
+		template <typename T, typename Allocator>
+			bool	operator<=(const vector<T, Allocator> & lhs, const vector<T, Allocator> & rhs)
+			{
+				ft::vector<int> unconst_rhs(rhs);
+				return (!(unconst_rhs < *this));
+			};
+
+	//	SPECIALIZED ALGORITHM --------------------------------------------------------------------------------------------------------------------
+		
+		template <typename T, typename Allocator>
+			void	swap(vector<T, Allocator>& x, vector<T, Allocator>& y)
+			{
+				x.swap(y);
+			};
 }
