@@ -475,6 +475,7 @@ namespace ft
 				capacity_ = size_;
 			};
 
+			// Inserts elements from range [first, last) before posisition. 
 			template <class InputIterator>
 				void	insert(iterator position, typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
 				{
@@ -515,6 +516,7 @@ namespace ft
 				};
 			
 			// Removes from the vector a single element at position.
+			// An invalid position or range causes undefined behavior.
 			iterator	erase(iterator position)
 			{
 				if (position == end())
@@ -526,7 +528,6 @@ namespace ft
 
 				// add try catch here
 				size_type where_to_erase = std::distance(begin(), position);
-
 				allocator_.destroy(array_ + where_to_erase);
 				// shift all elements to the left
 			    for (iterator i = position; i != end() - 1; i++)
@@ -536,19 +537,21 @@ namespace ft
 			};
 // 
 			// Removes fromt the vector a range of elements ([first,last))
+			// An invalid position or range causes undefined behavior.
 			iterator	erase(iterator first, iterator last)
 			{
+				if (first == last)
+					return first;
 				size_t n = std::distance(first, last);
 				size_t where_to_erase = std::distance(begin(), last) - 1;
-
 				for (; where_to_erase < n; where_to_erase++)
 					allocator_.destroy(array_+ where_to_erase);
-
+				iterator remember_first = first;
 				// shift all elements n times to the left
-			    for (; first != end() - n; first++)
-    			    *first = *(first + n);
+				for (; first != end() - n; first++)
+					*first = *(first + n);
 				size_ -= n;
-				return first;
+				return remember_first;
 			};
 
 			// void	swap(vector<T,Allocator>&)
