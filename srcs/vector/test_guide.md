@@ -21,5 +21,16 @@ Test guide
 |17				| Testing push_back()
 |18				| Testing insert() with one element
 |19				| Testing insert() with n elements
-|20				| 
-|21				| 
+|20				| Testing insert() with sequence
+|21				| Testing erase() with one element
+|22				| Testing erase() with sequence
+|23				| Testing clear() member function
+|24				| "Testing assign() member function
+|25				| 
+|26				| 
+|27				| 
+|28				| 
+|30				| 
+|29				| 
+
+

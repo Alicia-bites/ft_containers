@@ -207,6 +207,70 @@ namespace ft
 				allocator_.deallocate(array_, capacity_);
 			};
 
+	//		ASSIGNEMENT ----------------------------------------------------------------------------------------------------------------------------
+			vector<T,Allocator>& operator=(const vector<T,Allocator>& src) // TO DO -- CHECK SIZE_
+			{
+				// std::cout << MAGENTA3 << "Calling assignment operator." 
+				// 	<< std::endl << RESET;
+
+				if (this != &src)
+				{
+					ft::vector<int> unconst_src(src);
+					swap(unconst_src);
+					if (capacity_ > src.capacity_)
+					{
+						for (size_type i = size_; i != src.size_; i--)
+						{
+							std::cout << array_[i] << std::endl;
+							allocator_.destroy(array_ + i);
+						}
+					}
+				}
+				return *this;
+			};
+
+			// Assigns new contents to the vector, replacing its current contents, and modifying its size accordingly.
+			// The new contents are elements constructed from each of the elements in the range between first and last, in the same order.
+			template <class InputIt>
+				void assign(typename enable_if<!is_integral<InputIt>::value, InputIt>::type first, InputIt last)
+				{
+
+					// find out how many elements must be assigned
+					size_type n = std::distance(first, last);
+					// reserve necessary capacity
+					if (n > capacity_)
+						reserve(n);
+					// destroy elements in array_
+					for (size_type i = 0; i < size_; i++)
+						allocator_.destroy(array_ + i);
+					size_type i = 0;
+					// copy new elements
+					for (; first != last; first++)
+					{
+						array_[i] = *first;
+						i++;
+					}
+					// update size_
+					size_ = n;
+				};
+			
+			// Assigns new contents to the vector, replacing its current contents, and modifying its size accordingly.
+			// The new contents are n elements, each initialized to a copy of val.
+			 void    assign(size_type n, const T & val)
+			 {
+				// reserve necessary capacity
+				if (n > capacity_)
+					reserve(n);
+				// destroy elements in array_
+				for (size_type i = 0; i < size_; i++)
+					allocator_.destroy(array_ + i);
+				// update size_
+				size_ = n;
+				// copy new elements
+				for (size_type i = 0; i < size_; i++)
+					allocator_.construct(array_ + i, val);
+			 }
+
 	//		ITERATORS --------------------------------------------------------------------------------------
 			// returns an iterator pointing to the first element in the vector.
 			iterator	begin()
@@ -554,48 +618,6 @@ namespace ft
 				return remember_first;
 			};
 
-			// void	swap(vector<T,Allocator>&)
-			// {
-
-			// };
-
-			// void	clear()
-			// {
-
-			// };
-
-
-//			ASSIGNEMENT
-			vector<T,Allocator>& operator=(const vector<T,Allocator>& src)
-			{
-				std::cout << MAGENTA3 << "Calling assignment operator." 
-					<< std::endl << RESET;
-				if (this != &src)
-				{
-					ft::vector<int> unconst_src(src);
-					swap(unconst_src);
-					if (capacity_ > src.capacity_)
-					{
-						for (size_type i = size_; i != src.size_; i--)
-						{
-							std::cout << array_[i] << std::endl;
-							allocator_.destroy(array_ + i);
-						}
-					}
-				}
-				return *this;
-			};
-
-			// Assigns new contents to the vector, replacing its current contents, and modifying its size accordingly.
-			// template <class InputIt>
-			// 	void assign(InputIt first, InputIt last)
-			// 	{
-					
-			// 	};
-
-			// GETTERS ---------------------------------------------------------------------------------------
-
-//			MEMBER FUNCTIONS ---------------------------------------------------------------------------------
 //			Exchanges the content of the container by the content of swapMe,
 //			which is another vector object of the same type. Sizes may differ.
 			void    swap(vector<T, Allocator>& swapMe)
@@ -628,11 +650,21 @@ namespace ft
 				}
 			};
 
-			// void    clear()
-			// {
-			// 	while (!empty())
-			// 		pop_back();
-			// };
+			// Removes all elements from the vector (which are destroyed), leaving 
+			// the container with a size of 0.
+			void    clear()
+			{
+				while (!empty())
+					pop_back();
+			};
+
+
+			// GETTERS ---------------------------------------------------------------------------------------
+
+//			MEMBER FUNCTIONS ---------------------------------------------------------------------------------
+
+
+
 
 		private:
 			// number of elements in the vector.

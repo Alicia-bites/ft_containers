@@ -878,6 +878,159 @@ int	main(int argc, char **argv)
 			<< "#########################################################"
 			<< std::endl << RESET;
 		}
+
+		if (test_number == 23)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing clear() function"
+				<< RESET << std::endl << std::endl;
+		
+			int myInts[] = {1, 2, 3, 4, 5};
+			ft::vector<int> ft_vector(myInts, myInts + sizeof(myInts) / sizeof(myInts[0]));
+			std::vector<int> std_vector(myInts, myInts + sizeof(myInts) / sizeof(myInts[0]));
+
+			std::cout << "In std_vector : " << std::endl;
+			print_vector(std_vector);
+			std::cout << std::endl;
+			std_vector.clear();
+			std::cout << "In std_vector : " << std::endl;
+			print_vector(std_vector);
+			std::cout << std::endl;
+			std::cout << "std_vector size is " << std_vector.size() << std::endl;
+			std::cout << "std_vector capacity is " << std_vector.capacity() << std::endl;
+
+			std::cout << std::endl;
+
+			std::cout << "In ft_vector : " << std::endl;
+			print_vector(ft_vector);
+			std::cout << std::endl;
+			ft_vector.clear();
+			std::cout << "In ft_vector : " << std::endl;
+			print_vector(ft_vector);
+			std::cout << std::endl;
+			std::cout << "ft_vector size is " << ft_vector.size() << std::endl;
+			std::cout << "ft_vector capacity is " << ft_vector.capacity() << std::endl;
+
+
+			std::cout << std::endl;
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		if (test_number == 24)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing assign() member function"
+				<< RESET << std::endl << std::endl;
+		
+			int myInts[] = {1, 2, 3, 4, 5};
+			ft::vector<int> ft_vector(myInts, myInts + sizeof(myInts) / sizeof(myInts[0]));
+			std::vector<int> std_vector(myInts, myInts + sizeof(myInts) / sizeof(myInts[0]));
+
+			int toAssign[] = {42, 43, 44};
+
+			std::vector<int> std_toAssign(toAssign, toAssign + 3);
+			std::vector<int>::iterator std_first = std_toAssign.begin() + 1;
+			std::vector<int>::iterator std_last = std_toAssign.begin() + 3;
+			std::cout << "In std_vector : " << std::endl;
+			print_vector(std_vector);
+			std::cout << std::endl;
+			std_vector.assign(std_first, std_last);
+			std::cout << "In std_vector : " << std::endl;
+			print_vector(std_vector);
+			std::cout << std::endl;
+			std::cout << "std_vector size is " << std_vector.size() << std::endl;
+			std::cout << "std_vector capacity is " << std_vector.capacity() << std::endl;
+			std::cout << std::endl;
+			std::cout << CHARTREUSE5 << "Testing assign(n, val)"<< RESET << std::endl;
+			std_vector.assign(0, 1);
+			std::cout << "In std_vector : " << std::endl;
+			print_vector(std_vector);
+			std::cout << std::endl;
+			std::cout << "std_vector size is " << std_vector.size() << std::endl;
+			std::cout << "std_vector capacity is " << std_vector.capacity() << std::endl;
+
+			std::cout << std::endl;
+
+			ft::vector<int> ft_toAssign(toAssign, toAssign + 3);
+			ft::vector<int>::iterator ft_first = ft_toAssign.begin() + 1;
+			ft::vector<int>::iterator ft_last = ft_toAssign.begin() + 3;
+			std::cout << "In ft_vector : " << std::endl;
+			print_vector(ft_vector);
+			std::cout << std::endl;
+			ft_vector.assign(ft_first, ft_last);
+			std::cout << "In ft_vector : " << std::endl;
+			print_vector(ft_vector);
+			std::cout << std::endl;
+			std::cout << "ft_vector size is " << ft_vector.size() << std::endl;
+			std::cout << "ft_vector capacity is " << ft_vector.capacity() << std::endl;
+			std::cout << std::endl;
+			std::cout << CHARTREUSE5 << "Testing assign(n, val)" << RESET << std::endl;
+			ft_vector.assign(0, 1);
+			std::cout << "In ft_vector : " << std::endl;
+			print_vector(ft_vector);
+			std::cout << std::endl;
+			std::cout << "ft_vector size is " << ft_vector.size() << std::endl;
+			std::cout << "ft_vector capacity is " << ft_vector.capacity() << std::endl;
+
+			std::cout << std::endl;
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		if (test_number == 25)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing "
+				<< RESET << std::endl << std::endl;
+		
+
+			std::cout << std::endl;
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		if (test_number == 26)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing "
+				<< RESET << std::endl << std::endl;
+		
+
+			std::cout << std::endl;
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		if (test_number == 27)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing "
+				<< RESET << std::endl << std::endl;
+		
+
+			std::cout << std::endl;
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		if (test_number == 28)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing "
+				<< RESET << std::endl << std::endl;
+		
+
+			std::cout << std::endl;
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
 	}
 	catch(const std::exception& e)
 	{
