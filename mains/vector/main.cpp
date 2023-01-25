@@ -1241,11 +1241,14 @@ int	main(int argc, char **argv)
 			//INSERT
 			std::cout << "\nINSERT\n";
 
-			// MY STUFF
-			vector<int>::iterator alicia_tmp;
-			vector<int> alicia_insert_int_me(1, 15);
-			print_vector(alicia_insert_int_me);
-			alicia_insert_int_me.insert(alicia_tmp, 8, 42);
+			// // MY STUFF
+			// vector<int> alicia_insert_in_me(15, 1);
+			// print_vector(alicia_insert_in_me);
+			// vector<int>::iterator alicia_tmp = alicia_insert_in_me.begin() + 2;
+			// alicia_insert_in_me.insert(alicia_tmp, 8, 42);
+			// print_vector(alicia_insert_in_me);
+			// std::cout << SPRINGGREEN3 << "END OF MY STUFF" << RESET << std::endl;
+			// // END OF MY STUFF
 
 			vector<vector<int> >	insert_in_me;
 			for (int i = 0; i < 15; i++)
@@ -1255,21 +1258,29 @@ int	main(int argc, char **argv)
 			}
 			for (size_t i = 0; i < insert_in_me.size(); i++)
 			{
+				std::cout << LIGHTSEAGREEN << "vector[" << i << "] contains --> ";
 				for (size_t j = 0; j < insert_in_me.at(i).size(); j++)
 					std::cout << insert_in_me.at(i).at(j) << ' ';
 				std::cout << '\n';
 			}
-			vector<vector<int> >::iterator	tmp;
+			std::cout << RESET << std::endl;
 			test.assign(23, 19);
+			std::cout << LIGHTSLATEBLUE << "Printing content of test : ";
+			print_vector(test);
+			std::cout << RESET << std::endl;
+
+			vector<vector<int> >::iterator	tmp;
 			tmp = insert_in_me.begin() + 4;
 			insert_in_me.insert(tmp, 8, test);
 			for (size_t i = 0; i < insert_in_me.size(); i++)
 			{
+				std::cout << LIGHTSEAGREEN << "vector[" << i << "] contains --> ";
 				for (size_t j = 0; j < insert_in_me.at(i).size(); j++)
 					std::cout << insert_in_me.at(i).at(j) << ' ';
 				std::cout << '\n';
 			}
-
+			std::cout << RESET << std::endl;
+			
 			vector<vector<int> >::const_iterator const_it(insert_in_me.begin());
 			std::cout << "Const it.front() : " << std::endl;
 			std::cout << (*const_it).front() << '\n';

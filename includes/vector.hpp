@@ -218,6 +218,11 @@ namespace ft
 				return allocator_;
 			};
 
+			pointer	get_array() const
+			{
+				return array_;
+			}
+
 	//		ASSIGNEMENT ----------------------------------------------------------------------------------------------------------------------------
 			vector<T,Allocator>& operator=(const vector<T,Allocator> & src) // TO DO -- CHECK SIZE_
 			{
@@ -534,27 +539,28 @@ namespace ft
 
 				// step 1 : allocation
 				if (size_ + n >= capacity_)
-					reserve(size_ + n);				
+					reserve(size_ + n);
+
 				// step 2 : insertion
 				if (position == end())
 				{
 					for (size_type i = size_; i < size_ + n; i++)
-						allocator_.construct(array_ + i, new_guy);					
+						allocator_.construct(array_ + i, new_guy);
 				}
 				else
 				{
 					// place the last element at the new end
-					allocator_.construct(array_ + (size_ + n - 1), array_[size_ - 1]);
-					size_ += n; // update because end() depends on it
-					// shift all the other elements
-					position = begin() + where_to_insert; // our reserve relocate begin() so we must rellocate position as well
-					size_type i = 0;
-					for (iterator itEnd = end() - 2; itEnd > position; itEnd--)
-					{	
-						*itEnd = *(itEnd - n);
-						std::cout << CHARTREUSE3 << " i = " << i << std::endl;
-						i++;
+					size_type new_last_index = size_ + n - 1;
+					allocator_.construct(array_ + new_last_index, array_[size_ - 1]);
+
+					// shift all the other elements before index 'where_to_insert' n times to the right
+					new_last_index--;
+					for (size_type i = 0; i < size_ - 1; i++)
+					{
+						array_[new_last_index] = array_[new_last_index - n];
+						new_last_index--;
 					}
+
 					// insert new_guys
 					for (size_type i = 0; i < n; i++)
 					{
@@ -562,6 +568,9 @@ namespace ft
 						where_to_insert++;
 					}
 				}
+
+				//updates
+				size_ += n;
 				capacity_ = size_;
 			};
 
@@ -588,12 +597,17 @@ namespace ft
 					}
 					else
 					{
+						size_type new_last_index = size_ + n - 1;
 						allocator_.construct(array_ + (size_ + n - 1), array_[size_ - 1]);
+
 						// shift all the other elements
-						position = begin() + where_to_insert; // our reserve relocate begin() so we must rellocate position as well
-						size_ += n; // update because end() depends on it
-						for (iterator itEnd = end() - 2; itEnd > position; itEnd--)
-							*itEnd = *(itEnd - n);
+						new_last_index--;
+						for (size_type i = 0; i < size_ - 1; i++)
+						{
+							array_[new_last_index] = array_[new_last_index - n];
+							new_last_index--;
+						}
+
 						// insert new_guys
 						for (; first != last; first++)
 						{
@@ -601,7 +615,9 @@ namespace ft
 							where_to_insert++;
 						}
 					}
+					
 					// updates
+					size_ += n;
 					capacity_ = size_;
 				};
 			
@@ -750,4 +766,16 @@ namespace ft
 			{
 				x.swap(y);
 			};
+	
+	// FOR DEBUG ----------------------------------------------------------------------------------------------------------------------------------
+
+		template <typename T, typename Allocator>
+			std::ostream&	operator<<(std::ostream& o, vector<T, Allocator> const & rhs)
+			{
+				std::cout << MAGENTA3 << "Printing content of vector of size(" << rhs.size() << ") : " << std::endl;
+				for (size_t i = 0; i < rhs.size(); i++)
+					o << rhs.get_array()[i] << " | ";
+				std::cout << RESET << std::endl;
+				return o;
+			}
 }
