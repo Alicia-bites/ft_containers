@@ -504,9 +504,7 @@ namespace ft
 				size_type where_to_insert = std::distance(begin(), position);
 
 				if (size_ + 1 > capacity_)
-				{
 					reserve(size_ + 1);
-				}
 				// step 2 : translate position from iterator to integer so we can
 				// add it to our pointer array_ and place our new guy
 				position = begin() + where_to_insert;
