@@ -181,19 +181,22 @@ namespace ft
 				, array_(0)
 				, allocator_(original.allocator_)
 				{
-					// if (original.capacity_)
-					// {
-					// 	array_ = allocator_.allocate(original.capacity_);
-					// }
-					// for (size_type i = 0; i < original.size_; i++)
-					// {
-					// 	allocator_.construct(array_ + i, original[i]);
-					// 	std::cout << GREEN2 << "original[i] = " << original[i] << std::endl;
-					// }
+					std::cout << original << std::endl;
+					if (original.capacity_)
+					{
+						array_ = allocator_.allocate(original.capacity_);
+					}
+					for (size_type i = 0; i < original.size_; i++)
+					{
+						allocator_.construct(array_ + i, original[i]);
+						// std::cout << GREEN2 << "original[i] = " << original[i] << std::endl;
+					}
 					// if (this != &original)
 						// this->insert(this->begin(), original.begin(), original.end());
 
-					assign(original.begin(), original.end());
+					// if (this != &original)
+						// assign(original.begin(), original.end());
+
 				};
 
 	//		DESTRUCTORS --------------------------------------------------------------------------------------
@@ -202,10 +205,11 @@ namespace ft
 				// std::cout << OLIVE << "Calling destructor." 
 				// 	<< std::endl << RESET;
 
-				if (capacity_ == 0)
-					return ;
-				for (size_type i = 0; i < size_; i++)
-					allocator_.destroy(array_ + i);
+				// if (capacity_ == 0)
+					// return ;
+				// for (size_type i = 0; i < size_; i++)
+					// allocator_.destroy(array_ + i);
+				clear();
 				allocator_.deallocate(array_, capacity_);
 			};
 
@@ -226,29 +230,11 @@ namespace ft
 	//		ASSIGNEMENT ----------------------------------------------------------------------------------------------------------------------------
 			vector<T,Allocator>& operator=(const vector<T,Allocator> & src)
 			{
-				// if (this == &src)
-					// return (*this);
-// 
-				// if (src.size() > capacity_)
-				// {
-					// Delete existing elements
-					// for (size_t i = 0; i < size_; i++)
-						// allocator_.destroy(array_ + i);
-					// allocator_.deallocate(array_, capacity_);
-	// 
-					// Allocate new memory
-					// capacity_ = src.capacity_;
-					// array_ = allocator_.allocate(capacity_);
-				// }
-		// 
-				// Copy elements from src
-				// size_ = src.size_;
-				// for (size_t i = 0; i < size_; i++)
-					// array_[i] = src.array_[i];
-			// 
-				// return (*this);
+				if (this == &src)
+					return (*this);
 
 				this->~vector();
+				// // placement new --> way to call the constructor of an object at a specific memory location.  The this pointer is passed as the memory location where the object is to be constructed.
 				new (this) vector(src);
 				return *this;
 			};
