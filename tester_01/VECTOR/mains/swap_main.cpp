@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   swap_main.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbaudet <hbaudet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amarchan <amarchan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/02 13:07:06 by hbaudet           #+#    #+#             */
-/*   Updated: 2021/01/18 16:07:00 by hbaudet          ###   ########.fr       */
+/*   Updated: 2023/01/25 16:39:34 by amarchan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int main ()
 	bar.push_back(33);
 
 
-	vector<int>::const_iterator tmp = foo.begin(); //tmp iterates through foo
+	vector<int>::gandalf tmp = foo.begin(); //tmp iterates through foo
 	vector<int>::const_iterator tmp2 = bar.begin(); //tmp2 iterates through bar
 
 	swap(bar, foo); //tmp iterates through bar
@@ -95,73 +95,73 @@ int main ()
 	for (vector<int>::iterator it=bar.begin(); it!=bar.end(); ++it)
 		cout << *it << '\n';
 
-		while(tmp != bar.end())
-		{
-			cout << *tmp << '\n';
-			tmp++;
-		}
-		tmp--;
-
-		while(tmp2 != foo.end())
-		{
-			cout << *tmp2 << '\n';
-			tmp2++;
-		}
-		tmp2--;
-
-		swap(other, foo); //tmp2 iterates through other
-						//tmp3 iterates throught foo
-		print(other);
-		print(foo);
-		print(bar);
-		while(tmp != bar.begin())
-		{
-			cout << *tmp << '\n';
-			tmp--;
-		}
+	while(tmp != bar.end())
+	{
 		cout << *tmp << '\n';
+		tmp++;
+	}
+	tmp--;
 
-		while(tmp2 != other.begin())
-		{
-			cout << *tmp2 << '\n';
-			tmp2--;
-		}
-			cout << *tmp2 << '\n';
+	while(tmp2 != foo.end())
+	{
+		cout << *tmp2 << '\n';
+		tmp2++;
+	}
+	tmp2--;
 
-		while(tmp3 != foo.end())
-		{
-			cout << *tmp3 << '\n';
-			tmp3++;
-		}
+	swap(other, foo); //tmp2 iterates through other
+					//tmp3 iterates throught foo
+	print(other);
+	print(foo);
+	print(bar);
+	while(tmp != bar.begin())
+	{
+		cout << *tmp << '\n';
+		tmp--;
+	}
+	cout << *tmp << '\n';
+
+	while(tmp2 != other.begin())
+	{
+		cout << *tmp2 << '\n';
+		tmp2--;
+	}
+		cout << *tmp2 << '\n';
+
+	while(tmp3 != foo.end())
+	{
+		cout << *tmp3 << '\n';
+		tmp3++;
+	}
+	tmp3--;
+
+	swap(bar, foo);
+	swap(foo, bar);
+	swap(bar, foo); //tmp3 iterates through bar
+				//tmp iterates through foo
+
+	print(other);
+	print(foo);
+	print(bar);
+
+	while(tmp != foo.end())
+	{
+		cout << *tmp << '\n';
+		tmp++;
+	}
+
+	while(tmp2 != other.end())
+	{
+		cout << *tmp2 << '\n';
+		tmp2++;
+	}
+
+	while(tmp3 != bar.begin())
+	{
+		cout << *tmp3 << '\n';
 		tmp3--;
-
-		swap(bar, foo);
-		swap(foo, bar);
-		swap(bar, foo); //tmp3 iterates through bar
-					//tmp iterates through foo
-
-		print(other);
-		print(foo);
-		print(bar);
-
-		while(tmp != foo.end())
-		{
-			cout << *tmp << '\n';
-			tmp++;
-		}
-
-		while(tmp2 != other.end())
-		{
-			cout << *tmp2 << '\n';
-			tmp2++;
-		}
-
-		while(tmp3 != bar.begin())
-		{
-			cout << *tmp3 << '\n';
-			tmp3--;
-		}
-			cout << *tmp3 << '\n';
+	}
+	cout << *tmp3 << '\n';
 }
 
   return 0;

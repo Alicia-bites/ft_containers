@@ -141,57 +141,59 @@ namespace ft
 				}
 			};
 
-//				range constructor : Constructs a container with as many elements as
-//					the range [first,last), with each element constructed 
-//					from its corresponding element in that range, in the same order.
-//				type of the first argument will only be defined as input iterator if 
-//					this argument is not an integer (iow scalars --> native types with 
-//					a simple value, like int, char, long, bool...).
-				template <typename InputIt>
-					vector(typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type first, InputIt last, const Allocator & allocator = Allocator())
-					: size_(0)
-					, capacity_(0)
-					, array_(0)
-					, allocator_(allocator)
-					{
-						// std::cout << OLIVE << "Calling range constructor." 
-						// 	<< std::endl << RESET;
+//			range constructor : Constructs a container with as many elements as
+//				the range [first,last), with each element constructed 
+//				from its corresponding element in that range, in the same order.
+//			type of the first argument will only be defined as input iterator if 
+//				this argument is not an integer (iow scalars --> native types with 
+//				a simple value, like int, char, long, bool...).
+			template <typename InputIt>
+				vector(typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type first, InputIt last, const Allocator & allocator = Allocator())
+				: size_(0)
+				, capacity_(0)
+				, array_(0)
+				, allocator_(allocator)
+				{
+					// std::cout << OLIVE << "Calling range constructor." 
+					// 	<< std::endl << RESET;
 
-						InputIt remember_first = first;
-						for (; first != last; first++)
-							size_++;
-						first = remember_first;
-						if (size_)
-						{
-							array_ = allocator_.allocate(size_);
-							capacity_ = size_;
-						}
-						for (size_type i = 0; i < size_; i++)
-						{
-							allocator_.construct(array_ + i, *first);
-							first++;
-						}
-					};
+					InputIt remember_first = first;
+					for (; first != last; first++)
+						size_++;
+					first = remember_first;
+					if (size_)
+					{
+						array_ = allocator_.allocate(size_);
+						capacity_ = size_;
+					}
+					for (size_type i = 0; i < size_; i++)
+					{
+						allocator_.construct(array_ + i, *first);
+						first++;
+					}
+				};
 
 	//			Copy constructor : Constructs a container with a copy of each of 
-	//			the elements in x, in the same order.
+	//			the elements in original, in the same order.
 				vector(const vector<T,Allocator> & original)
-				: size_(original.size_)
-				, capacity_(original.capacity_)
+				: size_(0)
+				, capacity_(0)
 				, array_(0)
 				, allocator_(original.allocator_)
 				{
-					// std::cout << OLIVE << "Calling copy constructor." 
-					// 	<< std::endl << RESET;
+					// if (original.capacity_)
+					// {
+					// 	array_ = allocator_.allocate(original.capacity_);
+					// }
+					// for (size_type i = 0; i < original.size_; i++)
+					// {
+					// 	allocator_.construct(array_ + i, original[i]);
+					// 	std::cout << GREEN2 << "original[i] = " << original[i] << std::endl;
+					// }
+					// if (this != &original)
+						// this->insert(this->begin(), original.begin(), original.end());
 
-					if (original.capacity_)
-					{
-						array_ = allocator_.allocate(original.capacity_);
-					}
-					for (size_type i = 0; i < original.size_; i++)
-					{
-						allocator_.construct(array_ + i, original[i]);
-					}
+					assign(original.begin(), original.end());
 				};
 
 	//		DESTRUCTORS --------------------------------------------------------------------------------------
@@ -203,9 +205,7 @@ namespace ft
 				if (capacity_ == 0)
 					return ;
 				for (size_type i = 0; i < size_; i++)
-				{
 					allocator_.destroy(array_ + i);
-				}
 				allocator_.deallocate(array_, capacity_);
 			};
 
@@ -224,35 +224,33 @@ namespace ft
 			}
 
 	//		ASSIGNEMENT ----------------------------------------------------------------------------------------------------------------------------
-			vector<T,Allocator>& operator=(const vector<T,Allocator> & src) // TO DO -- CHECK SIZE_
+			vector<T,Allocator>& operator=(const vector<T,Allocator> & src)
 			{
-				// std::cout << MAGENTA3 << "Calling assignment operator." 
-				// 	<< std::endl << RESET;
+				// if (this == &src)
+					// return (*this);
+// 
+				// if (src.size() > capacity_)
+				// {
+					// Delete existing elements
+					// for (size_t i = 0; i < size_; i++)
+						// allocator_.destroy(array_ + i);
+					// allocator_.deallocate(array_, capacity_);
+	// 
+					// Allocate new memory
+					// capacity_ = src.capacity_;
+					// array_ = allocator_.allocate(capacity_);
+				// }
+		// 
+				// Copy elements from src
+				// size_ = src.size_;
+				// for (size_t i = 0; i < size_; i++)
+					// array_[i] = src.array_[i];
+			// 
+				// return (*this);
 
-				if (this == &src)
-					return (*this);
-				if (src.size() > capacity_)
-				{
-					vector<T, Allocator>    tmp(src);
-					this->swap(tmp);
-				}
-				else
-				{
-					if (src.size() <= size_)
-					{
-						iterator it = std::copy(src.begin(), src.end(), this->begin());
-						for (; it < this->end(); it++)
-							allocator_.destroy(it.getPointer());
-						size_ = src.size();
-					}
-					else
-					{
-						std::copy(src.begin(), src.begin() + size_, this->begin());
-						for (; size_ < src.size(); size_++)
-							allocator_.construct(array_ + size_, src[size_]);
-					}
-				}
-				return (*this);
+				this->~vector();
+				new (this) vector(src);
+				return *this;
 			};
 
 			// Assigns new contents to the vector, replacing its current contents, and modifying its size accordingly.
@@ -503,15 +501,14 @@ namespace ft
 			// Inserts element of value new_guy at the specified location in the container. 
 			iterator	insert(iterator position, const T & new_guy)
 			{
-				// step 1 : allocate. If size_ is stritcly inferior to capacity_,
-				// it's cool, nothing to allocate. But if size_ is equal to capacity_,
-				// we need to allocate one more block for our new guy.
-				if (size_ == capacity_)
-					allocator_.allocate(size_ + 1);
+				size_type where_to_insert = std::distance(begin(), position);
 
+				if (size_ + 1 > capacity_)
+				{
+					reserve(size_ + 1);
+				}
 				// step 2 : translate position from iterator to integer so we can
 				// add it to our pointer array_ and place our new guy
-				size_type where_to_insert = std::distance(begin(), position);
 				position = begin() + where_to_insert;
 				if (position == end())
 					allocator_.construct(array_ + size_, new_guy);
@@ -542,33 +539,40 @@ namespace ft
 					reserve(size_ + n);
 
 				// step 2 : insertion
-				if (position == end())
+				if (size_ == 0)
 				{
-					for (size_type i = size_; i < size_ + n; i++)
+					for (size_type i = 0; i < n; i++)
 						allocator_.construct(array_ + i, new_guy);
 				}
 				else
 				{
-					// place the last element at the new end
-					size_type new_last_index = size_ + n - 1;
-					allocator_.construct(array_ + new_last_index, array_[size_ - 1]);
-
-					// shift all the other elements before index 'where_to_insert' n times to the right
-					new_last_index--;
-					for (size_type i = 0; i < size_ - 1; i++)
+					if (position == end())
 					{
-						array_[new_last_index] = array_[new_last_index - n];
-						new_last_index--;
+						for (size_type i = size_; i < size_ + n; i++)
+							allocator_.construct(array_ + i, new_guy);
 					}
-
-					// insert new_guys
-					for (size_type i = 0; i < n; i++)
+					else
 					{
-						allocator_.construct(array_ + where_to_insert, new_guy);
-						where_to_insert++;
+						// place the last element at the new end
+						size_type new_last_index = size_ + n - 1;
+						allocator_.construct(array_ + new_last_index, array_[size_ - 1]);
+	
+						// shift all the other elements before index 'where_to_insert' n times to the right
+						new_last_index--;
+						for (size_type i = where_to_insert; i < size_ - 1; i++)
+						{
+							array_[new_last_index] = array_[new_last_index - n];
+							new_last_index--;
+						}
+	
+						// insert new_guys
+						for (size_type i = 0; i < n; i++)
+						{
+							allocator_.construct(array_ + where_to_insert, new_guy);
+							where_to_insert++;
+						}
 					}
 				}
-
 				//updates
 				size_ += n;
 				capacity_ = size_;
@@ -580,42 +584,56 @@ namespace ft
 				{
 
 					// n is the number of elements to insert
-					size_type n = std::distance(first, last);
-
+					size_type n = std::distance(first, last); 
 					size_type where_to_insert = std::distance(begin(), position);
 				
 					// step 1 : allocation
 					if (size_ + n >= capacity_)
 						reserve(size_ + n);
-					if (position == end())
+
+					// step 2 : insertion
+					if (size_ == 0)
 					{
-						for (; first != last; first++)
+						for (size_type i = 0; i < n; i++)
 						{
-							allocator_.construct(array_ + where_to_insert, *first);
-							where_to_insert++;
+							allocator_.construct(array_ + i, *first);
+							first++;
 						}
 					}
-					else
+					else 
 					{
-						size_type new_last_index = size_ + n - 1;
-						allocator_.construct(array_ + (size_ + n - 1), array_[size_ - 1]);
-
-						// shift all the other elements
-						new_last_index--;
-						for (size_type i = 0; i < size_ - 1; i++)
+						if (position == end())
 						{
-							array_[new_last_index] = array_[new_last_index - n];
-							new_last_index--;
+							for (; first != last; first++)
+							{
+								allocator_.construct(array_ + where_to_insert, *first);
+								where_to_insert++;
+							}
 						}
-
-						// insert new_guys
-						for (; first != last; first++)
+						else
 						{
-							allocator_.construct(array_ + where_to_insert, *first);
-							where_to_insert++;
+							size_type new_last_index = size_ + n - 1;
+	
+							// shift element at last index to new last index
+							allocator_.construct(array_ + (size_ + n - 1), array_[size_ - 1]);
+							if (new_last_index - 1 > 0)
+								new_last_index--;
+							// shift all the other elements
+							for (size_type i = where_to_insert; i < size_ - 1; i++)
+							{
+								array_[new_last_index] = array_[new_last_index - n];
+								new_last_index--;
+							}
+	
+							// insert new_guys
+							for (; first != last; first++)
+							{
+								allocator_.construct(array_ + where_to_insert, *first);
+								where_to_insert++;
+							}
 						}
 					}
-					
+
 					// updates
 					size_ += n;
 					capacity_ = size_;
@@ -664,7 +682,7 @@ namespace ft
 //			which is another vector object of the same type. Sizes may differ.
 			void    swap(vector<T, Allocator> & swapMe)
 			{
-				pointer  tmp;
+				pointer  	tmp;
 				size_type   tmp_size;
 
 				// step 1 : swap arrays (aka pointer to the array of elements of type T)
