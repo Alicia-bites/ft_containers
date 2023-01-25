@@ -1631,31 +1631,9 @@ int	main(int argc, char **argv)
 		if (test_number == 29)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing insert "
+			std::cout << STEELBLUE3 << "Testing  "
 				<< RESET << std::endl << std::endl;
 			
-			using namespace ft;
-			vector<int> myvector (3,100);
-			vector<int>::iterator it;
-
-			it = myvector.begin();
-			it = myvector.insert ( it , 200 );
-
-			myvector.insert (it,2,300);
-
-			// "it" no longer valid, get a new one:
-			it = myvector.begin();
-
-			vector<int> anothervector (2,400);
-			myvector.insert (it+2,anothervector.begin(),anothervector.end());
-
-			int myarray [] = { 501,502,503 };
-			myvector.insert (myvector.begin(), myarray, myarray+3);
-
-			std::cout << "myvector contains:";
-			for (it=myvector.begin(); it<myvector.end(); it++)
-				std::cout << ' ' << *it;
-			std::cout << '\n';
 
 			std::cout << std::endl;
 			std::cout << std::endl << STEELBLUE2
