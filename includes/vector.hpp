@@ -228,14 +228,11 @@ namespace ft
 				// std::cout << std::endl;
 				// std::cout << DODGERBLUE2 << "-----------------------------------------------------------------------------" << RESET << std::endl;
 
-
 				if (capacity_ == 0)
 					return ;
 				for (size_type i = 0; i < size_; i++)
 					allocator_.destroy(array_ + i);
 
-
-				// clear();
 				allocator_.deallocate(array_, capacity_);
 			};
 
@@ -372,15 +369,15 @@ namespace ft
 			// if n is greater than the current vector capacity, the function 
 			// causes the container to reallocate its storage increasing its
 			// capacity to n (or greater).
-			void reserve(size_type newcapacity_)
+			void reserve(size_type newcapacity)
 			{
-				if (newcapacity_ < capacity_)
+				if (newcapacity < capacity_ || newcapacity == 0)
 					return ;
-				if (newcapacity_ > max_size())
+				if (newcapacity > max_size())
 					throw (std::length_error("Can´t reserve more space than max_size() allows. Try with a number smaller than max_size()"));
 				
 				// Allocate new memory
-				pointer new_array = allocator_.allocate(newcapacity_);
+				pointer new_array = allocator_.allocate(newcapacity);
 		
 				// Copy elements to new memory
 				for (size_t i = 0; i < size_; ++i)
@@ -392,7 +389,7 @@ namespace ft
 				allocator_.deallocate(array_, capacity_);
 
 				// updates
-				capacity_ = newcapacity_;
+				capacity_ = newcapacity;
 				array_ = new_array;
 			};
 
@@ -571,7 +568,8 @@ namespace ft
 						new_last_index--;
 						for (size_type i = where_to_insert; i < size_ - 1; i++)
 						{
-							allocator_.destroy(array_ + new_last_index);
+							if (new_last_index < size_)
+								allocator_.destroy(array_ + new_last_index);
 							allocator_.construct(array_ + new_last_index, array_[new_last_index - n]);
 							new_last_index--;
 						}
@@ -594,10 +592,6 @@ namespace ft
 			template <class InputIterator>
 				void	insert(iterator position, typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
 				{
-					(void)position;
-					(void)first;
-					(void)last;
-
 					// n is the number of elements to insert
 					size_type n = std::distance(first, last); 
 					size_type where_to_insert = std::distance(begin(), position);
@@ -631,18 +625,21 @@ namespace ft
 	
 							// shift element at last index to new last index
 							allocator_.construct(array_ + (size_ + n - 1), array_[size_ - 1]);
-							if (new_last_index - 1 > 0)
-								new_last_index--;
+
 							// shift all the other elements
+							new_last_index--;
 							for (size_type i = where_to_insert; i < size_ - 1; i++)
 							{
-								array_[new_last_index] = array_[new_last_index - n];
+								if (new_last_index < size_)
+									allocator_.destroy(array_ + new_last_index);
+								allocator_.construct(array_ + new_last_index, array_[new_last_index - n]);
 								new_last_index--;
 							}
 	
 							// insert new_guys
 							for (; first != last; first++)
 							{
+								allocator_.destroy(array_ + where_to_insert);
 								allocator_.construct(array_ + where_to_insert, *first);
 								where_to_insert++;
 							}
@@ -664,13 +661,13 @@ namespace ft
 					size_--;
 					return position;
 				}
-
-				// add try catch here
-				size_type where_to_erase = std::distance(begin(), position);
-				allocator_.destroy(array_ + where_to_erase);
+				
 				// shift all elements to the left
 			    for (iterator i = position; i != end() - 1; i++)
     			    *i = *(i + 1);
+				
+				allocator_.destroy(array_ + size_ - 1);
+
 				size_--;
 				return position;
 			};
@@ -682,13 +679,17 @@ namespace ft
 				if (first == last)
 					return first;
 				size_t n = std::distance(first, last);
-				size_t where_to_erase = std::distance(begin(), last) - 1;
-				for (; where_to_erase < n; where_to_erase++)
-					allocator_.destroy(array_+ where_to_erase);
+				// size_t where_to_erase = std::distance(begin(), last) - 1;
+				// for (; where_to_erase < n; where_to_erase++)
+				// 	allocator_.destroy(array_+ where_to_erase);
 				iterator remember_first = first;
 				// shift all elements n times to the left
 				for (; first != end() - n; first++)
 					*first = *(first + n);
+				for (size_type i = size_ - n; i < size_ ; i++)
+				{
+					allocator_.destroy(array_ + i);
+				}
 				size_ -= n;
 				return remember_first;
 			};

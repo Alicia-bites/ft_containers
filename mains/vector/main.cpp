@@ -44,6 +44,19 @@ template <typename T>
 		std::cout << std::endl;
 	}
 
+template <typename T>
+	void	print_vector(T vector, std::string vector_name)
+	{
+		std::cout << DODGERBLUE2 << "-----------------------------------------------------------------------------" << std::endl;
+		std::cout << "Printing " << vector_name << std::endl;
+		std::cout << "vector size is " << vector.size() << std::endl;
+		std::cout << "vector capacity is " << vector.capacity() << std::endl;
+		for (size_t i = 0; i < vector.size(); i++)
+			std::cout << vector[i] << " | ";
+		std::cout << std::endl;
+		std::cout << DODGERBLUE2 << "-----------------------------------------------------------------------------" << RESET << std::endl;
+	}
+
 int	main(int argc, char **argv)
 {
 	if (argc != 2)
@@ -1100,31 +1113,29 @@ int	main(int argc, char **argv)
 
 			using namespace ft;
 
-			vector<int>			test(3, 3);
+			// vector<int>			test(3, 3);
 
-			std::cout << "self assignation test\n";
-			vector<vector<int> >	self_assign;
-			vector<vector<int> >	*ptr = &self_assign;
-			vector<vector<int> >	*ptr2 = &self_assign;
+			// std::cout << "self assignation test\n";
+			// vector<vector<int> >	self_assign;
+			// vector<vector<int> >	*ptr = &self_assign;
+			// vector<vector<int> >	*ptr2 = &self_assign;
 
-			self_assign.assign(4, test);
-			*ptr = *ptr2;
+			// self_assign.assign(4, test);
+			// *ptr = *ptr2;
 
-			std::cout << std::boolalpha << (*ptr == *ptr2) << '\n';
-		//	self_assign = self_assign; //compiler doesn't like it!
+			// std::cout << std::boolalpha << (*ptr == *ptr2) << '\n';
 
-
-
-			vector<vector<int> > JOHN;
-			vector<vector<int> > BOB(5, test);
-			std::cout << "BOB(5, test(test, 5)) : \n";
-			for (size_t i = 0; i < BOB.size(); i++)
-			{
-				for (size_t j = 0; j < BOB[i].size(); j++)
-					std::cout << BOB[i][j] << ' ';
-				std::cout << '\n';
-			}
-			vector<vector<int> > MIKE(BOB);
+			// vector<vector<int> > JOHN;
+			// vector<vector<int> > BOB(5, test);
+			// std::cout << "BOB(5, test(test, 5)) : \n";
+			// for (size_t i = 0; i < BOB.size(); i++)
+			// {
+			// 	for (size_t j = 0; j < BOB[i].size(); j++)
+			// 		std::cout << BOB[i][j] << ' ';
+			// 	std::cout << '\n';
+			// }
+			// vector<vector<int> > MIKE(BOB);
+			// print_vector(MIKE, "MIKE");
 
 			// // CTORs
 			// std::cout << "\nCTORS\n";
@@ -1185,6 +1196,7 @@ int	main(int argc, char **argv)
 			// 	}
 			// std::cout << std::endl;
 			// }
+
 			// // RESERVE
 			// std::cout << "\nRESERVE\n";
 
@@ -1219,6 +1231,7 @@ int	main(int argc, char **argv)
 
 			// //AT
 			// std::cout << "\nAT\n";
+
 			// try
 			// {
 			// 	std::cout << MIKE.at(2).front() << '\n';
@@ -1229,6 +1242,7 @@ int	main(int argc, char **argv)
 			// 	(void)oor;
 			// 	std::cout << "OOR error caught\n";
 			// }
+
 
 			// // FRONT / BACK
 			// std::cout << "\nFRONT / BACK\n";
@@ -1251,7 +1265,7 @@ int	main(int argc, char **argv)
 			// std::cout << "BOB is empty ? " << BOB.empty() << '\n';
 			// std::cout << "BOB at(1) : " << BOB.at(1).front() << '\n';
 
-			// //PUSH/POP_BACK
+			// // //PUSH/POP_BACK
 			// std::cout << "\nPUSH/POP_BACK\n";
 			// test.assign(2, 42);
 			// BOB.push_back(test);
@@ -1262,21 +1276,24 @@ int	main(int argc, char **argv)
 			// //INSERT
 			// std::cout << "\nINSERT\n";
 
-			// // // MY STUFF
-			// // vector<int> alicia_insert_in_me(15, 1);
-			// // print_vector(alicia_insert_in_me);
-			// // vector<int>::iterator alicia_tmp = alicia_insert_in_me.begin() + 2;
-			// // alicia_insert_in_me.insert(alicia_tmp, 8, 42);
-			// // print_vector(alicia_insert_in_me);
-			// // std::cout << SPRINGGREEN3 << "END OF MY STUFF" << RESET << std::endl;
-			// // // END OF MY STUFF
+			// // // // MY STUFF
+			// // // vector<int> alicia_insert_in_me(15, 1);
+			// // // print_vector(alicia_insert_in_me);
+			// // // vector<int>::iterator alicia_tmp = alicia_insert_in_me.begin() + 2;
+			// // // alicia_insert_in_me.insert(alicia_tmp, 8, 42);
+			// // // print_vector(alicia_insert_in_me);
+			// // // std::cout << SPRINGGREEN3 << "END OF MY STUFF" << RESET << std::endl;
+			// // // // END OF MY STUFF
 
+			// // vector<int>	test;
 			// vector<vector<int> >	insert_in_me;
-			// for (int i = 0; i < 15; i++)
+			// for (int i = 0; i < 4; i++)
 			// {
-			// 	vector<int>	j(2, i);
+			// 	vector<int>	j(1, i);
 			// 	insert_in_me.push_back(j);
 			// }
+			// std::cout << LIGHTSEAGREEN << "Printing insert_in_me : " << std::endl;
+			// std::cout << "insert_in_me.capacity_ = " << insert_in_me.capacity() << std::endl;
 			// for (size_t i = 0; i < insert_in_me.size(); i++)
 			// {
 			// 	std::cout << LIGHTSEAGREEN << "vector[" << i << "] contains --> ";
@@ -1285,14 +1302,13 @@ int	main(int argc, char **argv)
 			// 	std::cout << '\n';
 			// }
 			// std::cout << RESET << std::endl;
-			// test.assign(23, 19);
-			// std::cout << LIGHTSLATEBLUE << "Printing content of test : ";
-			// print_vector(test);
+			// test.assign(1, 2);
+			// print_vector(test, "test");
 			// std::cout << RESET << std::endl;
 
 			// vector<vector<int> >::iterator	tmp;
-			// tmp = insert_in_me.begin() + 4;
-			// insert_in_me.insert(tmp, 8, test);
+			// tmp = insert_in_me.begin() + 1;
+			// insert_in_me.insert(tmp, 2, test);
 			// for (size_t i = 0; i < insert_in_me.size(); i++)
 			// {
 			// 	std::cout << LIGHTSEAGREEN << "vector[" << i << "] contains --> ";
@@ -1341,26 +1357,27 @@ int	main(int argc, char **argv)
 			// std::cout << '\n';
 
 
-			// //ERASE
-			// std::cout << "\nERASE\n";
-			// vector<vector<int> >	erase_in_me;
-			// for (int i = 0; i < 15; i++)
-			// {
-			// 	vector<int>	j(1, i);
-			// 	erase_in_me.push_back(j);
-			// }
-			// for (size_t i = 0; i < erase_in_me.size(); i++)
-			// 	std::cout << erase_in_me.at(i).front() << ' ';
-			// std::cout << '\n';
+			//ERASE
+			std::cout << "\nERASE\n";
+			vector<vector<int> >	erase_in_me;
+			for (int i = 0; i < 15; i++)
+			{
+				vector<int>	j(1, i);
+				erase_in_me.push_back(j);
+			}
+			for (size_t i = 0; i < erase_in_me.size(); i++)
+				std::cout << erase_in_me.at(i).front() << ' ';
+			std::cout << '\n';
 
-			// erase_in_me.erase(erase_in_me.begin() + 7);
-			// for (size_t i = 0; i < erase_in_me.size(); i++)
-			// 	std::cout << erase_in_me.at(i).front() << ' ';
-			// std::cout << '\n';
-			// erase_in_me.erase(erase_in_me.begin() + 2, erase_in_me.begin() + 6);
-			// for (size_t i = 0; i < erase_in_me.size(); i++)
-			// 	std::cout << erase_in_me.at(i).front() << ' ';
-			// std::cout << '\n';
+			erase_in_me.erase(erase_in_me.begin() + 7);
+			for (size_t i = 0; i < erase_in_me.size(); i++)
+				std::cout << erase_in_me.at(i).front() << ' ';
+			std::cout << '\n';
+
+			erase_in_me.erase(erase_in_me.begin() + 2, erase_in_me.begin() + 6);
+			for (size_t i = 0; i < erase_in_me.size(); i++)
+				std::cout << erase_in_me.at(i).front() << ' ';
+			std::cout << '\n';
 
 			// //SWAP
 			// std::cout << "\nSWAP\n";
@@ -1631,7 +1648,7 @@ int	main(int argc, char **argv)
 		if (test_number == 29)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing  "
+			std::cout << STEELBLUE3 << "Testing  reserve leaks"
 				<< RESET << std::endl << std::endl;
 			
 
