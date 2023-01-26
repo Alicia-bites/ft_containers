@@ -604,6 +604,7 @@ namespace ft
 					// step 2 : insertion
 					if (size_ == 0)
 					{
+						// vector is empty so just built elements to insert
 						for (size_type i = 0; i < n; i++)
 						{
 							allocator_.construct(array_ + i, *first);
@@ -614,6 +615,7 @@ namespace ft
 					{
 						if (position == end())
 						{
+							// insert elements at the end
 							for (; first != last; first++)
 							{
 								allocator_.construct(array_ + where_to_insert, *first);
