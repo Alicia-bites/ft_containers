@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <iterator>
 #include <cstddef>
+#include <memory>
 
 #include "../colors/colors.hpp"
 #include "iterator.hpp"
@@ -59,6 +60,13 @@ namespace ft
 	template <typename T, typename Allocator = std::allocator<T> >
 	class vector
 	{
+		// struct MemoryChunk
+		// {
+		// 	T* start;
+		// 	T* end;
+		// 	MemoryChunk* next;
+		// };
+
 		public:
 			// HOMEMADE TYPE DEFINITION
 			typedef typename Allocator::reference			reference;
@@ -181,7 +189,10 @@ namespace ft
 				, array_(0)
 				, allocator_(original.allocator_)
 				{
-					std::cout << original << std::endl;
+
+					// std::cout << OLIVE << "Calling copy constructor." 
+					// 		<< std::endl << RESET;
+					// std::cout << "Original contains : " << original << std::endl;
 					if (original.capacity_)
 					{
 						array_ = allocator_.allocate(original.capacity_);
@@ -191,6 +202,10 @@ namespace ft
 						allocator_.construct(array_ + i, original[i]);
 						// std::cout << GREEN2 << "original[i] = " << original[i] << std::endl;
 					}
+
+					size_ = original.size_;
+					capacity_ = original.capacity_;
+
 					// if (this != &original)
 						// this->insert(this->begin(), original.begin(), original.end());
 
@@ -205,11 +220,22 @@ namespace ft
 				// std::cout << OLIVE << "Calling destructor." 
 				// 	<< std::endl << RESET;
 
-				// if (capacity_ == 0)
-					// return ;
-				// for (size_type i = 0; i < size_; i++)
-					// allocator_.destroy(array_ + i);
-				clear();
+				// std::cout << DODGERBLUE2 << "-----------------------------------------------------------------------------" << std::endl;
+				// std::cout << "vector size is " << size_ << std::endl;
+				// std::cout << "vector capacity is " << capacity_ << std::endl;
+				// for (size_t i = 0; i < size_; i++)
+					// std::cout << this[i] << " | ";
+				// std::cout << std::endl;
+				// std::cout << DODGERBLUE2 << "-----------------------------------------------------------------------------" << RESET << std::endl;
+
+
+				if (capacity_ == 0)
+					return ;
+				for (size_type i = 0; i < size_; i++)
+					allocator_.destroy(array_ + i);
+
+
+				// clear();
 				allocator_.deallocate(array_, capacity_);
 			};
 
@@ -352,16 +378,20 @@ namespace ft
 					return ;
 				if (newcapacity_ > max_size())
 					throw (std::length_error("Can´t reserve more space than max_size() allows. Try with a number smaller than max_size()"));
-				// step 1, we create a new pointer and allocate as much space as newcapacity_ indicates
-				pointer new_array;
-				new_array = allocator_.allocate(newcapacity_);
-				// step 2, we copy each element of the old array in new_array
-				for (size_t i = 0; i < size_; i++)
+				
+				// Allocate new memory
+				pointer new_array = allocator_.allocate(newcapacity_);
+		
+				// Copy elements to new memory
+				for (size_t i = 0; i < size_; ++i)
 					allocator_.construct(new_array + i, array_[i]);
-				// step 3, we destroy old array
-				for (size_t i = 0; i < size_ ; i++)
+		
+				// Deallocate old memory
+				for (size_t i = 0; i < size_; ++i)
 					allocator_.destroy(array_ + i);
 				allocator_.deallocate(array_, capacity_);
+
+				// updates
 				capacity_ = newcapacity_;
 				array_ = new_array;
 			};
@@ -464,17 +494,15 @@ namespace ft
 			// last element. The content of new_elt is copied (or moved) to the new element.
 			void	push_back(const T& new_element)
 			{
-				if (capacity_ > size_)
-					allocator_.construct(array_ + size_, new_element);
-				else if (capacity_ * 2 > max_size())
+				if (capacity_ * 2 > max_size())
 					throw (std::length_error("Cannot allocate anymore. Maximum size reached"));
-				else
+				else if (capacity_ <= size_)
 				{
 					capacity_ = capacity_ == 0 ? 1 : capacity_ * 2;
 					reserve(capacity_);
 				}
-				allocator_.construct(array_ + size_, new_element);
 				size_++;
+				allocator_.construct(array_ + size_ - 1, new_element);
 			};
 
 		
@@ -524,10 +552,8 @@ namespace ft
 
 				// step 2 : insertion
 				if (size_ == 0)
-				{
 					for (size_type i = 0; i < n; i++)
 						allocator_.construct(array_ + i, new_guy);
-				}
 				else
 				{
 					if (position == end())
@@ -545,13 +571,15 @@ namespace ft
 						new_last_index--;
 						for (size_type i = where_to_insert; i < size_ - 1; i++)
 						{
-							array_[new_last_index] = array_[new_last_index - n];
+							allocator_.destroy(array_ + new_last_index);
+							allocator_.construct(array_ + new_last_index, array_[new_last_index - n]);
 							new_last_index--;
 						}
 	
 						// insert new_guys
 						for (size_type i = 0; i < n; i++)
 						{
+							allocator_.destroy(array_ + where_to_insert);
 							allocator_.construct(array_ + where_to_insert, new_guy);
 							where_to_insert++;
 						}
@@ -566,6 +594,9 @@ namespace ft
 			template <class InputIterator>
 				void	insert(iterator position, typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
 				{
+					(void)position;
+					(void)first;
+					(void)last;
 
 					// n is the number of elements to insert
 					size_type n = std::distance(first, last); 
@@ -774,7 +805,7 @@ namespace ft
 		template <typename T, typename Allocator>
 			std::ostream&	operator<<(std::ostream& o, vector<T, Allocator> const & rhs)
 			{
-				std::cout << MAGENTA3 << "Printing content of vector of size(" << rhs.size() << ") : " << std::endl;
+				std::cout << DARKTURQUOISE << "Printing content of vector of size(" << rhs.size() << ") : " << std::endl;
 				for (size_t i = 0; i < rhs.size(); i++)
 					o << rhs.get_array()[i] << " | ";
 				std::cout << RESET << std::endl;
