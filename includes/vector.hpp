@@ -577,7 +577,8 @@ namespace ft
 						// insert new_guys
 						for (size_type i = 0; i < n; i++)
 						{
-							allocator_.destroy(array_ + where_to_insert);
+							if (where_to_insert < size_)
+								allocator_.destroy(array_ + where_to_insert);
 							allocator_.construct(array_ + where_to_insert, new_guy);
 							where_to_insert++;
 						}
@@ -639,7 +640,8 @@ namespace ft
 							// insert new_guys
 							for (; first != last; first++)
 							{
-								allocator_.destroy(array_ + where_to_insert);
+								if (where_to_insert < size_)
+									allocator_.destroy(array_ + where_to_insert);
 								allocator_.construct(array_ + where_to_insert, *first);
 								where_to_insert++;
 							}
