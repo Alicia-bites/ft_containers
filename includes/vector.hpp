@@ -399,6 +399,7 @@ namespace ft
 			{
 				if (newsize <= size_)
 				{
+					// remove exceeding elements
 					for (size_t i = newsize; i < size_; i++)
 						allocator_.destroy(array_ + i);
 					size_ = newsize;
@@ -409,7 +410,12 @@ namespace ft
 					try
 					{
 						if (newsize > capacity_)
-							reserve(newsize);
+						{
+							if (newsize - capacity_ < 50)
+								reserve(newsize * 1.8);
+							else 
+								reserve(newsize);
+						}
 					}
 					catch(const std::exception& e)
 					{
