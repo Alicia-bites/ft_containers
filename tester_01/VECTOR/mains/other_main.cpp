@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   other_main.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbaudet <hbaudet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amarchan <amarchan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/11 08:48:03 by user42            #+#    #+#             */
-/*   Updated: 2021/01/18 16:07:14 by hbaudet          ###   ########.fr       */
+/*   Updated: 2023/01/26 17:22:22 by amarchan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,19 @@
 
 using namespace NAMESPACE;
 
-# define RED "\033[0;31m"
+// # define RED "\033[0;31m"
 # define CRED std::cout << "\033[0;31m"
-# define GREEN "\033[0;92m"
+// # define GREEN "\033[0;92m"
 # define CGREEN std::cout << "\033[0;92m"
 # define MAG "\033[0;95m"
 # define CMAG std::cout << "\033[0;95m"
-# define CYAN "\033[0;96m"
+// # define CYAN "\033[0;96m"
 # define CCYAN std::cout << "\033[0;96m"
-# define BLUE "\033[0;94m"
+// # define BLUE "\033[0;94m"
 # define CBLUE std::cout << "\033[0;94m"
-# define YELLOW "\033[0;93m"
+// # define YELLOW "\033[0;93m"
 # define CYELLOW std::cout << "\033[0;93m"
-# define GREY "\033[0;90m"
+// # define GREY "\033[0;90m"
 # define CGREY std::cout << "\033[0;90m"
 # define END "\033[0m"
 # define ENDL "\033[0m" << std::endl
