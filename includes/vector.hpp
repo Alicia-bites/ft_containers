@@ -257,7 +257,7 @@ namespace ft
 					return (*this);
 
 				this->~vector();
-				// // placement new --> way to call the constructor of an object at a specific memory location.  The this pointer is passed as the memory location where the object is to be constructed.
+				// placement new --> way to call the constructor of an object at a specific memory location.  The this pointer is passed as the memory location where the object is to be constructed.
 				new (this) vector(src);
 				return *this;
 			};
@@ -267,8 +267,8 @@ namespace ft
 			template <class InputIt>
 				void assign(typename enable_if<!is_integral<InputIt>::value, InputIt>::type first, InputIt last)
 				{
-					vector<T> temp(first, last);
-					temp.swap(*this);
+					vector<T> tmp(first, last);
+					tmp.swap(*this);
 				};
 			
 			// Assigns new contents to the vector, replacing its current contents, and modifying its size accordingly.
@@ -351,7 +351,7 @@ namespace ft
 			// capacity to n (or greater).
 			void reserve(size_type newcapacity)
 			{
-				if (newcapacity < capacity_ || newcapacity == 0)
+				if (newcapacity < capacity_ || newcapacity == 0 || newcapacity == capacity_)
 					return ;
 				if (newcapacity > max_size())
 					throw (std::length_error("Can´t reserve more space than max_size() allows. Try with a number smaller than max_size()"));
@@ -389,18 +389,14 @@ namespace ft
 					// step 1 : we increase the allocated space of our vector with reserve() 
 					try
 					{
-						if (newsize > capacity_)
-						{
-							if (newsize - capacity_ < 50)
-								reserve(newsize * 1.8);
-							else 
-								reserve(newsize);
-						}
+						if ((newsize > capacity_) && (newsize < size_ * 2))
+							reserve(size_ * 2);
+						else
+							reserve(newsize);
 					}
 					catch(const std::exception& e)
 					{
 						throw (std::bad_alloc());
-						return ;
 					}
 					// step 2 : we add elements until newsize is satisfied
 					// if val is not specified, val will automatically be set to 0
@@ -477,15 +473,16 @@ namespace ft
 			// last element. The content of new_elt is copied (or moved) to the new element.
 			void	push_back(const T& new_element)
 			{
-				if (capacity_ * 2 > max_size())
-					throw (std::length_error("Cannot allocate anymore. Maximum size reached"));
-				else if (capacity_ <= size_)
-				{
-					capacity_ = capacity_ == 0 ? 1 : capacity_ * 2;
-					reserve(capacity_);
-				}
-				size_++;
-				allocator_.construct(array_ + size_ - 1, new_element);
+				// if (size_ * 2 > max_size())
+				// 	throw (std::length_error("Cannot allocate anymore. Maximum size reached"));
+				// else if (capacity_ <= size_)
+				// 	insert(end(), 1, new_element);
+				// else
+				// {
+				// 	size_++;
+				// 	allocator_.construct(array_ + size_ - 1, new_element);
+				// }
+				insert(end(), 1, new_element);
 			};
 
 		
@@ -506,7 +503,10 @@ namespace ft
 				// add it to our pointer array_ and place our new guy
 				position = begin() + where_to_insert;
 				if (position == end())
+				{
 					allocator_.construct(array_ + size_, new_guy);
+					size_++;
+				}
 				else
 				{
 					// step 3 : we just construct one more object at the end()
@@ -530,8 +530,14 @@ namespace ft
 				size_type where_to_insert = std::distance(begin(), position);
 
 				// step 1 : allocation
-				if (size_ + n >= capacity_)
-					reserve(size_ + n);
+				if (n == 0)
+					return ;
+				if (capacity_ == 0)
+					reserve(n);
+				else if ((size_ + n > capacity_) && (size_ + n < size_ * 2))
+					reserve(size_ * 2);
+				else
+					reserve(size_ + n);	
 
 				// step 2 : insertion
 				if (size_ == 0)
@@ -570,9 +576,9 @@ namespace ft
 						}
 					}
 				}
-				//updates
+
+				//update
 				size_ += n;
-				capacity_ = size_;
 			};
 
 			// Inserts elements from range [first, last) before posisition. 
@@ -584,8 +590,15 @@ namespace ft
 					size_type where_to_insert = std::distance(begin(), position);
 				
 					// step 1 : allocation
-					if (size_ + n >= capacity_)
-						reserve(size_ + n);
+					if (n == 0)
+						return ;
+					if (capacity_ == 0)
+						reserve(n);
+					else if ((size_ + n > capacity_) && (size_ + n < size_ * 2))
+						reserve(size_ * 2);
+					else
+						reserve(size_ + n);	
+
 
 					// step 2 : insertion
 					if (size_ == 0)
@@ -638,7 +651,6 @@ namespace ft
 
 					// updates
 					size_ += n;
-					capacity_ = size_;
 				};
 			
 			// Removes from the vector a single element at position.
@@ -708,12 +720,12 @@ namespace ft
 				}
 
 				// step 3 : swap capacities
-				if (capacity_ != swapMe.capacity_)
-				{
-					tmp_size = capacity_;
-					capacity_ = swapMe.capacity_;
-					swapMe.capacity_ = tmp_size;
-				}
+				// if (capacity_ != swapMe.capacity_)
+				// {
+				// 	tmp_size = capacity_;
+				// 	capacity_ = swapMe.capacity_;
+				// 	swapMe.capacity_ = tmp_size;
+				// }
 			};
 
 			// Removes all elements from the vector (which are destroyed), leaving 
