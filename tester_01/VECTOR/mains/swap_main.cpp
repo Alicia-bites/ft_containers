@@ -6,7 +6,7 @@
 /*   By: amarchan <amarchan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/02 13:07:06 by hbaudet           #+#    #+#             */
-/*   Updated: 2023/01/25 16:39:34 by amarchan         ###   ########.fr       */
+/*   Updated: 2023/01/27 10:24:59 by amarchan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int main ()
 	bar.push_back(33);
 
 
-	vector<int>::gandalf tmp = foo.begin(); //tmp iterates through foo
+	vector<int>::const_iterator tmp = foo.begin(); //tmp iterates through foo
 	vector<int>::const_iterator tmp2 = bar.begin(); //tmp2 iterates through bar
 
 	swap(bar, foo); //tmp iterates through bar
