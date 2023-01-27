@@ -195,7 +195,7 @@ namespace ft
 					// std::cout << "Original contains : " << original << std::endl;
 					if (original.capacity_)
 					{
-						array_ = allocator_.allocate(original.capacity_);
+						array_ = allocator_.allocate(original.size_);
 					}
 					for (size_type i = 0; i < original.size_; i++)
 					{
@@ -204,7 +204,7 @@ namespace ft
 					}
 
 					size_ = original.size_;
-					capacity_ = original.capacity_;
+					capacity_ = original.size_;
 
 					// if (this != &original)
 						// this->insert(this->begin(), original.begin(), original.end());
@@ -256,9 +256,18 @@ namespace ft
 				if (this == &src)
 					return (*this);
 
-				this->~vector();
-				// placement new --> way to call the constructor of an object at a specific memory location.  The this pointer is passed as the memory location where the object is to be constructed.
-				new (this) vector(src);
+				if (capacity_ > src.size_)
+				{
+					clear();
+					std::copy(src.begin(), src.end(), begin());
+					size_ = src.size_;
+				}
+				else
+				{
+					this->~vector();
+					// placement new --> way to call the constructor of an object at a specific memory location.  The this pointer is passed as the memory location where the object is to be constructed.
+					new (this) vector(src);
+				}
 				return *this;
 			};
 
@@ -267,21 +276,40 @@ namespace ft
 			template <class InputIt>
 				void assign(typename enable_if<!is_integral<InputIt>::value, InputIt>::type first, InputIt last)
 				{
-					vector<T> tmp(first, last);
-					tmp.swap(*this);
+					size_type n = std::distance(first, last);
+					if (n == 0)
+						return ;
+					clear();
+					if (capacity_ < n)
+						reserve(n);
+					for (size_type i = 0; i < n; i++)
+					{
+						allocator_.construct(array_ + i, *first);
+						first++;
+						size_++;
+					}
 				};
 			
 			// Assigns new contents to the vector, replacing its current contents, and modifying its size accordingly.
 			// The new contents are n elements, each initialized to a copy of val.
-			 void    assign(size_type count, const T & value)
+			 void    assign(size_type n, const T & value)
 			 {
-				if (count <= capacity())
-				{
-					std::fill_n(begin(), count, value);
-					resize(count);
-				}
-				else
-					vector(count, value).swap(*this);
+				// if (n <= capacity())
+				// {
+				// 	std::fill_n(begin(), n, value);
+				// 	resize(n);
+				// }
+				// else
+				// {
+				// 	size_type remember_capacity = capacity_;
+				// 	vector<T> tmp(n, value);
+				// 	tmp.swap(*this);
+				// 	capacity_ = remember_capacity;
+				// }
+				clear();
+				if (capacity_ < n)
+					reserve(n);
+				resize(n, value);
 			 }
 
 	//		ITERATORS --------------------------------------------------------------------------------------
@@ -354,7 +382,7 @@ namespace ft
 				if (newcapacity < capacity_ || newcapacity == 0 || newcapacity == capacity_)
 					return ;
 				if (newcapacity > max_size())
-					throw (std::length_error("Can´t reserve more space than max_size() allows. Try with a number smaller than max_size()"));
+					throw (std::length_error("vector::reserve"));
 				
 				// Allocate new memory
 				pointer new_array = allocator_.allocate(newcapacity);
@@ -375,6 +403,7 @@ namespace ft
 
 
 			// resizes the container so that it contains n elements.
+			// NOTE : val will be used only if new elements need to be added to reach newsize!
 			void resize(size_type newsize, T val = T())
 			{
 				if (newsize <= size_)
@@ -404,6 +433,7 @@ namespace ft
 						allocator_.construct(array_ + i, val);
 					size_ = newsize;
 				}
+
 			};
 
 			// returns the size of the storage space currently allocated for the vector, expressed in terms of elements.
@@ -471,18 +501,28 @@ namespace ft
 
 			// Adds a new element at the end of the vector, after its current 
 			// last element. The content of new_elt is copied (or moved) to the new element.
-			void	push_back(const T& new_element)
+			void	push_back(const T & new_element)
 			{
 				// if (size_ * 2 > max_size())
 				// 	throw (std::length_error("Cannot allocate anymore. Maximum size reached"));
-				// else if (capacity_ <= size_)
+				// else if (capacity_ == size_)
 				// 	insert(end(), 1, new_element);
 				// else
 				// {
 				// 	size_++;
 				// 	allocator_.construct(array_ + size_ - 1, new_element);
 				// }
+
 				insert(end(), 1, new_element);
+				// if (capacity_ == 0)
+				// 	reserve(1);
+				// else if ((size_ + 1 > capacity_) && (size_ + 1 < size_ * 2))
+				// 	reserve(size_ * 2);
+				// else
+				// 	reserve(size_ + 1);
+			 	// size_++;
+				// allocator_.construct(array_ + size_ - 1, new_element);
+
 			};
 
 		
@@ -502,7 +542,7 @@ namespace ft
 				// step 2 : translate position from iterator to integer so we can
 				// add it to our pointer array_ and place our new guy
 				position = begin() + where_to_insert;
-				if (position == end())
+				if (where_to_insert == size_)
 				{
 					allocator_.construct(array_ + size_, new_guy);
 					size_++;
@@ -537,7 +577,7 @@ namespace ft
 				else if ((size_ + n > capacity_) && (size_ + n < size_ * 2))
 					reserve(size_ * 2);
 				else
-					reserve(size_ + n);	
+					reserve(size_ + n);
 
 				// step 2 : insertion
 				if (size_ == 0)
@@ -545,7 +585,7 @@ namespace ft
 						allocator_.construct(array_ + i, new_guy);
 				else
 				{
-					if (position == end())
+					if (where_to_insert == size_)
 					{
 						for (size_type i = size_; i < size_ + n; i++)
 							allocator_.construct(array_ + i, new_guy);
@@ -612,7 +652,7 @@ namespace ft
 					}
 					else 
 					{
-						if (position == end())
+						if (where_to_insert == size_)
 						{
 							// insert elements at the end
 							for (; first != last; first++)
@@ -720,12 +760,13 @@ namespace ft
 				}
 
 				// step 3 : swap capacities
-				// if (capacity_ != swapMe.capacity_)
-				// {
-				// 	tmp_size = capacity_;
-				// 	capacity_ = swapMe.capacity_;
-				// 	swapMe.capacity_ = tmp_size;
-				// }
+				if (capacity_ != swapMe.capacity_)
+				{
+					tmp_size = capacity_;
+					capacity_ = swapMe.capacity_;
+					swapMe.capacity_ = tmp_size;
+				}
+
 			};
 
 			// Removes all elements from the vector (which are destroyed), leaving 
