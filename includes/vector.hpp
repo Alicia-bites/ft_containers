@@ -267,41 +267,21 @@ namespace ft
 			template <class InputIt>
 				void assign(typename enable_if<!is_integral<InputIt>::value, InputIt>::type first, InputIt last)
 				{
-
-					// find out how many elements must be assigned
-					size_type n = std::distance(first, last);
-					// reserve necessary capacity
-					if (n > capacity_)
-						reserve(n);
-					// destroy elements in array_
-					for (size_type i = 0; i < size_; i++)
-						allocator_.destroy(array_ + i);
-					size_type i = 0;
-					// copy new elements
-					for (; first != last; first++)
-					{
-						array_[i] = *first;
-						i++;
-					}
-					// update size_
-					size_ = n;
+					vector<T> temp(first, last);
+					temp.swap(*this);
 				};
 			
 			// Assigns new contents to the vector, replacing its current contents, and modifying its size accordingly.
 			// The new contents are n elements, each initialized to a copy of val.
-			 void    assign(size_type n, const T & val)
+			 void    assign(size_type count, const T & value)
 			 {
-				// reserve necessary capacity
-				if (n > capacity_)
-					reserve(n);
-				// destroy elements in array_
-				for (size_type i = 0; i < size_; i++)
-					allocator_.destroy(array_ + i);
-				// update size_
-				size_ = n;
-				// copy new elements
-				for (size_type i = 0; i < size_; i++)
-					allocator_.construct(array_ + i, val);
+				if (count <= capacity())
+				{
+					std::fill_n(begin(), count, value);
+					resize(count);
+				}
+				else
+					vector(count, value).swap(*this);
 			 }
 
 	//		ITERATORS --------------------------------------------------------------------------------------
