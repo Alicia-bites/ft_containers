@@ -72,11 +72,11 @@ namespace ft
 			Iterator current_position;
 
 		public:
-			typedef typename ft::iterator_traits<Iterator>::iterator_category iterator_category;
-			typedef typename ft::iterator_traits<Iterator>::value_type        value_type;
-			typedef typename ft::iterator_traits<Iterator>::difference_type   difference_type;
-			typedef typename ft::iterator_traits<Iterator>::pointer           pointer;
-			typedef typename ft::iterator_traits<Iterator>::reference         reference;
+			typedef typename ft::iterator_traits<Iterator>::iterator_category 	iterator_category;
+			typedef typename ft::iterator_traits<Iterator>::value_type        	value_type;
+			typedef typename ft::iterator_traits<Iterator>::difference_type   	difference_type;
+			typedef typename ft::iterator_traits<Iterator>::pointer           	pointer;
+			typedef typename ft::iterator_traits<Iterator>::reference         	reference;
 
 	// CONSTRUCTORS --------------------------------------------------------------------------------------------------------------
 			// default constructor
@@ -91,7 +91,7 @@ namespace ft
 
 			// copy constructor - initializes current with u.current.
 			template <typename OtherIterator>
-				reverse_iterator(const reverse_iterator<typename remove_cv<value_type>::type> & other)
+				reverse_iterator(const OtherIterator & other)
 				: current_position(other.base())
 				{};
 
