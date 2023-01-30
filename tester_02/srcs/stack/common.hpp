@@ -1,6 +1,6 @@
 #include "../base.hpp"
 #if !defined(USING_STD)
-# include "stack.hpp"
+# include "/mnt/nfs/homes/amarchan/Documents/ft_containers/includes/stack.hpp"
 #else
 # include <stack>
 #endif /* !defined(STD) */
