@@ -32,6 +32,11 @@ namespace ft
 			~vectorIterator(void)
 			{};
 
+			pointer base() const
+			{
+				return pointer_;
+			}
+
 // GETTERS ---------------------------------------------------------------------------------------------
 				
 			pointer getPointer(void) const 
@@ -44,7 +49,7 @@ namespace ft
 			// assignement operator
 			vectorIterator<T>&    operator=(const vectorIterator<typename remove_cv<value_type>::type> & rhs)
 			{
-				pointer_ = rhs.pointer_;
+				pointer_ = rhs.getPointer();
 				return *this;
 			};
 
