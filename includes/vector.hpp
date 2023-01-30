@@ -343,7 +343,7 @@ namespace ft
 
 			const_reverse_iterator	rbegin() const
 			{
-				return reverse_iterator(end());
+				return const_reverse_iterator(end());
 			};
 
 			// returns a reverse iterator pointing to the theoretical element
@@ -356,7 +356,7 @@ namespace ft
 
 			const_reverse_iterator 	rend() const
 			{
-				return reverse_iterator(begin());
+				return const_reverse_iterator(begin());
 			};
 
 	//		CAPACITY --------------------------------------------------------------------------------------
