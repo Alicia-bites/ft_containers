@@ -38,7 +38,7 @@ namespace ft
     template<>	struct is_integral<bool>					: public true_type {};
 
 
-    // The template parameter "T" is only enabled (= validayy) if the boolean
+    // The template parameter "T" is only enabled if the boolean
     // template parameter "B" is true. The second parameter T is set to void by default.
     template<bool B, typename T = void>
         struct enable_if
@@ -52,4 +52,10 @@ namespace ft
 		{ 
 			typedef T type;
 		};
+    
+    template<class T, class U>
+        struct is_same : false_type {};
+    
+    template<class T>
+        struct is_same<T, T> : true_type {};
 }
