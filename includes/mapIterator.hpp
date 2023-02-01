@@ -1,40 +1,50 @@
 #pragma once
 
 // # include "../../utils/utility.hpp"
-# include "node.hpp"
+// # include "node.hpp"
 
 # include <cstddef>
 
 namespace ft
 {
-    node_base*          node_increment(node_base* x);
-    const node_base*    node_increment(const node_base* x);
-    node_base*          node_decrement(node_base* x);
-    const node_base*    node_decrement(const node_base* x);
-
-    template <class Tp>
-    struct ItMap
+    template <typename Tp>
+    struct MapIterator
     {
-        typedef Tp  value_type;
-        typedef Tp* pointer;
-        typedef Tp& reference;
-
+        typedef Tp                              value_type;
+        typedef Tp*                             pointer;
+        typedef Tp&                             reference;
         typedef std::ptrdiff_t                  difference_type;
         typedef std::bidirectional_iterator_tag iterator_category;
+        typedef MapIterator<Tp>                       Self;
+        typedef node_base::base_ptr             base_ptr;
+        typedef node<Tp>*                       link_type;
 
-        typedef ItMap<Tp>           Self;
-        typedef node_base::base_ptr base_ptr;
-        typedef node<Tp>*           link_type;
+//	CONSTRUCTORS ----------------------------------------------------------------------------
 
-        ItMap() : _node()            {}
-        ItMap(base_ptr x) : _node(x) {}
+        MapIterator()
+        : node_()
+        {};
+        
+        MapIterator(base_ptr x) :
+        node_(x)
+        {};
 
-        reference   operator*() const   { return(*(static_cast<link_type>(_node)->getDataPtr())); }
-        pointer     operator->() const  { return(static_cast<link_type>(_node)->getDataPtr()); }
+//	OPERATOR OVERLOADS ----------------------------------------------------------------------------
+
+        reference   operator*() const   
+        {
+            return(*(static_cast<link_type>(node_)->getDataPtr()));
+        };
+
+        pointer     operator->() const  
+        {
+            return(static_cast<link_type>(node_)->getDataPtr());
+        };
+
 
         Self&   operator++()
         {
-            this->_node = node_increment(this->_node);
+            this->node_ = node_increment(this->node_);
             return (*this);
         }
 
@@ -42,13 +52,13 @@ namespace ft
         {
             Self    tmp(*this);
 
-            this->_node = node_increment(this->_node);
+            this->node_ = node_increment(this->node_);
             return (tmp);
         }
 
         Self&   operator--()
         {
-            this->_node = node_decrement(this->_node);
+            this->node_ = node_decrement(this->node_);
             return (*this);
         }
 
@@ -56,44 +66,65 @@ namespace ft
         {
             Self    tmp(*this);
 
-            this->_node = node_decrement(this->_node);
+            this->node_ = node_decrement(this->node_);
             return (tmp);
         }
 
-        friend bool operator==(const Self& x, const Self& y)    { return (x._node == y._node); }
-        friend bool operator!=(const Self& x, const Self& y)    { return (x._node != y._node); }
+        friend bool operator==(const Self& x, const Self& y)    { return (x.node_ == y.node_); }
+        friend bool operator!=(const Self& x, const Self& y)    { return (x.node_ != y.node_); }
 
-        base_ptr    _node;
+        base_ptr    node_;
     };
 
     template <class Tp>
-    struct ConstItMap
+    struct ConstMapIterator
     {
-        typedef Tp          value_type;
-        typedef const Tp*   pointer;
-        typedef const Tp&   reference;
-        
-        typedef ItMap<Tp>   iterator;
-
+        typedef Tp                              value_type;
+        typedef const Tp*                       pointer;
+        typedef const Tp&                       reference;
+        typedef MapIterator<Tp>                 iterator;
         typedef std::ptrdiff_t                  difference_type;
         typedef std::bidirectional_iterator_tag iterator_category;
+        typedef ConstMapIterator<Tp>            Self;
+        typedef node_base::const_base_ptr       base_ptr;
+        typedef const node<Tp>*                 link_type;
 
-        typedef ConstItMap<Tp>              Self;
-        typedef node_base::const_base_ptr   base_ptr;
-        typedef const node<Tp>*             link_type;
+//	CONSTRUCTORS ----------------------------------------------------------------------------
 
-        ConstItMap() : _node()                          {}
-        ConstItMap(base_ptr x) : _node(x)               {}
-        ConstItMap(const iterator& x) : _node(x._node)  {}
+        ConstMapIterator()
+        : node_()                          
+        {};
+        
+        ConstMapIterator(base_ptr x)
+        : node_(x)               
+        {};
+        
+        ConstMapIterator(const iterator& x)
+        : node_(x.node_)  
+        {};
+        
 
-        iterator    _const_cast() const { return iterator(const_cast<typename iterator::base_ptr>(this->_node)); }
+        iterator    _const_cast() const 
+        { 
+            return iterator(const_cast<typename iterator::base_ptr>(this->node_));
+        };
 
-        reference   operator*() const   { return (*(static_cast<link_type>(_node)->getDataPtr())); }
-        pointer     operator->() const  { return (static_cast<link_type>(_node)->getDataPtr()); }
+
+//	OPERATOR OVERLOADS ----------------------------------------------------------------------------
+
+        reference   operator*() const   
+        { 
+            return (*(static_cast<link_type>(node_)->getDataPtr()));
+        };
+
+        pointer     operator->() const  
+        { 
+            return (static_cast<link_type>(node_)->getDataPtr());
+        };
 
         Self&   operator++()
         {
-            this->_node = node_increment(this->_node);
+            this->node_ = node_increment(this->node_);
             return (*this);
         }
 
@@ -101,13 +132,13 @@ namespace ft
         {
             Self    tmp(*this);
 
-            this->_node = node_increment(this->_node);
+            this->node_ = node_increment(this->node_);
             return (tmp);
         }
 
         Self&   operator--()
         {
-            this->_node = node_decrement(this->_node);
+            this->node_ = node_decrement(this->node_);
             return (*this);
         }
 
@@ -115,13 +146,13 @@ namespace ft
         {
             Self    tmp(*this);
 
-            this->_node = node_decrement(this->_node);
+            this->node_ = node_decrement(this->node_);
             return (tmp);
         }
 
-        friend bool operator==(const Self& x, const Self& y)    { return (x._node == y._node); }
-        friend bool operator!=(const Self& x, const Self& y)    { return (x._node != y._node); }
+        friend bool operator==(const Self& x, const Self& y)    { return (x.node_ == y.node_); }
+        friend bool operator!=(const Self& x, const Self& y)    { return (x.node_ != y.node_); }
 
-        base_ptr    _node;
+        base_ptr    node_;
     };
 }

@@ -11,6 +11,7 @@
 #include "type_traits.hpp"
 #include "algorithms.hpp"
 #include "pair.hpp"
+#include "mapIterator.hpp"
 
 namespace ft
 {
@@ -27,10 +28,10 @@ namespace ft
 			typedef Allocator 								allocator_type;
 			typedef typename Allocator::reference 			reference;
 			typedef typename Allocator::const_reference 	const_reference;
-			// typedef implementation defined 				iterator;
-			// typedef implementation defined 				const_iterator;
-			// typedef implementation defined 				size_type;
-			// typedef implementation defined 				difference_type;
+			// typedef ft::mapIterator			 				iterator;
+			// typedef ft::mapIterator<const T>				const_iterator;
+			typedef std_size_				 				size_type;
+			typedef std::ptrdiff_t 							difference_type;
 			typedef typename Allocator::pointer				pointer;
 			typedef typename Allocator::const_pointer		const_pointer;
 			typedef ft::reverse_iterator<iterator>			reverse_iterator;
