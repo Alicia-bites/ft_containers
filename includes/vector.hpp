@@ -622,8 +622,10 @@ namespace ft
 			};
 
 			// Inserts elements from range [first, last) before posisition. 
+			// template <class InputIterator>
+				// void	insert(iterator position, typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
 			template <class InputIterator>
-				void	insert(iterator position, typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
+				void insert(iterator position, typename enable_if<!is_integral<InputIterator>::value && !is_same<InputIterator, const char*>::value, InputIterator>::type first, InputIterator last)
 				{
 					// n is the number of elements to insert
 					size_type n = std::distance(first, last); 
@@ -638,7 +640,6 @@ namespace ft
 						reserve(size_ * 2);
 					else
 						reserve(size_ + n);	
-
 
 					// step 2 : insertion
 					if (size_ == 0)
@@ -693,6 +694,78 @@ namespace ft
 					size_ += n;
 				};
 			
+			template <class InputIterator>
+				void insert(iterator position, typename enable_if<is_same<InputIterator, const char*>::value, InputIterator>::type first, InputIterator last)
+				{					
+					// n is the number of elements to insert
+					size_type n = std::distance(first, last); 
+					size_type where_to_insert = std::distance(begin(), position);
+
+					if (!first)
+						return ;
+					// step 1 : allocation
+					if (n == 0)
+						return ;
+					if (capacity_ == 0)
+						reserve(n);
+					else if ((size_ + n > capacity_) && (size_ + n < size_ * 2))
+						reserve(size_ * 2);
+					else
+						reserve(size_ + n);	
+
+					// step 2 : insertion
+					if (size_ == 0)
+					{
+						// vector is empty so just built elements to insert
+						for (size_type i = 0; i < n; i++)
+						{
+							allocator_.construct(array_ + i, std::string(first));
+							first++;
+						}
+					}
+					else 
+					{
+						if (where_to_insert == size_)
+						{
+							// insert elements at the end
+							for (; first != last; first++)
+							{
+								allocator_.construct(array_ + where_to_insert, std::string(first));
+								where_to_insert++;
+							}
+						}
+						else
+						{
+							size_type new_last_index = size_ + n - 1;
+	
+							// shift element at last index to new last index
+							allocator_.construct(array_ + (size_ + n - 1), array_[size_ - 1]);
+
+							// shift all the other elements
+							new_last_index--;
+							for (size_type i = where_to_insert; i < size_ - 1; i++)
+							{
+								if (new_last_index < size_)
+									allocator_.destroy(array_ + new_last_index);
+								allocator_.construct(array_ + new_last_index, array_[new_last_index - n]);
+								new_last_index--;
+							}
+	
+							// insert new_guys
+							for (; first != last; first++)
+							{
+								if (where_to_insert < size_)
+									allocator_.destroy(array_ + where_to_insert);
+								allocator_.construct(array_ + where_to_insert, std::string(first));
+								where_to_insert++;
+							}
+						}
+					}
+
+					// updates
+					size_ += n;
+				};
+
 			// Removes from the vector a single element at position.
 			// An invalid position or range causes undefined behavior.
 			iterator	erase(iterator position)
