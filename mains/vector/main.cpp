@@ -1517,11 +1517,25 @@ int	main(int argc, char **argv)
 			std::cout << STEELBLUE3 << "Testing swap_main"
 				<< RESET << std::endl << std::endl;
 		
-			std::vector<std::string> bob(3, "what's up");
+			ft::vector<std::string> bob(3, "what's up");
 			print_vector(bob, "bob");
 
 			bob.insert(bob.begin(), 0, "");
 			print_vector(bob, "bob");
+
+			std::vector<std::string> bobby(3, "what's up");
+			print_vector(bobby, "bobby");
+
+			bobby.insert(bobby.begin(), 0, "");
+			print_vector(bobby, "bobby");
+
+			std::vector<int> louis(2, 7000);
+			print_vector(louis, "louis");
+			louis.insert(louis.begin(), 0, 56);
+
+			std::vector<int> louison(2, 7000);
+			print_vector(louison, "louison");
+			louison.insert(louison.begin(), 0, 56);
 
 			std::cout << std::endl;
 			std::cout << std::endl << STEELBLUE2
