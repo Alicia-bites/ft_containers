@@ -60,13 +60,6 @@ namespace ft
 	template <typename T, typename Allocator = std::allocator<T> >
 	class vector
 	{
-		// struct MemoryChunk
-		// {
-		// 	T* start;
-		// 	T* end;
-		// 	MemoryChunk* next;
-		// };
-
 		public:
 			// HOMEMADE TYPE DEFINITION
 			typedef typename Allocator::reference			reference;
