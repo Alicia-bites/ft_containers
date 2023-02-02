@@ -1,5 +1,7 @@
-#include "../../includes/map.hpp"
+// #include "../../includes/map.hpp"
 #include "../../includes/pair.hpp"
+#include "../../includes/RBTree.hpp"
+#include "../../colors/colors.hpp"
 
 #include <string>
 #include <algorithm>
@@ -42,10 +44,18 @@ int	main(int argc, char **argv)
 		if (test_number == 1)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing default constructor" 
+			std::cout << STEELBLUE3 << "Testing binary tree" 
 				<< RESET << std::endl << std::endl;
 
+			RBTree<int, std::string> tree;
+			Node<int, std::string> *root = NULL;
 
+			tree.insert(root, 8, "first");
+			tree.insert(root, 2, "second");
+			tree.insert(root, 6, "third");
+			tree.insert(root, 4, "fourth");
+
+			tree.print_tree(root);
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"

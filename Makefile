@@ -12,7 +12,8 @@ OPATH			:=	obj
 
 SRCS_PATH		:=	mains
 # STACK_PATH		:=	stack
-VECTOR_PATH		:= 	vector
+# VECTOR_PATH		:= 	vector
+MAP_PATH		:= 	map
 
 RM				:=	rm -rf
 
@@ -21,7 +22,8 @@ RM				:=	rm -rf
 VECTOR_SRCS		:= 	main.cpp \
 
 SRCS			:=	$(STACK_SRCS) \
-					$(VECTOR_SRCS)
+					$(VECTOR_SRCS) \
+					$(MAP_SRCS)
 
 OBJS			:=	$(addprefix $(OPATH)/, $(SRCS:.cpp=.o))
 DEPS			:=	$(OBJS:.o=.d)
@@ -30,6 +32,7 @@ vpath %.hpp $(IPATH)
 vpath %.cpp $(SRCS_PATH)\
 			$(SRCS_PATH)/$(STACK_PATH) \
 			$(SRCS_PATH)/$(VECTOR_PATH) \
+			$(SRCS_PATH)/$(MAP_PATH) \
 
 vpath %.o $(OPATH)
 

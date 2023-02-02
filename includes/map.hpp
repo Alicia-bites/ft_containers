@@ -12,6 +12,7 @@
 #include "algorithms.hpp"
 #include "pair.hpp"
 #include "mapIterator.hpp"
+#include "RBTree.hpp"
 
 namespace ft
 {
@@ -57,7 +58,9 @@ namespace ft
 //	CONSTRUCTORS ----------------------------------------------------------------------------
 
 			// Constructs an empty container, with no elements.
-			explicit map(const Compare& comp = Compare(), const Allocator& = Allocator());
+			explicit map(const Compare& comp = Compare(), const Allocator& = Allocator())
+			: tree(comp, alloc)
+			{};
 
 			// Constructs a container with as many elements as the range [first,last),
 			// with each element constructed from its corresponding element in that range.
@@ -66,42 +69,97 @@ namespace ft
 			// first and last, including the element pointed by first but not the element
 			// pointed by last.
 			template <class InputIterator>
-				map(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Allocator& = Allocator());
+				map(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Allocator& = Allocator())
+				: tree(comp, alloc)
+				{
+					insert(first, last);
+				};
 			
 			// Constructs a container with a copy of each of the elements in x
-			map(const map<Key,T,Compare,Allocator>& x);
+			map(const map<Key,T,Compare,Allocator>& src)
+			: tree(src.tree)
+			{};
 
 
 //	DESTRUCTORS --------------------------------------------------------------------------------------
 
 			// This destroys all container elements, and deallocates all the storage capacity allocated by the map container using its allocator.
-			~map();
+			~map()
+			{};
 
 //	MEMBER FUNCTIONS ---------------------------------------------------------------------------------
 
 //		ASSIGNEMENT ----------------------------------------------------------------------------------------------------------------------------
 
-			map<Key,T,Compare,Allocator> & operator=(const map<Key,T,Compare,Allocator>& x);
+			map<Key,T,Compare,Allocator> & operator=(const map<Key,T,Compare,Allocator>& rhs)
+			{
+                if (this != &rhs)
+                    this->tree = rhs.tree;
+                return (*this);
+			};
 	
 //		ITERATORS --------------------------------------------------------------------------------------
 	
-			iterator	begin();
-			const_iterator	begin() const;
-			iterator	end();
-			const_iterator	end() const;
-			reverse_iterator	rbegin();
-			const_reverse_iterator rbegin() const;
-			reverse_iterator	rend();
-			const_reverse_iterator rend() const;
+			iterator	begin()
+			{
+				return tree.begin();
+			};
+
+			const_iterator	begin() const
+			{
+				return tree.begin();
+			};
+
+			iterator	end()
+			{
+				return tree.end();
+			};
+
+			const_iterator	end() const
+			{
+				return tree.end();
+			};
+
+			reverse_iterator	rbegin()
+			{
+				return tree.rebgin();
+			};
+
+			const_reverse_iterator rbegin() const
+			{
+				return tree.rebgin();
+			};
+
+			reverse_iterator	rend()
+			{
+				return tree.rend();
+			};
+
+			const_reverse_iterator rend() const
+			{
+				return tree.rend();
+			};
 
 //		CAPACITY --------------------------------------------------------------------------------------
-			bool	empty() const;
-			size_type	size() const;
-			size_type	max_size() const;
+			bool	empty() const
+			{
+				return tree.empty();
+			};
+
+			size_type	size() const
+			{
+				return tree.size();
+			};
+
+			size_type	max_size() const
+			{
+				return tree.max_size();
+			};
 
 //		ACCESSORS --------------------------------------------------------------------------------------
 			
-			T &	operator[](const key_type& x);
+			T &	operator[](const key_type& x)
+			{};
 
 //		MODIFIERS --------------------------------------------------------------------------------------
 			
@@ -130,6 +188,11 @@ namespace ft
 			const_iterator upper_bound(const key_type& x) const;
 			pair<iterator,iterator>	equal_range(const key_type& x);
 			pair<const_iterator,const_iterator>	equal_range(const key_type& x) const;
+
+			private :
+				typedef RBTree<key_type, value_type, std::_Select1st<value_type>, key_compare, allocator_type>    RBTree;
+
+				RBTree    tree;
 	};
 
 //		COMPARATORS --------------------------------------------------------------------------------------

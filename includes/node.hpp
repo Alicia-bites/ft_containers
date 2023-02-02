@@ -1,13 +1,29 @@
 #pragma once
 
-// defines a single node in the AVL tree
-template <typename T>
-	struct node
+enum Color
+{
+	RED,
+	BLACK
+};
+
+// defines a single node in the red-black tree
+template<typename Key, typename Value>
+	struct Node
 	{
-		T data_;
-		int height_;
-		node* left_;
-		node* right_;
-	
-		node(T data) : data_(data), height_(1), left_(nullptr), right_(nullptr) {}
+		Key		key_; // 1st template parameter
+		Value	value_; // 2nd template parameter
+		bool	color_;
+		Node	*left_; // stores a pointer to the child on the left
+		Node	*right_; // stores a pointer to the child on the right
+		Node	*parent_; // stores a pointer to the parent of the node
+
+		// default constructor
+		Node(Key key, Value value)
+		: key_(key)
+		, value_(value)
+		, color_(RED)
+		, left_(NULL)
+		, right_(NULL)
+		, parent_(NULL)
+		{}
 	};
