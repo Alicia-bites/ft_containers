@@ -21,28 +21,32 @@ namespace ft
 	{
 		public:
 			// HOMEMADE TYPE DEFINITION
-			typedef Key 									key_type;
-			typedef T 										mapped_type;
-			typedef pair<const Key, T> 						value_type;
-			typedef Compare 								key_compare;
-			typedef Allocator 								allocator_type;
-			typedef typename Allocator::reference 			reference;
-			typedef typename Allocator::const_reference 	const_reference;
-			// typedef ft::mapIterator			 				iterator;
-			// typedef ft::mapIterator<const T>				const_iterator;
-			typedef std_size_				 				size_type;
-			typedef std::ptrdiff_t 							difference_type;
-			typedef typename Allocator::pointer				pointer;
-			typedef typename Allocator::const_pointer		const_pointer;
+
+            typedef Key                                     key_type; // type of key used to pair with value (1st template parameter)
+            typedef T                                       mapped_type; // type of the value paired with key (2nd template parameter)
+            typedef pair<const Key, T>                      value_type; // represent the key-value pair
+            typedef Compare                                 key_compare; // comparaison fonction used to compare keys (3rd template parameter, defaults to: less<key_type>)
+            typedef Allocator                               allocator_type; // (4th template parameter, defaults to: allocator<value_type>)
+            typedef typename Allocator::reference           reference; // for the default allocator: value_type &
+            typedef typename Allocator::const_reference     const_reference; // for the default allocator: const value_type&
+            typedef std::size_t                             size_type;
+            typedef std::ptrdiff_t                          difference_type;
+            typedef typename Allocator::pointer             pointer; // for the default allocator: value_type*
+            typedef typename Allocator::const_pointer       const_pointer; 	// for the default allocator: const value_type*
+			// typedef ft::mapIterator			 				iterator; // a bidirectional iterator to value_type
+			// typedef ft::mapIterator<const T>				const_iterator; // a bidirectional iterator to const value_type
 			typedef ft::reverse_iterator<iterator>			reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 
-			class value_compare : public binary_function<value_type,value_type,bool>
+			class value_compare : public std::binary_function<value_type,value_type,bool>
 			{
 				friend class map;
+
 				protected:
-					Compare comp;
-					value_compare(Compare c) : comp(c) {}
+					Compare	comp;
+					value_compare(Compare c) : comp(c)
+					{}
+
 				public:
 					bool operator()(const value_type& x, const value_type& y) const
 					{
@@ -52,16 +56,25 @@ namespace ft
 
 //	CONSTRUCTORS ----------------------------------------------------------------------------
 
+			// Constructs an empty container, with no elements.
 			explicit map(const Compare& comp = Compare(), const Allocator& = Allocator());
 
+			// Constructs a container with as many elements as the range [first,last),
+			// with each element constructed from its corresponding element in that range.
+			// Input iterators to the initial and final positions in a range.
+			// The range used is [first,last), which includes all the elements between
+			// first and last, including the element pointed by first but not the element
+			// pointed by last.
 			template <class InputIterator>
 				map(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Allocator& = Allocator());
 			
+			// Constructs a container with a copy of each of the elements in x
 			map(const map<Key,T,Compare,Allocator>& x);
 
 
 //	DESTRUCTORS --------------------------------------------------------------------------------------
 
+			// This destroys all container elements, and deallocates all the storage capacity allocated by the map container using its allocator.
 			~map();
 
 //	MEMBER FUNCTIONS ---------------------------------------------------------------------------------
