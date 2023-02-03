@@ -1,14 +1,16 @@
 #pragma once
 
 #include <iostream>
-#include <map>
+#include "iterator.hpp"
+#include "pair.hpp"
+
 namespace ft
 {
 	template <typename Key, typename Value >
 		class mapIterator
 		{
 			public:
-				typedef std::pair<const Key, Value > value_type;
+				typedef ft::pair<const Key, Value > value_type;
 				typedef value_type& reference;
 				typedef value_type* pointer;
 				typedef std::bidirectional_iterator_tag iterator_category;
