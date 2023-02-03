@@ -1,6 +1,7 @@
-// #include "../../includes/map.hpp"
+#include "../../includes/map.hpp"
 #include "../../includes/pair.hpp"
 #include "../../includes/RBTree.hpp"
+#include "../../includes/BST.hpp"
 #include "../../colors/colors.hpp"
 
 #include <string>
@@ -70,7 +71,48 @@ int	main(int argc, char **argv)
 			std::cout << STEELBLUE3 << "Testing default constructor" 
 				<< RESET << std::endl << std::endl;
 
+			std::map<int, std::string> std_map;
 
+			std::string std_string_1("first");
+			std::string std_string_2("second");
+			std::string std_string_3("third");
+
+			std_map.insert(std_string_1);
+			std::cout << std_map.begin()->first << std::endl;
+			std_map.insert(std_string_2);
+			std::cout << std_map.begin()->first << std::endl;
+			std_map.insert(std_string_3);
+			std::cout << std_map.begin()->first << std::endl;
+
+			std::map<int, std::string>::iterator std_it = std_map.begin();
+
+			for(; std_it != std_map.end(); std_it++)
+				std::cout << std_it->first << " ";
+			std::cout << std::endl;
+
+			ft::map<int, std::string> ft_map;
+
+			std::string string_1("first");
+			std::string string_2("second");
+			std::string string_3("third");
+			
+
+			ft_map.insert(string_1);
+			std::cout << ft_map.begin()->first << std::endl;
+			ft_map.insert(string_2);
+			std::cout << ft_map.begin()->first << std::endl;
+			ft_map.insert(string_3);
+			std::cout << ft_map.begin()->first << std::endl;
+
+			std::map<int, std::string>::iterator std_it = ft_map.begin();
+
+			for(; std_it != ft_map.end(); std_it++)
+				std::cout << std_it->first << " ";
+			std::cout << std::endl;
+
+
+			// ft::pair<int, std::string> ft_pair(3, "first");
+			// ft_map.insert(ft_pair);
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
