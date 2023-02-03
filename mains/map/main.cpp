@@ -44,18 +44,20 @@ int	main(int argc, char **argv)
 		if (test_number == 1)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing binary tree" 
+			std::cout << STEELBLUE3 << "Testing binary search tree" 
 				<< RESET << std::endl << std::endl;
 
-			RBTree<int, std::string> tree;
-			Node<int, std::string> *root = NULL;
+			BinarySearchTree<int, std::string> tree;
 
-			tree.insert(root, 8, "first");
-			tree.insert(root, 2, "second");
-			tree.insert(root, 6, "third");
-			tree.insert(root, 4, "fourth");
+			tree.insert(8, "first");
+			tree.insert(2, "second");
+			tree.insert(6, "third");
+			tree.insert(4, "fourth");
 
-			tree.print_tree(root);
+			std::cout << "tree.root = " << tree.getRoot()->key << std::endl;
+			tree.printTree(tree.getRoot());
+
+			std::cout << tree[4] << std::endl;
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"

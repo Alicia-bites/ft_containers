@@ -12,7 +12,9 @@
 #include "algorithms.hpp"
 #include "pair.hpp"
 #include "mapIterator.hpp"
-#include "RBTree.hpp"
+
+// #include "RBTree.hpp"
+#include "BST.hpp"
 
 namespace ft
 {
@@ -158,8 +160,10 @@ namespace ft
 
 //		ACCESSORS --------------------------------------------------------------------------------------
 			
-			T &	operator[](const key_type& x)
-			{};
+			T &	operator[](const key_type& x)	
+			{
+				tree[x];
+			};
 
 //		MODIFIERS --------------------------------------------------------------------------------------
 			
@@ -190,9 +194,12 @@ namespace ft
 			pair<const_iterator,const_iterator>	equal_range(const key_type& x) const;
 
 			private :
-				typedef RBTree<key_type, value_type, std::_Select1st<value_type>, key_compare, allocator_type>    RBTree;
+				// typedef RBTree<key_type, value_type, std::_Select1st<value_type>, key_compare, allocator_type>    RBTree;
 
-				RBTree    tree;
+				// RBTree    tree;
+
+				typedef BinearySearchTree<key_type, value_type> BST;
+				BST	tree;
 	};
 
 //		COMPARATORS --------------------------------------------------------------------------------------
