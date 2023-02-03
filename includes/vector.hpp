@@ -185,26 +185,13 @@ namespace ft
 
 					// std::cout << OLIVE << "Calling copy constructor." 
 					// 		<< std::endl << RESET;
-					// std::cout << "Original contains : " << original << std::endl;
 					if (original.capacity_)
-					{
 						array_ = allocator_.allocate(original.size_);
-					}
 					for (size_type i = 0; i < original.size_; i++)
-					{
 						allocator_.construct(array_ + i, original[i]);
-						// std::cout << GREEN2 << "original[i] = " << original[i] << std::endl;
-					}
 
 					size_ = original.size_;
 					capacity_ = original.size_;
-
-					// if (this != &original)
-						// this->insert(this->begin(), original.begin(), original.end());
-
-					// if (this != &original)
-						// assign(original.begin(), original.end());
-
 				};
 
 	//		DESTRUCTORS --------------------------------------------------------------------------------------
