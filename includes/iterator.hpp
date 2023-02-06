@@ -8,6 +8,24 @@
 
 namespace ft
 {
+	struct input_iterator_tag {};
+	struct forward_iterator_tag {};
+	struct bidirectional_iterator_tag	: public input_iterator_tag {};
+	struct random_access_iterator_tag	: public forward_iterator_tag {};
+	struct output_iterator_tag			: public bidirectional_iterator_tag {};
+
+	// our base for different iterator types. Stock all the caracteristic of an
+	// iterator for later use.
+	template <typename Category, typename T, typename Distance = std::ptrdiff_t,
+			typename Pointer = T*, typename Reference = T&>
+	struct iterator
+	{
+		typedef T         									value_type;
+		typedef Distance  									difference_type;
+		typedef Pointer   									pointer;
+		typedef Reference 									reference;
+		typedef Category  									iterator_category;
+	};
 
 // ITERATOR_TRAITS ----------------------------------------------------------------------------------------------
 	template <typename Iterator>
@@ -51,18 +69,6 @@ namespace ft
 
 // REVERSE_ITERATOR ----------------------------------------------------------------------------------------------
 
-	// our base for different iterator types. Stock all the caracteristic of an
-	// iterator for later use.
-	template <typename Category, typename T, typename Distance = std::ptrdiff_t,
-			typename Pointer = T*, typename Reference = T&>
-	struct iterator
-	{
-		typedef T         									value_type;
-		typedef Distance  									difference_type;
-		typedef Pointer   									pointer;
-		typedef Reference 									reference;
-		typedef Category  									iterator_category;
-	};
 
 // std::reverse_iterator is an iterator adaptor that reverses the direction of a given iterator,
 	template <typename Iterator>

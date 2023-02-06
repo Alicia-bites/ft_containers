@@ -674,7 +674,7 @@ namespace ft
 					size_ += n;
 				};
 			
-			template <class InputIterator>
+			template <typename InputIterator>
 				void insert(iterator position, typename enable_if<is_same<InputIterator, const char*>::value, InputIterator>::type first, InputIterator last)
 				{					
 					// n is the number of elements to insert

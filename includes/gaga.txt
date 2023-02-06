@@ -1,0 +1,3 @@
+error: no matching function for call to 
+
+‘ft::pair<const int, std::__cxx11::basic_string<char> >::pair(const std::__cxx11::basic_string<char>&)’

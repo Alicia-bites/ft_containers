@@ -2,15 +2,13 @@
 
 #include <iostream>
 #include <algorithm>
+#include "type_traits.hpp"
 
 namespace ft 
 {
-	template <class T1, class T2>
+	template <typename T1, typename T2>
 		struct pair
 		{
-			typedef T1 first_type;
-			typedef T2 second_type;
-
 			T1 first;
 			T2 second;
 
@@ -44,7 +42,17 @@ namespace ft
 				std::swap(second, rhs.second);
 			};
 
-			// Assigns rshs as the new content for the pair object.
+			// Assigns rhs as the new content for the pair object.
+			// pair & operator=(const pair<typename remove_cv<value_type>::type> & rhs)
+			// {
+			// 	if (this != &rhs)
+			// 	{
+			// 		first = rhs.first;
+			// 		second = rhs.second;
+			// 	}
+			// 	return *this;
+			// };
+
 			pair & operator=(const pair & rhs)
 			{
 				if (this != &rhs)
@@ -104,4 +112,18 @@ namespace ft
 			{
 				return pair<T1, T2>(x, y);	
 			};
+
+		// // Constructs a pair object with its first element set to x and its second element set to y.
+		// template <typename T1, typename T2>
+		// 	pair<T1, T2>    make_pair(T1 x, typename enable_if<is_same<T2, const char *>::value, T2>::type y)
+		// 	{
+		// 		return pair<T1, T2>(x, std::string(y));	
+		// 	};
+
+		// // Constructs a pair object with its first element set to x and its second element set to y.
+		// template <typename T1, typename T2>
+		// 	pair<T1, T2>    make_pair(typename enable_if<is_same<T1, const char *>::value, T1>::type x, T2 y)
+		// 	{
+		// 		return pair<T1, T2>(x, std::string(y));	
+		// 	};
 }

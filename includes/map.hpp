@@ -13,6 +13,7 @@
 #include "pair.hpp"
 #include "mapIterator.hpp"
 
+
 // #include "RBTree.hpp"
 #include "BST.hpp"
 
@@ -25,21 +26,21 @@ namespace ft
 		public:
 			// HOMEMADE TYPE DEFINITION
 
-            typedef Key                                     key_type; // type of key used to pair with value (1st template parameter)
-            typedef Value                                   value_type; // type of the value paired with key (2nd template parameter)
-            typedef pair<const Key, Value>                  pair_type; // represent the key-value pair
-            typedef Compare                                 key_compare; // comparaison fonction used to compare keys (3rd template parameter, defaults to: less<key_type>)
-            typedef Allocator                               allocator_type; // (4th template parameter, defaults to: allocator<value_type>)
-            typedef typename Allocator::reference           reference; // for the default allocator: value_type &
-            typedef typename Allocator::const_reference     const_reference; // for the default allocator: const value_type&
-            typedef std::size_t                             size_type;
-            typedef std::ptrdiff_t                          difference_type;
-            typedef typename Allocator::pointer             pointer; // for the default allocator: value_type*
-            typedef typename Allocator::const_pointer       const_pointer; 	// for the default allocator: const value_type*
-			typedef ft::mapIterator<Key, Value>				iterator; // a bidirectional iterator to value_type
-			typedef ft::mapIterator<const Key, const Value>	const_iterator; // a bidirectional iterator to const value_type
-			typedef ft::reverse_iterator<iterator>			reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
+			typedef Key                                     		key_type; // type of key used to pair with value (1st template parameter)
+			typedef Value                                   		mapped_type; // type of the value paired with key (2nd template parameter)
+			typedef pair<const Key, Value>                  		value_type; // represent the key-value pair
+			typedef Compare                                 		key_compare; // comparaison fonction used to compare keys (3rd template parameter, defaults to: less<key_type>)
+			typedef Allocator                               		allocator_type; // (4th template parameter, defaults to: allocator<value_type>)
+			typedef typename Allocator::reference           		reference; // for the default allocator: value_type &
+			typedef typename Allocator::const_reference     		const_reference; // for the default allocator: const value_type&
+			typedef std::size_t                             		size_type;
+			typedef std::ptrdiff_t                          		difference_type;
+			typedef typename Allocator::pointer             		pointer; // for the default allocator: value_type*
+			typedef typename Allocator::const_pointer       		const_pointer; 	// for the default allocator: const value_type*
+			typedef ft::mapIterator<Key, Value>						iterator; // a bidirectional iterator to value_type
+			typedef ft::mapIterator<const Key, Value>				const_iterator; // a bidirectional iterator to const value_type
+			typedef ft::reverse_iterator<iterator>					reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 
 			class value_compare : public std::binary_function<value_type,value_type,bool>
 			{
@@ -111,7 +112,7 @@ namespace ft
 			// const_iterator	begin() const
 			// {
 			// 	return tree.begin();
-			// };
+			// };value_type
 
 			iterator	end()
 			{
@@ -121,7 +122,7 @@ namespace ft
 			// const_iterator	end() const
 			// {
 			// 	return tree.end();
-			// };
+			// };input_pair
 
 			// reverse_iterator	rbegin()
 			// {
@@ -174,9 +175,13 @@ namespace ft
 			// inserted element has a key equivalent to the one of an element already in the container,
 			// and if so, the element is not inserted, returning an iterator to this existing element
 			// (if the function returns a value).
-			pair<iterator, bool>	insert(const value_type& x)
+			pair<iterator, bool>	insert(const value_type & input_pair)
 			{
-				return tree.insert(x);
+				ft::pair<node_ptr, bool> res;
+				res = tree.insert(input_pair);
+				// std::cout << res.first << std::endl;
+				// std::cout << res.second << std::endl;
+				return ft::make_pair<iterator, bool>(iterator(), true); 
 			};
 			// iterator	insert(iterator position, const value_type& x);
 			// template <class InputIterator>
@@ -208,7 +213,9 @@ namespace ft
 
 				// RBTree    tree;
 
-				typedef BinarySearchTree<key_type, value_type> BST;
+				typedef BinarySearchTree<key_type, value_type>			BST;
+				typedef typename BST::node_ptr							node_ptr;
+
 				BST	tree;
 	};
 

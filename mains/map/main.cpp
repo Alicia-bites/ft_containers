@@ -48,12 +48,12 @@ int	main(int argc, char **argv)
 			std::cout << STEELBLUE3 << "Testing binary search tree" 
 				<< RESET << std::endl << std::endl;
 
-			BinarySearchTree<int, std::string> tree;
+			ft::BinarySearchTree<int, std::string> tree;
 
-			tree.insert(8, "first");
-			tree.insert(2, "second");
-			tree.insert(6, "third");
-			tree.insert(4, "fourth");
+			tree.insert(ft::make_pair(8, "first"));
+			tree.insert(ft::make_pair(1, "second"));
+			tree.insert(ft::make_pair(6, "third"));
+			tree.insert(ft::make_pair(4, "fourth"));
 
 			std::cout << "tree.root = " << tree.getRoot()->key << std::endl;
 			tree.printTree(tree.getRoot());
@@ -72,47 +72,27 @@ int	main(int argc, char **argv)
 				<< RESET << std::endl << std::endl;
 
 			std::map<int, std::string> std_map;
+			std::pair<std::map<int, std::string>::iterator, bool> std_result;
 
-			std::string std_string_1("first");
-			std::string std_string_2("second");
-			std::string std_string_3("third");
-
-			std_map.insert(std_string_1);
-			std::cout << std_map.begin()->first << std::endl;
-			std_map.insert(std_string_2);
-			std::cout << std_map.begin()->first << std::endl;
-			std_map.insert(std_string_3);
-			std::cout << std_map.begin()->first << std::endl;
-
-			std::map<int, std::string>::iterator std_it = std_map.begin();
-
-			for(; std_it != std_map.end(); std_it++)
-				std::cout << std_it->first << " ";
-			std::cout << std::endl;
+			std_result = std_map.insert(std::make_pair(1, "one"));
+			if (std_result.second == true)
+				std::cout << "Inserted " << std_result.first->second << " into the map with key "
+					<< std_result.first->first << std::endl;
+			else
+				std::cout << "Key " << std_result.first->first << " already has the value "
+					<< std_result.first->second << " in the map" << std::endl;
 
 			ft::map<int, std::string> ft_map;
+			ft::pair<ft::map<int, std::string>::iterator, bool> ft_result;
 
-			std::string string_1("first");
-			std::string string_2("second");
-			std::string string_3("third");
-			
-
-			ft_map.insert(string_1);
-			std::cout << ft_map.begin()->first << std::endl;
-			ft_map.insert(string_2);
-			std::cout << ft_map.begin()->first << std::endl;
-			ft_map.insert(string_3);
-			std::cout << ft_map.begin()->first << std::endl;
-
-			std::map<int, std::string>::iterator std_it = ft_map.begin();
-
-			for(; std_it != ft_map.end(); std_it++)
-				std::cout << std_it->first << " ";
-			std::cout << std::endl;
-
-
-			// ft::pair<int, std::string> ft_pair(3, "first");
-			// ft_map.insert(ft_pair);
+			ft::pair<int, std::string> ft_inputpair = ft::make_pair(1, "one");
+			ft_result = ft_map.insert(ft_inputpair);
+			// if (ft_result.second == true)
+			// 	std::cout << "Inserted " << std_result.first->second << " into the map with key "
+			// 		<< ft_result.first->first << std::endl;
+			// else
+			// 	std::cout << "Key " << ft_result.first->first << " already has the value "
+			// 		<< ft_result.first->second << " in the map " << std::endl;
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
@@ -125,7 +105,7 @@ int	main(int argc, char **argv)
 			std::cout << STEELBLUE3 << "Testing default constructor" 
 				<< RESET << std::endl << std::endl;
 
-
+			ft::make_pair(1, "one");
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
