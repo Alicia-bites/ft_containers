@@ -87,7 +87,7 @@ namespace ft
 	}
 
 	template <typename Key, typename Value, typename Compare = std::less<Key>,
-		typename Allocator = std::allocator<std::pair<const Key, Value> > >
+		typename Allocator = std::allocator<ft::pair<const Key, Value> > >
 	class BinarySearchTree
 	{
 		public:
@@ -95,7 +95,7 @@ namespace ft
 			public:
 				typedef Key													key_type; // type of key used to pair with value (1st template parameter)
 				typedef Value												mapped_type; // type of the value paired with key (2nd template parameter)
-				typedef std::pair<const Key, Value>							value_type; 	 // represent the key-value pair
+				typedef ft::pair<const Key, Value>							value_type; 	 // represent the key-value pair
 				typedef Compare		 										key_compare;	 // The third template parameter (Compare)	defaults to: less<key_type>
 				typedef Allocator											allocator_type;	 // The fourth template parameter (Alloc)	defaults to: allocator<value_type>
 				typedef typename allocator_type::reference					reference;		 // for the default allocator: value_type&
@@ -138,14 +138,14 @@ namespace ft
 			// inserts new node
 			// returns a pair, with its member pair::first set to an iterator pointing to either
 			// the newly inserted element or to the element with an equivalent key in the map
-			std::pair<node_ptr, bool>	insert(const value_type & input_pair)
+			ft::pair<node_ptr, bool>	insert(const value_type & input_pair)
 			{
 				node_ptr node = findNode(root_, input_pair.first);
 				
 				if (node)
-					return std::make_pair(node, false);
+					return ft::make_pair(node, false);
 				root_ = insertHelper(root_, input_pair.first, input_pair.second);
-				return std::make_pair(root_, true);
+				return ft::make_pair(root_, true);
 			};
 		
 			// accessor

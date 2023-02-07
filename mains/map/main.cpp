@@ -50,10 +50,10 @@ int	main(int argc, char **argv)
 
 			ft::BinarySearchTree<int, std::string> tree;
 
-			tree.insert(std::make_pair(8, "first"));
-			tree.insert(std::make_pair(1, "second"));
-			tree.insert(std::make_pair(6, "third"));
-			tree.insert(std::make_pair(4, "fourth"));
+			tree.insert(ft::make_pair(8, "first"));
+			tree.insert(ft::make_pair(1, "second"));
+			tree.insert(ft::make_pair(6, "third"));
+			tree.insert(ft::make_pair(4, "fourth"));
 
 			std::cout << "tree.root = " << tree.getRoot()->key << std::endl;
 			tree.printTree(tree.getRoot());
@@ -83,9 +83,9 @@ int	main(int argc, char **argv)
 					<< std_result.first->second << " in the map" << std::endl;
 
 			// ft::map<int, std::string> ft_map;
-			// std::pair<ft::map<int, std::string>::iterator, bool> ft_result;
+			// ft::pair<ft::map<int, std::string>::iterator, bool> ft_result;
 
-			// std::pair<int, std::string> ft_inputpair = std::make_pair(1, "one");
+			// ft::pair<int, std::string> ft_inputpair =ft::make_pair(1, "one");
 			// ft_result = ft_map.insert(ft_inputpair);
 			// if (ft_result.second == true)
 			// 	std::cout << "Inserted " << std_result.first->second << " into the map with key "
@@ -109,8 +109,8 @@ int	main(int argc, char **argv)
 			// ft::map<int, int>::iterator it;
 			ft::BinarySearchTree<int, int> tree;
 
-			std::pair<ft::Node<int, int> *, bool> res;
-			std::pair<int, int> input = std::make_pair(1, 2);
+			ft::pair<ft::Node<int, int> *, bool> res;
+			ft::pair<int, int> input =ft::make_pair(1, 2);
 			res = tree.insert(input);
 			ft::Node<int, int> * node = res.first;
 			if (node)

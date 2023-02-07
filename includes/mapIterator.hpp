@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <cstddef>
-// #include "iterator.hpp"
+#include "iterator.hpp"
 #include "pair.hpp"
 #include "BST.hpp"
 #include "utils.hpp"
@@ -19,16 +19,16 @@ namespace ft
 		class mapIterator
 		{
 			public:
-				typedef std::pair<const Key, Value >     value_type;
+				typedef ft::pair<const Key, Value >     value_type;
 				typedef value_type&                     reference;
 				typedef value_type*                     pointer;
 				typedef std::bidirectional_iterator_tag iterator_category;
 				typedef std::ptrdiff_t                  difference_type;
 
             private:
-                typedef Node<Key, Value>    node_ptr;
+                typedef Node<Key, Value>  *  node_ptr;
 
-                pointer    pointer_;
+                node_ptr    pointer_;
             
             public:
 
@@ -50,14 +50,14 @@ namespace ft
                 ~mapIterator(void)
                 {};
 
-                pointer base() const
+                node_ptr base() const
                 {
                     return pointer_;
                 }
 
 // GETTERS ---------------------------------------------------------------------------------------------
 				
-                pointer getPointer(void) const 
+                node_ptr getPointer(void) const 
                 {
                     return (pointer_);
                 }
@@ -89,7 +89,7 @@ namespace ft
                 };
 
                 // allows a object of this class to be accessed like a pointer. 
-                pointer	operator->(void) const
+                node_ptr	operator->(void) const
                 {
                     return pointer_;
                 };
