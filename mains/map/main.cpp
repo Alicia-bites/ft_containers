@@ -50,10 +50,10 @@ int	main(int argc, char **argv)
 
 			ft::BinarySearchTree<int, std::string> tree;
 
-			tree.insert(ft::make_pair(8, "first"));
-			tree.insert(ft::make_pair(1, "second"));
-			tree.insert(ft::make_pair(6, "third"));
-			tree.insert(ft::make_pair(4, "fourth"));
+			tree.insert(std::make_pair(8, "first"));
+			tree.insert(std::make_pair(1, "second"));
+			tree.insert(std::make_pair(6, "third"));
+			tree.insert(std::make_pair(4, "fourth"));
 
 			std::cout << "tree.root = " << tree.getRoot()->key << std::endl;
 			tree.printTree(tree.getRoot());
@@ -82,11 +82,11 @@ int	main(int argc, char **argv)
 				std::cout << "Key " << std_result.first->first << " already has the value "
 					<< std_result.first->second << " in the map" << std::endl;
 
-			ft::map<int, std::string> ft_map;
-			ft::pair<ft::map<int, std::string>::iterator, bool> ft_result;
+			// ft::map<int, std::string> ft_map;
+			// std::pair<ft::map<int, std::string>::iterator, bool> ft_result;
 
-			ft::pair<int, std::string> ft_inputpair = ft::make_pair(1, "one");
-			ft_result = ft_map.insert(ft_inputpair);
+			// std::pair<int, std::string> ft_inputpair = std::make_pair(1, "one");
+			// ft_result = ft_map.insert(ft_inputpair);
 			// if (ft_result.second == true)
 			// 	std::cout << "Inserted " << std_result.first->second << " into the map with key "
 			// 		<< ft_result.first->first << std::endl;
@@ -105,7 +105,21 @@ int	main(int argc, char **argv)
 			std::cout << STEELBLUE3 << "Testing default constructor" 
 				<< RESET << std::endl << std::endl;
 
-			ft::make_pair(1, "one");
+			// ft::Node<int, int> node;
+			// ft::map<int, int>::iterator it;
+			ft::BinarySearchTree<int, int> tree;
+
+			std::pair<ft::Node<int, int> *, bool> res;
+			std::pair<int, int> input = std::make_pair(1, 2);
+			res = tree.insert(input);
+			ft::Node<int, int> * node = res.first;
+			if (node)
+				std::cout << *node << std::endl;
+
+			ft::map<int, int> mappy;
+			ft::map<int, int>::iterator it;
+
+			mappy.insert(input);
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"

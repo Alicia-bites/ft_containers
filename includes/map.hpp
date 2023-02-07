@@ -10,7 +10,7 @@
 #include "iterator.hpp"
 #include "type_traits.hpp"
 #include "algorithms.hpp"
-#include "pair.hpp"
+// #include "pair.hpp"
 #include "mapIterator.hpp"
 
 
@@ -20,7 +20,7 @@
 namespace ft
 {
 	template <typename Key, typename Value, typename Compare = std::less<Key>,
-		typename Allocator = std::allocator<ft::pair<const Key, Value> > >
+		typename Allocator = std::allocator<std::pair<const Key, Value> > >
 	class map
 	{
 		public:
@@ -28,7 +28,7 @@ namespace ft
 
 			typedef Key                                     		key_type; // type of key used to pair with value (1st template parameter)
 			typedef Value                                   		mapped_type; // type of the value paired with key (2nd template parameter)
-			typedef pair<const Key, Value>                  		value_type; // represent the key-value pair
+			typedef std::pair<const Key, Value>                  	value_type; // represent the key-value pair
 			typedef Compare                                 		key_compare; // comparaison fonction used to compare keys (3rd template parameter, defaults to: less<key_type>)
 			typedef Allocator                               		allocator_type; // (4th template parameter, defaults to: allocator<value_type>)
 			typedef typename Allocator::reference           		reference; // for the default allocator: value_type &
@@ -175,13 +175,14 @@ namespace ft
 			// inserted element has a key equivalent to the one of an element already in the container,
 			// and if so, the element is not inserted, returning an iterator to this existing element
 			// (if the function returns a value).
-			pair<iterator, bool>	insert(const value_type & input_pair)
+			std::pair<ft::Node<Key, Value> *, bool>	insert(const value_type & input_pair)
 			{
-				ft::pair<node_ptr, bool> res;
+				std::pair<ft::Node<Key, Value> *, bool> res;
 				res = tree.insert(input_pair);
-				// std::cout << res.first << std::endl;
-				// std::cout << res.second << std::endl;
-				return ft::make_pair<iterator, bool>(iterator(), true); 
+				// node_ptr node = res.first;
+				// iterator it(node);
+				// return std::make_pair(it, true);
+				return res; 
 			};
 			// iterator	insert(iterator position, const value_type& x);
 			// template <class InputIterator>
@@ -213,8 +214,9 @@ namespace ft
 
 				// RBTree    tree;
 
-				typedef BinarySearchTree<key_type, value_type>			BST;
-				typedef typename BST::node_ptr							node_ptr;
+				typedef BinarySearchTree<key_type, mapped_type>			BST;
+				// typedef typename BST::node_ptr							node_ptr;
+				ft::Node<Key, Value> *node_ptr;
 
 				BST	tree;
 	};

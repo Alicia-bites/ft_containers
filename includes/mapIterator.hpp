@@ -19,7 +19,7 @@ namespace ft
 		class mapIterator
 		{
 			public:
-				typedef ft::pair<const Key, Value >     value_type;
+				typedef std::pair<const Key, Value >     value_type;
 				typedef value_type&                     reference;
 				typedef value_type*                     pointer;
 				typedef std::bidirectional_iterator_tag iterator_category;
@@ -39,11 +39,7 @@ namespace ft
                 // constructor
                 mapIterator(node_ptr input_node)
                 :pointer_(input_node)
-                {
-                    // pointer_->first = input_node->key;
-                    // pointer_->second = input_node->value;
-
-                };
+                {};
 
                 // copy constructor
                 mapIterator(const mapIterator<Key, Value> & src)

@@ -1,3 +1,4 @@
-error: no matching function for call to 
+note: synthesized method 
 
-‘ft::pair<const int, std::__cxx11::basic_string<char> >::pair(const std::__cxx11::basic_string<char>&)’
+‘std::pair<const int, std::__cxx11::basic_string<char> >& 
+std::pair<const int, std::__cxx11::basic_string<char> >::operator=(const std::pair<const int, std::__cxx11::basic_string<char> >&)’ first required here
