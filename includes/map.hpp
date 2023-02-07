@@ -10,7 +10,7 @@
 #include "iterator.hpp"
 #include "type_traits.hpp"
 #include "algorithms.hpp"
-// #include "pair.hpp"
+#include "pair.hpp"
 #include "mapIterator.hpp"
 
 
@@ -177,12 +177,9 @@ namespace ft
 			// (if the function returns a value).
 			ft::pair<iterator, bool>	insert(const value_type & input_pair)
 			{
-				ft::pair<ft::Node<Key, Value> *, bool> res;
-				res = tree.insert(input_pair);
-				ft::Node<Key, Value> * node = res.first;
-				iterator it(node);
-				return ft::make_pair(it, true);
+				return tree.insert(input_pair);
 			};
+			
 			// iterator	insert(iterator position, const value_type& x);
 			// template <class InputIterator>
 			// 	void 	insert(InputIterator first, InputIterator last);
