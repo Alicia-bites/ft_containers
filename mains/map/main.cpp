@@ -6,8 +6,17 @@
 
 #include <string>
 #include <algorithm>
+
 #include <utility>
 #include <map>
+
+#ifndef STD
+# define NAMESPACE ft
+// #else
+// # define NAMESPACE std
+#endif
+
+using namespace NAMESPACE;
 
 template <typename T>
 	void	print_map(T map)
@@ -71,28 +80,16 @@ int	main(int argc, char **argv)
 			std::cout << STEELBLUE3 << "Testing default constructor" 
 				<< RESET << std::endl << std::endl;
 
-			std::map<int, std::string> std_map;
-			std::pair<std::map<int, std::string>::iterator, bool> std_result;
+			map<int, std::string> mappy;
+			pair<map<int, std::string>::iterator, bool> res;
 
-			std_result = std_map.insert(std::make_pair(1, "one"));
-			if (std_result.second == true)
-				std::cout << "Inserted " << std_result.first->second << " into the map with key "
-					<< std_result.first->first << std::endl;
+			res = mappy.insert(make_pair(1, "one"));
+			if (res.second == true)
+				std::cout << "Inserted " << res.first->second << " into the map with key "
+					<< res.first->first << std::endl;
 			else
-				std::cout << "Key " << std_result.first->first << " already has the value "
-					<< std_result.first->second << " in the map" << std::endl;
-
-			// ft::map<int, std::string> ft_map;
-			// ft::pair<ft::map<int, std::string>::iterator, bool> ft_result;
-
-			// ft::pair<int, std::string> ft_inputpair =ft::make_pair(1, "one");
-			// ft_result = ft_map.insert(ft_inputpair);
-			// if (ft_result.second == true)
-			// 	std::cout << "Inserted " << std_result.first->second << " into the map with key "
-			// 		<< ft_result.first->first << std::endl;
-			// else
-			// 	std::cout << "Key " << ft_result.first->first << " already has the value "
-			// 		<< ft_result.first->second << " in the map " << std::endl;
+				std::cout << "Key " << res.first->first << " already has the value "
+					<< res.first->second << " in the map" << std::endl;
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
@@ -105,8 +102,6 @@ int	main(int argc, char **argv)
 			std::cout << STEELBLUE3 << "Testing default constructor" 
 				<< RESET << std::endl << std::endl;
 
-			// ft::Node<int, int> node;
-			// ft::map<int, int>::iterator it;
 			ft::BinarySearchTree<int, int> tree;
 
 			ft::pair<ft::Node<int, int> *, bool> res;
@@ -118,8 +113,13 @@ int	main(int argc, char **argv)
 
 			ft::map<int, int> mappy;
 			ft::map<int, int>::iterator it;
+			ft::pair<ft::mapIterator<int, int>, bool> output;
 
-			mappy.insert(input);
+			output = mappy.insert(input);
+
+			it = output.first;
+			std::cout << *(it.getPointer()) << std::endl;
+
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
