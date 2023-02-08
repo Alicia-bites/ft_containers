@@ -6,7 +6,7 @@
 
 #include <string>
 #include <algorithm>
-
+#include <iostream>
 #include <utility>
 #include <map>
 
@@ -57,18 +57,32 @@ int	main(int argc, char **argv)
 			std::cout << STEELBLUE3 << "Testing binary search tree" 
 				<< RESET << std::endl << std::endl;
 
+			std::cout << DARKTURQUOISE << "Creating tree..." << RESET << std::endl;
 			ft::BinarySearchTree<int, std::string> tree;
 
+			std::cout << DEEPPINK1 << "Inserting stuff in tree..." << RESET << std::endl;
 			tree.insert(ft::make_pair(8, "first"));
 			tree.insert(ft::make_pair(1, "second"));
 			tree.insert(ft::make_pair(6, "third"));
 			tree.insert(ft::make_pair(4, "fourth"));
+			tree.insert(ft::make_pair(4, "fifth"));
 
 			std::cout << "tree.root = " << tree.getRoot()->key << std::endl;
 			tree.printTree(tree.getRoot());
 
-			std::cout << tree[4] << std::endl;
+			std::cout << MEDIUMTURQUOISE << "Testing accessor" << RESET << std::endl;
+			std::cout << "tree[4] = " << tree[4] << std::endl;
 
+			std::cout << LIGHTSEAGREEN << "Testing removing node" << RESET << std::endl;
+			ft::BinarySearchTree<int, std::string> tree_copy(tree);
+
+			std::cout << CYAN3 << "Testing accessor" << RESET << std::endl;
+			tree_copy.remove(tree.getRoot(), 4);
+
+			std::cout << "Printing copy_tree : " << RESET << std::endl;
+			tree_copy.printTree(tree_copy.getRoot());
+			std::cout << "Printing tree : " << RESET << std::endl;
+			tree.printTree(tree.getRoot());
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
 			<< std::endl << RESET;
@@ -77,13 +91,21 @@ int	main(int argc, char **argv)
 		if (test_number == 2)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing default constructor" 
+			std::cout << STEELBLUE3 << "Testing insert(const value_type & input_pair)" 
 				<< RESET << std::endl << std::endl;
 
 			map<int, std::string> mappy;
 			pair<map<int, std::string>::iterator, bool> res;
 
 			res = mappy.insert(make_pair(1, "one"));
+			if (res.second == true)
+				std::cout << "Inserted " << res.first->second << " into the map with key "
+					<< res.first->first << std::endl;
+			else
+				std::cout << "Key " << res.first->first << " already has the value "
+					<< res.first->second << " in the map" << std::endl;
+
+			res = mappy.insert(make_pair(1, "two"));
 			if (res.second == true)
 				std::cout << "Inserted " << res.first->second << " into the map with key "
 					<< res.first->first << std::endl;
@@ -102,24 +124,15 @@ int	main(int argc, char **argv)
 			std::cout << STEELBLUE3 << "Testing default constructor" 
 				<< RESET << std::endl << std::endl;
 
-			ft::BinarySearchTree<int, int> tree;
+			map<int, int> bob;
+			bob.insert(make_pair(1, 647823));
+			bob.insert(make_pair(2, 4156));
 
-			ft::pair<ft::Node<int, int> *, bool> res;
-			ft::pair<int, int> input =ft::make_pair(1, 2);
-			res = tree.insert(input);
-			ft::Node<int, int> * node = res.first;
-			if (node)
-				std::cout << *node << std::endl;
+			map<int, int>::iterator it1 = bob.begin();
+			std::cout << it1->first << std::endl;
+			std::cout << it1->second << std::endl;
 
-			ft::map<int, int> mappy;
-			ft::map<int, int>::iterator it;
-			ft::pair<ft::mapIterator<int, int>, bool> output;
-
-			output = mappy.insert(input);
-
-			it = output.first;
-			std::cout << *(it.getPointer()) << std::endl;
-
+			// map<int, int>::iterator it2 = bob.end();
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
