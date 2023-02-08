@@ -21,6 +21,7 @@ namespace ft
 	class Node
 	{
 		public:
+
 			Key					key;
 			Value				value;
 			Node<Key, Value>	*left;
@@ -47,10 +48,10 @@ namespace ft
 			{
 				if (this != &original)
 				{
-					key = original->key;
-					value = original->value;
-					left = original->left;
-					right = original->right;
+					key = original.key;
+					value = original.value;
+					left = original.left;
+					right = original.right;
 				}
 			}
 	};
@@ -107,26 +108,28 @@ namespace ft
 
 				typedef Node<Key, Value>									*node_ptr;
 
+//	CONSTRUCTORS ----------------------------------------------------------------------------
+
 			// default constructor
 			BinarySearchTree(const Allocator & allocator = Allocator())
 			: root_(0)
 			, comp_(std::less<Key>())
-			, treeAllocator_(allocator)
+			, allocator_(allocator)
 			, size_(0)
 			{};
 
 			// constuctor with specific compare function and allocator function
-			BinarySearchTree(key_compare comp, allocator_type treeAllocator)
+			BinarySearchTree(key_compare comp, allocator_type allocator)
 			: root_(0)
 			, comp_(comp)
-			, treeAllocator_(treeAllocator)
+			, allocator_(allocator)
 			, size_(0)
 			{};
 
 			// copy constructor
-			BinarySearchTree(const BinarySearchTree & original)
+			BinarySearchTree(const BinarySearchTree<Key, Value, Compare, Allocator> & original)
 			: comp_(original.comp_)
-			, treeAllocator_(original.treeAllocator_)
+			, allocator_(original.allocator_)
 			{
 				if (this != &original)
 				{
@@ -134,7 +137,40 @@ namespace ft
 				}
 			};
 
-			// inserts new node
+//	DESTRUCTORS --------------------------------------------------------------------------------------
+
+			~BinarySearchTree()
+			{}
+
+//	MEMBER FUNCTIONS ---------------------------------------------------------------------------------
+
+//		ASSIGNEMENT ----------------------------------------------------------------------------------------------------------------------------
+
+//		ACCESSORS --------------------------------------------------------------------------------------
+
+			Value &operator[](const Key &key)
+			{
+				node_ptr node = findNode(root_, key);
+				
+				if (node == 0)
+					node = insertHelper(root_, key, Value());
+				return node->value;
+			};
+
+			// print all the keys and values of the tree.
+			void	printTree(node_ptr root)
+			{
+				if (root != NULL)
+				{
+					printTree(root->left);
+					std::cout << "key = " << root->key << " | value = " << root->value << std::endl;
+					printTree(root->right);
+				}
+			};
+
+//		MODIFIERS --------------------------------------------------------------------------------------
+
+			// inserts new node.
 			// returns a pair, with its member pair::first set to an iterator pointing to either
 			// the newly inserted element or to the element with an equivalent key in the map
 			ft::pair<node_ptr, bool>	insert(const value_type & input_pair)
@@ -146,27 +182,45 @@ namespace ft
 				root_ = insertHelper(root_, input_pair.first, input_pair.second);
 				return ft::make_pair(root_, true);
 			};
-		
-			// accessor
-			Value &operator[](const Key &key)
-			{
-				node_ptr node = findNode(root_, key);
-				
-				if (node == 0)
-					node = insertHelper(root_, key, Value());
-				return node->value;
-			};
 
-			// print all the keys and values of the tree
-			void	printTree(node_ptr root)
+			// remove node from tree.
+			// !! when calling function, always set first parameter to tree.getroot()
+			// second parameter should be the key of the item you want to remove.
+			node_ptr remove(node_ptr root, int key)
 			{
-				if (root != NULL)
+				if (root == NULL)
+					return root;
+				if (key < root->key)
+					root->left = remove(root->left, key);
+				else if (key > root->key)
+					root->right = remove(root->right, key);
+				else 
 				{
-					printTree(root->left);
-					std::cout << "key = " << root->key << " | value = " << root->value << std::endl;
-					printTree(root->right);
+					if (root->left == NULL)
+					{
+						node_ptr tmp = root->right;
+						delete root;
+						return tmp;
+					}
+					else if (root->right == NULL)
+					{
+						node_ptr tmp = root->left;
+						delete root;
+						return tmp;
+					} 
+					else
+					{
+						node_ptr tmp = root->right;
+						while (tmp->left)
+							tmp = tmp->left;
+						root->key = tmp->key;
+						root->value = tmp->value;
+						root->right = remove(root->right, tmp->key);
+					}
 				}
-			};
+				return root;
+			}
+//		GETTERS --------------------------------------------------------------------------------------
 
 			// return a pointer to root node
 			node_ptr	getRoot() const
@@ -174,24 +228,27 @@ namespace ft
 				return root_;
 			};
 
+//		COPY TOOL --------------------------------------------------------------------------------------
+
 			void copyTree(node_ptr & copy, node_ptr original)
 			{
 				if (original == 0)
 					copy = 0;
 				else
 				{
-					copy = new Node<Key, Value>();
-					copy->data = original->data;
+					copy = nodeAllocator_.allocate(1);
+					nodeAllocator_.construct(copy, *original);
+					// copy = new Node<Key, Value>(original->key, original->value);
 					copyTree(copy->left, original->left);
 					copyTree(copy->right, original->right);
 				}
-			}
+			};
 
 		protected:
 			node_ptr							root_;
 			std::allocator<Node<Key, Value> >	nodeAllocator_;
 			key_compare							comp_; // key comparator
-			allocator_type						treeAllocator_;
+			allocator_type						allocator_;
 			size_type							size_; // total number of nodes
 
 		private :		
