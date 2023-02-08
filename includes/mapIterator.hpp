@@ -24,7 +24,7 @@ namespace ft
 				typedef value_type*                     pointer;
 				typedef std::bidirectional_iterator_tag iterator_category;
 				typedef std::ptrdiff_t                  difference_type;
-                
+
             private:
                 typedef Node<Key, Value>  *  node_ptr;
 
@@ -270,5 +270,16 @@ namespace ft
 	// 	{
 	// 		return gandalf.getPointer() >= sauron.getPointer();
 	// 	}
+
+    template <typename Key, typename Value, typename Allocator>
+    std::ostream & operator<<(std::ostream & o, const mapIterator<Key, Value, Allocator> & rhs)
+    {
+        o << LIGHTGREEN1 << "Printing pair iterator point to --> " << std::endl
+            << "Key = " << rhs->first << std::endl
+            << "Value = " << rhs->second << std::endl
+            << RESET
+            << std::endl;
+        return o;
+    }
 
 }
