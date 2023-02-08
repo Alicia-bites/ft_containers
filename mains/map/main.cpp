@@ -11,9 +11,9 @@
 #include <map>
 
 #ifndef STD
-# define NAMESPACE ft
+// # define NAMESPACE ft
 // #else
-// # define NAMESPACE std
+# define NAMESPACE std
 #endif
 
 using namespace NAMESPACE;
@@ -123,16 +123,24 @@ int	main(int argc, char **argv)
 		if (test_number == 3)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing default constructor" 
+			std::cout << STEELBLUE3 << "Testing iterator" << std::endl 
 				<< RESET << std::endl << std::endl;
 
 			map<int, int> bob;
-			bob.insert(make_pair(1, 647823));
+			bob.insert(make_pair(8, 647823));
 			bob.insert(make_pair(2, 4156));
+			bob.insert(make_pair(5, 4156));
 
 			map<int, int>::iterator it1 = bob.begin();
+			std::cout << "begin / " << std::endl;
 			std::cout << it1->first << std::endl;
-			std::cout << it1->second << std::endl;
+			std::cout << it1->second << std::endl << std::endl;
+
+			map<int, int>::iterator it2 = bob.end();
+			std::cout << "end / " << std::endl;
+			std::cout << it2->first << std::endl;
+			std::cout << it2->second << std::endl << std::endl;
+
 
 			// map<int, int>::iterator it2 = bob.end();
 
