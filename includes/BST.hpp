@@ -132,7 +132,6 @@ namespace ft
 				{
 					copyTree(root_, original.root_);
 				}
-
 			};
 
 			// inserts new node
