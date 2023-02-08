@@ -9,13 +9,13 @@
 #include "iterator.hpp"
 
 // FOR DEBUG
-#include <utility>
+// #include <utility>
 
 // this is an iterator that will browse through my binary search tree
 // mapIterator point to a pair<const Key, Value> of type value_type
 namespace ft
 {
-	template <typename Key, typename Value>
+	template <typename Key, typename Value, typename Allocator = std::allocator<ft::pair<const Key, Value> > >
 		class mapIterator
 		{
 			public:
@@ -24,22 +24,28 @@ namespace ft
 				typedef value_type*                     pointer;
 				typedef std::bidirectional_iterator_tag iterator_category;
 				typedef std::ptrdiff_t                  difference_type;
-
+                
             private:
                 typedef Node<Key, Value>  *  node_ptr;
 
-                node_ptr    pointer_;
-            
+                node_ptr        node_;
+                pointer         pointer_;
+                Allocator       allocator_;
+                
             public:
 
                 // default constructor
                 mapIterator()
                 : pointer_(0)
                 {};
+
                 // constructor
                 mapIterator(node_ptr input_node)
-                :pointer_(input_node)
-                {};
+                :node_(input_node)
+                {
+                    pointer_ = allocator_.allocate(1);
+                    allocator_.construct(pointer_, ft::make_pair(node_->key, node_->value));
+                };
 
                 // copy constructor
                 mapIterator(const mapIterator<Key, Value> & src)
@@ -50,14 +56,14 @@ namespace ft
                 ~mapIterator(void)
                 {};
 
-                node_ptr base() const
+                pointer base() const
                 {
                     return pointer_;
                 }
 
 // GETTERS ---------------------------------------------------------------------------------------------
 				
-                node_ptr getPointer(void) const 
+                pointer getPointer(void) const 
                 {
                     return (pointer_);
                 }
@@ -89,7 +95,7 @@ namespace ft
                 };
 
                 // allows a object of this class to be accessed like a pointer. 
-                node_ptr	operator->(void) const
+                pointer	operator->(void) const
                 {
                     return pointer_;
                 };
