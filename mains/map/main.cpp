@@ -73,12 +73,14 @@ int	main(int argc, char **argv)
 			std::cout << MEDIUMTURQUOISE << "Testing accessor" << RESET << std::endl;
 			std::cout << "tree[4] = " << tree[4] << std::endl;
 
-			std::cout << LIGHTSEAGREEN << "Testing removing node" << RESET << std::endl;
+			std::cout << LIGHTSEAGREEN << "Testing copy constructor" << RESET << std::endl;
 			ft::BinarySearchTree<int, std::string> tree_copy(tree);
-
-			std::cout << CYAN3 << "Testing accessor" << RESET << std::endl;
+			std::cout << "Printing copy_tree : " << RESET << std::endl;
+			tree_copy.printTree(tree_copy.getRoot());
+			std::cout << CYAN3 << "Testing remove function" << RESET << std::endl;
 			tree_copy.remove(tree.getRoot(), 4);
 
+			std::cout << TURQUOISE2 << "Checking if deep copy has been done properly : " << RESET << std::endl;
 			std::cout << "Printing copy_tree : " << RESET << std::endl;
 			tree_copy.printTree(tree_copy.getRoot());
 			std::cout << "Printing tree : " << RESET << std::endl;
