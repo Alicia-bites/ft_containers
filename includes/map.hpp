@@ -106,18 +106,17 @@ namespace ft
 	
 			iterator	begin()
 			{
-				return tree.begin();
+				return iterator(tree.getRoot());
 			};
 
-			// const_iterator	begin() const
-			// {
-			// 	return tree.begin();
-			// };value_type
-
-			iterator	end()
+			const_iterator	begin() const
 			{
-				return tree.end();
+				return iterator(tree.getRoot());
 			};
+
+			// iterator	end()
+			// {
+			// };
 
 			// const_iterator	end() const
 			// {
@@ -189,7 +188,7 @@ namespace ft
 			// void	swap(map<Key,T,Compare,Allocator>&);
 			// void	clear();
 
-//		MODIFIERS --------------------------------------------------------------------------------------
+//		OBSERVERS --------------------------------------------------------------------------------------
 			key_compare	key_comp() const;
 			value_compare	value_comp() const;
 
@@ -211,7 +210,7 @@ namespace ft
 				// RBTree    tree;
 
 				typedef BinarySearchTree<key_type, mapped_type>			BST;
-				// typedef typename BST::node_ptr							node_ptr;
+
 				ft::Node<Key, Value> *node_ptr;
 
 				BST	tree;
