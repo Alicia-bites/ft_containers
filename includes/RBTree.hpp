@@ -3,246 +3,226 @@
 #include <cstdio>
 #include <iostream>
 
-// #include "node.hpp"
+#include "node.hpp"
 #include "../colors/colors.hpp"
 
-// The colour of the NULL node is always black
-// Always try recoloring first. If recolouring doesn’t work, then we go for rotation.
-// If the uncle is red, we do recolour. If the uncle is black, we do rotations and/or
-// recolouring.
+// #1 A node is eather RED or BLACK
 
+// #2 The root and leaves are BLACK
 
-// enum Color
-// {
-// 	RED,
-// 	BLACK
-// };
+// #3 If a node is RED, then its children are BLACK
 
-// struct Node
-// {
-//     int key;
-//     Node *left, *right, *parent;
-//     Color color;
+// #4 All paths to a node's leaf descendant contains the same number of black nodes 
 
-//     Node(int key = 0, Node *left = NULL, Node *right = NULL, Node *parent = NULL, Color color = RED)
-//         : key(key), left(left), right(right), parent(parent), color(color) {}
-// };
+namespace ft
+{
+	template <typename Key, typename Value, typename Compare = std::less<Key>,
+		typename Allocator = std::allocator<ft::pair<const Key, Value> > >
+	class RedBlackTree
+	{
+		public:
+			typedef Key													key_type; // type of key used to pair with value (1st template parameter)
+			typedef Value												mapped_type; // type of the value paired with key (2nd template parameter)
+			typedef ft::pair<const Key, Value>							value_type; 	 // represent the key-value pair
+			typedef Compare		 										key_compare;	 // The third template parameter (Compare)	defaults to: less<key_type>
+			typedef Allocator											allocator_type;	 // The fourth template parameter (Alloc)	defaults to: allocator<value_type>
+			typedef typename allocator_type::reference					reference;		 // for the default allocator: value_type&
+			typedef typename allocator_type::const_reference			const_reference; // for the default allocator: const value_type&
+			typedef typename allocator_type::pointer					pointer;		 // for the default allocator: value_type*
+			typedef typename allocator_type::const_pointer				const_pointer;	 // for the default allocator: const value_type*
+			typedef typename allocator_type::difference_type			difference_type; // a signed integral type, identical to: iterator_traits<iterator>::difference_type	usually the same as ptrdiff_t
+			typedef typename allocator_type::size_type					size_type;		 // an unsigned integral type that can represent any non-negative value of difference_type	usually the same as size_t
 
-// class RedBlackTree
-// {
-// private:
-//     Node *root;
+			typedef Node<Key, Value>									*node_ptr;
 
-// protected:
-//     void rotateLeft(Node *&, Node *&);
-//     void rotateRight(Node *&, Node *&);
-//     void fixViolation(Node *&, Node *&);
+//	CONSTRUCTORS ----------------------------------------------------------------------------
 
-// public:
-//     RedBlackTree() : root(NULL) {}
-//     void insert(const int &);
-//     void inorder();
-//     void levelOrder();
-// };
+			// default constructor
+			RedBlackTree(const Allocator & allocator = Allocator())
+			: root_(0)
+			, comp_(std::less<Key>())
+			, allocator_(allocator)
+			, size_(0)
+			{};
 
-// void RedBlackTree::rotateLeft(Node *&root, Node *&pt)
-// {
-//     Node *pt_right = pt->right;
+			// constuctor with specific compare function and allocator function
+			RedBlackTree(key_compare comp, allocator_type allocator)
+			: root_(0)
+			, comp_(comp)
+			, allocator_(allocator)
+			, size_(0)
+			{};
 
-//     pt->right = pt_right->left;
+			// copy constructor
+			RedBlackTree(const RedBlackTree<Key, Value, Compare, Allocator> & original)
+			: comp_(original.comp_)
+			, allocator_(original.allocator_)
+			{
+				if (this != &original)
+					copyTree(root_, original.root_);
+			};
 
-//     if (pt->right != NULL)
-//         pt->right->parent = pt;
+//	DESTRUCTORS --------------------------------------------------------------------------------------
 
-//     pt_right->parent = pt->parent;
+			~RedBlackTree()
+			{}
 
-//     if (pt->parent == NULL)
-//         root = pt_right;
+//	MEMBER FUNCTIONS ---------------------------------------------------------------------------------
 
-//     else if (pt == pt->parent->left)
-//         pt->parent->left = pt_right;
+//		ASSIGNEMENT ----------------------------------------------------------------------------------------------------------------------------
 
-//     else
-//         pt->parent->right = pt_right;
+//		ACCESSORS --------------------------------------------------------------------------------------
 
-//     pt_right->left = pt;
-//     pt->parent = pt_right;
-// }
+			Value &operator[](const Key &key)
+			{
+				node_ptr node = findNode(root_, key);
+				
+				if (node == 0)
+					node = insertHelper(root_, key, Value());
+				return node->value;
+			};
 
-// void RedBlackTree::rotateRight(Node *&root, Node *&pt)
-// {
-//     Node *pt_left = pt->left;
+			// print all the keys and values of the tree.
+			void	printTree(node_ptr root)
+			{
+				if (root != NULL)
+				{
+					printTree(root->left);
+					std::cout << "key = " << root->key << " | value = " << root->value << std::endl;
+					printTree(root->right);
+				}
+			};
 
-//     pt->left = pt_left->right;
+//		MODIFIERS --------------------------------------------------------------------------------------
 
-//     if (pt->left != NULL)
-//         pt->left->parent = pt;
+			// inserts new node.
+			// returns a pair, with its member pair::first set to an iterator pointing to either
+			// the newly inserted element or to the element with an equivalent key in the map
+			ft::pair<node_ptr, bool>	insert(const value_type & input_pair)
+			{
+				node_ptr node = findNode(root_, input_pair.first);
+				
+				if (node)
+					return ft::make_pair(node, false);
 
-//     pt_left->parent = pt->parent;
+				root_ = insertHelper(root_, input_pair.first, input_pair.second);
+				// fixViolation(root_, )
 
-//     if (pt->parent == NULL)
-//         root = pt_left;
+				return ft::make_pair(root_, true);
+			};
 
-//     else if (pt == pt->parent->left)
-//         pt->parent->left = pt_left;
+			// remove node from tree.
+			// !! when calling function, always set first parameter to tree.getroot()
+			// second parameter should be the key of the item you want to remove.
+			node_ptr remove(node_ptr root, int key)
+			{
+				if (root == NULL)
+					return root;
+				if (key < root->key)
+					root->left = remove(root->left, key);
+				else if (key > root->key)
+					root->right = remove(root->right, key);
+				else 
+				{
+					if (root->left == NULL)
+					{
+						node_ptr tmp = root->right;
+						delete root;
+						return tmp;
+					}
+					else if (root->right == NULL)
+					{
+						node_ptr tmp = root->left;
+						delete root;
+						return tmp;
+					} 
+					else
+					{
+						node_ptr tmp = root->right;
+						while (tmp->left)
+							tmp = tmp->left;
+						root->key = tmp->key;
+						root->value = tmp->value;
+						root->right = remove(root->right, tmp->key);
+					}
+				}
+				return root;
+			}
+//		GETTERS --------------------------------------------------------------------------------------
 
-//     else
-//         pt->parent->right = pt_left;
+			// return a pointer to root node
+			node_ptr	getRoot() const
+			{
+				return root_;
+			};
 
-//     pt_left->right = pt;
-//     pt->parent = pt_left;
-// }
+//		COPY TOOL --------------------------------------------------------------------------------------
 
-// void RedBlackTree::fixViolation(Node *&root, Node *&pt)
-// {
-//     Node *parent_pt = NULL;
-//     Node *grand_parent_pt = NULL;
+			void copyTree(node_ptr & copy, node_ptr original)
+			{
+				if (original == 0)
+					copy = 0;
+				else
+				{
+					copy = nodeAllocator_.allocate(1);
+					nodeAllocator_.construct(copy, *original);
+					// copy = new Node<Key, Value>(original->key, original->value);
+					copyTree(copy->left, original->left);
+					copyTree(copy->right, original->right);
+				}
+			};
 
-//     while ((pt != root) && (pt->color != BLACK) &&
-//            (pt->parent->color == RED))
-//     {
+		protected:
+			node_ptr							root_;
+			std::allocator<Node<Key, Value> >	nodeAllocator_;
+			key_compare							comp_; // key comparator
+			allocator_type						allocator_;
+			size_type							size_; // total number of nodes
 
-//         parent_pt = pt->parent;
-//         grand_parent_pt = pt->parent->parent;
+		private :		
+			
+			bool	KeyisTaken(const Key &key)
+			{
+				if (findNode(root_, key))
+					return 1;
+				else
+					return 0;
+			};
 
-//         if (parent_pt == grand_parent_pt->left)
-//         {
+			// recursive function, used to insert a new node
+			// from root_, find the next available place to create new Node
+			// !! WITHOUT CARING ABOUT BALANCE
+			node_ptr	insertHelper(node_ptr node, const Key &key, const Value &value)
+			{
+				if (node == 0)
+					return new Node<Key, Value>(key, value);
+				if (key == node->key)
+				{
+					node->value = value;
+					return node;
+				}
+				if (key < node->key)
+				{
+					if (node->left == 0)
+						return new Node<Key, Value> (key, value);
+					return insertHelper(node->left, key, value);
+				}
+				if (node->right == 0)
+						return new Node<Key, Value> (key, value);
+					return insertHelper(node->right, key, value);
+			};
 
-//             Node *uncle_pt = grand_parent_pt->right;
-
-//             if (uncle_pt != NULL && uncle_pt->color == RED)
-//             {
-//                 grand_parent_pt->color = RED;
-//                 parent_pt->color = BLACK;
-//                 uncle_pt->color = BLACK;
-//                 pt = grand_parent_pt;
-//             }
-
-//             else
-//             {
-//                 if (pt == parent_
-// right)
-// {
-// rotateLeft(root, parent_pt);
-// pt = parent_pt;
-// parent_pt = pt->parent;
-// }
-//             parent_pt->color = BLACK;
-//             grand_parent_pt->color = RED;
-//             rotateRight(root, grand_parent_pt);
-//         }
-
-//         else
-//         {
-//             Node *uncle_pt = grand_parent_pt->left;
-
-//             if ((uncle_pt != NULL) && (uncle_pt->color == RED))
-//             {
-//                 grand_parent_pt->color = RED;
-//                 parent_pt->color = BLACK;
-//                 uncle_pt->color = BLACK;
-//                 pt = grand_parent_pt;
-//             }
-//             else
-//             {
-//                 if (pt == parent_pt->left)
-//                 {
-//                     rotateRight(root, parent_pt);
-//                     pt = parent_pt;
-//                     parent_pt = pt->parent;
-//                 }
-
-//                 parent_pt->color = BLACK;
-//                 grand_parent_pt->color = RED;
-//                 rotateLeft(root, grand_parent_pt);
-//             }
-//         }
-//     }
-//     root->color = BLACK;
-// }
-// }
-
-// void RedBlackTree::insert(const int &key)
-// {
-// Node *pt = new Node(key);
-// root = insertBST(root, pt);
-
-// fixViolation(root, pt);
-// }
-
-// Node *RedBlackTree::insertBST(Node *root, Node *pt)
-// {
-// if (root == NULL)
-// return pt;
-// if (pt->key < root->key)
-// {
-//     root->left = insertBST(root->left, pt);
-//     root->left->parent = root;
-// }
-
-// else if (pt->key > root->key)
-// {
-//     root->right = insertBST(root->right, pt);
-//     root->right->parent = root;
-// }
-
-// return root;
-// void RedBlackTree::inorder()
-// {
-// inorderHelper(root);
-// }
-
-// void RedBlackTree::inorderHelper(Node *root)
-// {
-// if (root == NULL)
-// return;
-
-// inorderHelper(root->left);
-// cout << root->key << " ";
-// inorderHelper(root->right);
-// }
-
-// void RedBlackTree::levelOrder()
-// {
-// levelOrderHelper(root);
-// }
-
-// void RedBlackTree::levelOrderHelper(Node *root)
-// {
-// if (root == NULL)
-// return;
-// std::queue<Node *> q;
-// q.push(root);
-
-// while (!q.empty())
-// {
-//     Node *temp = q.front();
-//     cout << temp->key << " ";
-//     q.pop();
-
-//     if (temp->left != NULL)
-//         q.push(temp->left);
-
-//     if (temp->right != NULL)
-//         q.push(temp->right);
-// }
-// }
-
-// int main()
-// {
-// 	RedBlackTree tree;
-// 	tree.insert(7);
-// 	tree.insert(6);
-// 	tree.insert(5);
-// 	tree.insert(4);
-// 	tree.insert(3);
-// 	tree.insert(2);
-// 	tree.insert(1);
-// 	cout << "Inorder traversal of the RB Tree is: ";
-// 	tree.inorder();
-
-// 	cout << "\nLevel order traversal of the RB Tree is: ";
-// 	tree.levelOrder();
-
-// 	return 0;
-// }
+			// a function that searches a specific node and returns it
+			node_ptr findNode(node_ptr node, const Key &key) const
+			{
+				while (node != 0 && node->key != key)
+				{
+					if (key < node->key)
+						node = node->left;
+					else
+						node = node->right;
+				}
+				return node;
+			};
+	};
+}
