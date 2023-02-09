@@ -6,7 +6,7 @@
 /*   By: amarchan <amarchan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 15:07:45 by jallerha          #+#    #+#             */
-/*   Updated: 2022/10/18 17:22:16 by amarchan         ###   ########.fr       */
+/*   Updated: 2023/02/09 10:53:16 by amarchan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # define AQUAMARINE1 "\033[38;5;122m"
 # define AQUAMARINE2 "\033[38;5;86m"
 # define AQUAMARINE3 "\033[38;5;79m"
-# define BLACK "\033[38;5;0m"
+// # define BLACK "\033[38;5;0m"
 # define BLUE "\033[38;5;12m"
 # define BLUE1 "\033[38;5;21m"
 # define BLUE2 "\033[38;5;19m"
@@ -222,7 +222,7 @@
 # define PURPLE4 "\033[38;5;56m"
 # define PURPLE5 "\033[38;5;54m"
 # define PURPLE6 "\033[38;5;55m"
-# define RED "\033[38;5;9m"
+// # define RED "\033[38;5;9m"
 # define RED1 "\033[38;5;196m"
 # define RED2 "\033[38;5;124m"
 # define RED3 "\033[38;5;160m"
