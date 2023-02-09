@@ -58,11 +58,23 @@ namespace ft
 					}
 			};
 
+		private :
+			// typedef RBTree<key_type, value_type, std::_Select1st<value_type>, key_compare, allocator_type>    RBTree;
+
+			// RBTree    tree;
+
+			typedef BinarySearchTree<key_type, mapped_type>			BST;
+
+			ft::Node<Key, Value> *node_ptr;
+
+			BST	tree_;
+
 //	CONSTRUCTORS ----------------------------------------------------------------------------
 
+		public :
 			// Constructs an empty container, with no elements.
 			explicit map(const Compare& comp = Compare(), const Allocator & allocator = Allocator())
-			: tree(comp, allocator)
+			: tree_(comp, allocator)
 			{};
 
 			// Constructs a container with as many elements as the range [first,last),
@@ -73,7 +85,7 @@ namespace ft
 			// pointed by last.
 			template <class InputIterator>
 				map(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Allocator & allocator = Allocator())
-				: tree(comp, allocator)
+				: tree_(comp, allocator)
 				{
 					insert(first, last);
 				};
@@ -81,7 +93,7 @@ namespace ft
 			// Copy constructor
 			// Constructs a container with a copy of each of the elements in x
 			map(const map<Key,Value,Compare,Allocator>& src)
-			: tree(src.tree)
+			: tree_(src.tree_)
 			{};
 
 
@@ -98,7 +110,7 @@ namespace ft
 			map<Key,Value,Compare,Allocator> & operator=(const map<Key,Value,Compare,Allocator>& rhs)
 			{
                 if (this != &rhs)
-                    this->tree = rhs.tree;
+                    this->tree_ = rhs.tree_;
                 return (*this);
 			};
 	
@@ -106,12 +118,12 @@ namespace ft
 	
 			iterator	begin()
 			{
-				return iterator(tree.getRoot());
+				return iterator(tree_.getRoot());
 			};
 
 			const_iterator	begin() const
 			{
-				return iterator(tree.getRoot());
+				return iterator(tree_.getRoot());
 			};
 
 			// iterator	end()
@@ -120,51 +132,56 @@ namespace ft
 
 			// const_iterator	end() const
 			// {
-			// 	return tree.end();
+			// 	return tree_.end();
 			// };input_pair
 
 			// reverse_iterator	rbegin()
 			// {
-			// 	return tree.rebgin();
+			// 	return tree_.rebgin();
 			// };
 
 			// const_reverse_iterator rbegin() const
 			// {
-			// 	return tree.rebgin();
+			// 	return tree_.rebgin();
 			// };
 
 			// reverse_iterator	rend()
 			// {
-			// 	return tree.rend();
+			// 	return tree_.rend();
 			// };
 
 			// const_reverse_iterator rend() const
 			// {
-			// 	return tree.rend();
+			// 	return tree_.rend();
 			// };
 
 //		CAPACITY --------------------------------------------------------------------------------------
 			bool	empty() const
 			{
-				return tree.empty();
+				return tree_.empty();
 			};
 
 			size_type	size() const
 			{
-				return tree.size();
+				return tree_.size();
 			};
 
 			size_type	max_size() const
 			{
-				return tree.max_size();
+				return tree_.max_size();
 			};
 
 //		ACCESSORS --------------------------------------------------------------------------------------
 			
 			Value &	operator[](const key_type& x)	
 			{
-				tree[x];
+				tree_[x];
 			};
+
+			BST	getTree() const
+			{
+				return tree_;
+			}
 
 //		MODIFIERS --------------------------------------------------------------------------------------
 			
@@ -176,7 +193,7 @@ namespace ft
 			// (if the function returns a value).
 			ft::pair<iterator, bool>	insert(const value_type & input_pair)
 			{
-				return tree.insert(input_pair);
+				return tree_.insert(input_pair);
 			};
 			
 			// iterator	insert(iterator position, const value_type& x);
@@ -204,16 +221,7 @@ namespace ft
 			// pair<iterator,iterator>	equal_range(const key_type& x);
 			// pair<const_iterator,const_iterator>	equal_range(const key_type& x) const;
 
-			private :
-				// typedef RBTree<key_type, value_type, std::_Select1st<value_type>, key_compare, allocator_type>    RBTree;
 
-				// RBTree    tree;
-
-				typedef BinarySearchTree<key_type, mapped_type>			BST;
-
-				ft::Node<Key, Value> *node_ptr;
-
-				BST	tree;
 	};
 
 //		COMPARATORS --------------------------------------------------------------------------------------
