@@ -156,14 +156,14 @@ namespace ft
 				return node->value;
 			};
 
-			// print all the keys and values of the tree.
-			void	printTree(node_ptr root)
+			// print all the keys and values of the tree from a specific node.
+			void	printTree(node_ptr node)
 			{
-				if (root != NULL)
+				if (node != NULL)
 				{
-					printTree(root->left);
-					std::cout << "key = " << root->key << " | value = " << root->value << std::endl;
-					printTree(root->right);
+					printTree(node->left);
+					std::cout << *node << std::endl;
+					printTree(node->right);
 				}
 			};
 
@@ -174,17 +174,13 @@ namespace ft
 			// the newly inserted element or to the element with an equivalent key in the map
 			ft::pair<node_ptr, bool>	insert(const value_type & input_pair)
 			{
-				if (root_ == 0)
-				{
-					root_ = new Node<Key, Value> (input_pair.first, input_pair.second);
-					return ft::make_pair(root_, true);
-				}
-
 				node_ptr node = findNode(root_, input_pair.first);
 				
 				if (node)
 					return ft::make_pair(node, false);
 				node = insertHelper(root_, input_pair.first, input_pair.second);
+				if (!root_)
+					root_ = node;
 				return ft::make_pair(node, true);
 			};
 
@@ -279,12 +275,18 @@ namespace ft
 				if (key < node->key)
 				{
 					if (node->left == 0)
-						return new Node<Key, Value> (key, value);
+					{
+						node->left = new Node<Key, Value> (key, value);
+						return node->left;
+					}
 					return insertHelper(node->left, key, value);
 				}
 				if (node->right == 0)
-						return new Node<Key, Value> (key, value);
-					return insertHelper(node->right, key, value);
+				{
+					node->right = new Node<Key, Value> (key, value);
+					return node->right;
+				}
+				return insertHelper(node->right, key, value);
 			};
 
 			// a function that searches a specific node and returns it
