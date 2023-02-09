@@ -3,6 +3,7 @@
 #include "../colors/colors.hpp"
 #include "pair.hpp"
 #include "mapIterator.hpp"
+#include "node.hpp"
 
 #include <iostream>
 // #include <stdlib.h>
@@ -17,96 +18,94 @@
 
 namespace ft
 {
-	template <typename Key, typename Value>
-	class Node
-	{
-		public:
+	// template <typename Key, typename Value>
+	// class Node
+	// {
+	// 	public:
 
-			Key					key;
-			Value				value;
-			Node<Key, Value>	*left;
-			Node<Key, Value>	*right;
+	// 		Key					key;
+	// 		Value				value;
+	// 		Node<Key, Value>	*left;
+	// 		Node<Key, Value>	*right;
 
-			// default constructor
-			Node()
-			: key(0)
-			, value(0)
-			, left(0)
-			, right(0)
-			{};
+	// 		// default constructor
+	// 		Node()
+	// 		: key(0)
+	// 		, value(0)
+	// 		, left(0)
+	// 		, right(0)
+	// 		{};
 
-			// constructor #1
-			Node(const Key & key, const Value & value)
-			: key(key)
-			, value(value)
-			, left(0)
-			, right(0)
-			{};
+	// 		// constructor #1
+	// 		Node(const Key & key, const Value & value)
+	// 		: key(key)
+	// 		, value(value)
+	// 		, left(0)
+	// 		, right(0)
+	// 		{};
 
-			// copy constructor
-			Node(const Node & original)
-			{
-				if (this != &original)
-				{
-					key = original.key;
-					value = original.value;
-					left = original.left;
-					right = original.right;
-				}
-			}
-	};
+	// 		// copy constructor
+	// 		Node(const Node & original)
+	// 		{
+	// 			if (this != &original)
+	// 			{
+	// 				key = original.key;
+	// 				value = original.value;
+	// 				left = original.left;
+	// 				right = original.right;
+	// 			}
+	// 		}
+	// };
 
-	template<typename Key, typename Value>
-	std::ostream & operator<<(std::ostream & o, const Node<Key, Value> & rhs)
-	{
+	// template<typename Key, typename Value>
+	// std::ostream & operator<<(std::ostream & o, const Node<Key, Value> & rhs)
+	// {
 		
-		o << "key = "
-			<< rhs.key
-			<< std::endl
-			<< "value = "
-			<< rhs.value
-			<< std::endl;
-		if (rhs.left)
-		{
-			o << "left->key = "
-				<< rhs.left->key
-				<< std::endl
-				<< "left->value = "
-				<< rhs.right->key
-				<< std::endl;
-		}
-		if (rhs.right)
-		{
-			o << "right->key = "
-			<< rhs.left->key
-			<< std::endl
-			<< "right->value = "
-			<< rhs.right->key
-			<< std::endl;
-		}
-		return o;
-	}
+	// 	o << "key = "
+	// 		<< rhs.key
+	// 		<< std::endl
+	// 		<< "value = "
+	// 		<< rhs.value
+	// 		<< std::endl;
+	// 	if (rhs.left)
+	// 	{
+	// 		o << "left->key = "
+	// 			<< rhs.left->key
+	// 			<< std::endl
+	// 			<< "left->value = "
+	// 			<< rhs.right->key
+	// 			<< std::endl;
+	// 	}
+	// 	if (rhs.right)
+	// 	{
+	// 		o << "right->key = "
+	// 		<< rhs.left->key
+	// 		<< std::endl
+	// 		<< "right->value = "
+	// 		<< rhs.right->key
+	// 		<< std::endl;
+	// 	}
+	// 	return o;
+	// }
 
 	template <typename Key, typename Value, typename Compare = std::less<Key>,
 		typename Allocator = std::allocator<ft::pair<const Key, Value> > >
 	class BinarySearchTree
 	{
 		public:
+			typedef Key													key_type; // type of key used to pair with value (1st template parameter)
+			typedef Value												mapped_type; // type of the value paired with key (2nd template parameter)
+			typedef ft::pair<const Key, Value>							value_type; 	 // represent the key-value pair
+			typedef Compare		 										key_compare;	 // The third template parameter (Compare)	defaults to: less<key_type>
+			typedef Allocator											allocator_type;	 // The fourth template parameter (Alloc)	defaults to: allocator<value_type>
+			typedef typename allocator_type::reference					reference;		 // for the default allocator: value_type&
+			typedef typename allocator_type::const_reference			const_reference; // for the default allocator: const value_type&
+			typedef typename allocator_type::pointer					pointer;		 // for the default allocator: value_type*
+			typedef typename allocator_type::const_pointer				const_pointer;	 // for the default allocator: const value_type*
+			typedef typename allocator_type::difference_type			difference_type; // a signed integral type, identical to: iterator_traits<iterator>::difference_type	usually the same as ptrdiff_t
+			typedef typename allocator_type::size_type					size_type;		 // an unsigned integral type that can represent any non-negative value of difference_type	usually the same as size_t
 
-			public:
-				typedef Key													key_type; // type of key used to pair with value (1st template parameter)
-				typedef Value												mapped_type; // type of the value paired with key (2nd template parameter)
-				typedef ft::pair<const Key, Value>							value_type; 	 // represent the key-value pair
-				typedef Compare		 										key_compare;	 // The third template parameter (Compare)	defaults to: less<key_type>
-				typedef Allocator											allocator_type;	 // The fourth template parameter (Alloc)	defaults to: allocator<value_type>
-				typedef typename allocator_type::reference					reference;		 // for the default allocator: value_type&
-				typedef typename allocator_type::const_reference			const_reference; // for the default allocator: const value_type&
-				typedef typename allocator_type::pointer					pointer;		 // for the default allocator: value_type*
-				typedef typename allocator_type::const_pointer				const_pointer;	 // for the default allocator: const value_type*
-				typedef typename allocator_type::difference_type			difference_type; // a signed integral type, identical to: iterator_traits<iterator>::difference_type	usually the same as ptrdiff_t
-				typedef typename allocator_type::size_type					size_type;		 // an unsigned integral type that can represent any non-negative value of difference_type	usually the same as size_t
-
-				typedef Node<Key, Value>									*node_ptr;
+			typedef Node<Key, Value>									*node_ptr;
 
 //	CONSTRUCTORS ----------------------------------------------------------------------------
 
@@ -175,12 +174,18 @@ namespace ft
 			// the newly inserted element or to the element with an equivalent key in the map
 			ft::pair<node_ptr, bool>	insert(const value_type & input_pair)
 			{
+				if (root_ == 0)
+				{
+					root_ = new Node<Key, Value> (input_pair.first, input_pair.second);
+					return ft::make_pair(root_, true);
+				}
+
 				node_ptr node = findNode(root_, input_pair.first);
 				
 				if (node)
 					return ft::make_pair(node, false);
-				root_ = insertHelper(root_, input_pair.first, input_pair.second);
-				return ft::make_pair(root_, true);
+				node = insertHelper(root_, input_pair.first, input_pair.second);
+				return ft::make_pair(node, true);
 			};
 
 			// remove node from tree.
@@ -266,13 +271,20 @@ namespace ft
 			{
 				if (node == 0)
 					return new Node<Key, Value>(key, value);
-				if (key < node->key)
-					node->left = insertHelper(node->left, key, value);
-				else if (node->key < key)
-					node->right = insertHelper(node->right, key, value);
-				else
+				if (key == node->key)
+				{
 					node->value = value;
-				return node;
+					return node;
+				}
+				if (key < node->key)
+				{
+					if (node->left == 0)
+						return new Node<Key, Value> (key, value);
+					return insertHelper(node->left, key, value);
+				}
+				if (node->right == 0)
+						return new Node<Key, Value> (key, value);
+					return insertHelper(node->right, key, value);
 			};
 
 			// a function that searches a specific node and returns it
