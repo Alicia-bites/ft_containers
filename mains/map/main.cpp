@@ -11,9 +11,9 @@
 #include <map>
 
 #ifndef STD
-// # define NAMESPACE ft
+# define NAMESPACE ft
 // #else
-# define NAMESPACE std
+// # define NAMESPACE std
 #endif
 
 using namespace NAMESPACE;
@@ -99,7 +99,7 @@ int	main(int argc, char **argv)
 			map<int, std::string> mappy;
 			pair<map<int, std::string>::iterator, bool> res;
 
-			res = mappy.insert(make_pair(1, "one"));
+			res = mappy.insert(make_pair(7, "first"));
 			if (res.second == true)
 				std::cout << "Inserted " << res.first->second << " into the map with key "
 					<< res.first->first << std::endl;
@@ -107,7 +107,7 @@ int	main(int argc, char **argv)
 				std::cout << "Key " << res.first->first << " already has the value "
 					<< res.first->second << " in the map" << std::endl;
 
-			res = mappy.insert(make_pair(1, "two"));
+			res = mappy.insert(make_pair(7, "error"));
 			if (res.second == true)
 				std::cout << "Inserted " << res.first->second << " into the map with key "
 					<< res.first->first << std::endl;
@@ -115,6 +115,31 @@ int	main(int argc, char **argv)
 				std::cout << "Key " << res.first->first << " already has the value "
 					<< res.first->second << " in the map" << std::endl;
 
+			res = mappy.insert(make_pair(4, "second"));
+			if (res.second == true)
+				std::cout << "Inserted " << res.first->second << " into the map with key "
+					<< res.first->first << std::endl;
+			else
+				std::cout << "Key " << res.first->first << " already has the value "
+					<< res.first->second << " in the map" << std::endl;
+
+			res = mappy.insert(make_pair(10, "third"));
+			if (res.second == true)
+				std::cout << "Inserted " << res.first->second << " into the map with key "
+					<< res.first->first << std::endl;
+			else
+				std::cout << "Key " << res.first->first << " already has the value "
+					<< res.first->second << " in the map" << std::endl;
+
+			res = mappy.insert(make_pair(15, "fourth"));
+			if (res.second == true)
+				std::cout << "Inserted " << res.first->second << " into the map with key "
+					<< res.first->first << std::endl;
+			else
+				std::cout << "Key " << res.first->first << " already has the value "
+					<< res.first->second << " in the map" << std::endl;
+
+			mappy.getTree().printTree(mappy.getTree().getRoot());
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
 			<< std::endl << RESET;
@@ -136,10 +161,10 @@ int	main(int argc, char **argv)
 			std::cout << it1->first << std::endl;
 			std::cout << it1->second << std::endl << std::endl;
 
-			map<int, int>::iterator it2 = bob.end();
-			std::cout << "end / " << std::endl;
-			std::cout << it2->first << std::endl;
-			std::cout << it2->second << std::endl << std::endl;
+			// map<int, int>::iterator it2 = bob.end();
+			// std::cout << "end / " << std::endl;
+			// std::cout << it2->first << std::endl;
+			// std::cout << it2->second << std::endl << std::endl;
 
 
 			// map<int, int>::iterator it2 = bob.end();
