@@ -139,7 +139,10 @@ namespace ft
 //	DESTRUCTORS --------------------------------------------------------------------------------------
 
 			~BinarySearchTree()
-			{}
+			{
+				std::cout << MAGENTA3 << "Calling BinarySearchTree destructor" << std::endl;
+				deleteTree(root_);
+			}
 
 //	MEMBER FUNCTIONS ---------------------------------------------------------------------------------
 
@@ -220,6 +223,17 @@ namespace ft
 					}
 				}
 				return root;
+			}
+
+			void deleteTree(node_ptr node)
+			{
+				if (node == NULL) return;
+			
+				deleteTree(node->left);
+				deleteTree(node->right);
+			
+				std::cout << MEDIUMORCHID3 << "Deleting node: " << node->value << RESET << std::endl;
+				delete node;
 			}
 //		GETTERS --------------------------------------------------------------------------------------
 

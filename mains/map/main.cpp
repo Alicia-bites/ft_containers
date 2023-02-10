@@ -177,10 +177,13 @@ int	main(int argc, char **argv)
 		if (test_number == 4)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing default constructor" 
+			std::cout << STEELBLUE3 << "Trying to get rid of leaks" 
 				<< RESET << std::endl << std::endl;
 
-
+			map<int, int> bob;
+			pair<map<int, int>::iterator, bool> res;
+			
+			res = bob.insert(make_pair(3, 4981));
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"

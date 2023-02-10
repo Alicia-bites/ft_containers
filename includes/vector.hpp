@@ -183,8 +183,6 @@ namespace ft
 				, allocator_(original.allocator_)
 				{
 
-					// std::cout << OLIVE << "Calling copy constructor." 
-					// 		<< std::endl << RESET;
 					if (original.capacity_)
 						array_ = allocator_.allocate(original.size_);
 					for (size_type i = 0; i < original.size_; i++)
@@ -197,23 +195,13 @@ namespace ft
 	//		DESTRUCTORS --------------------------------------------------------------------------------------
 			~vector()
 			{
-				// std::cout << OLIVE << "Calling destructor." 
-				// 	<< std::endl << RESET;
-
-				// std::cout << DODGERBLUE2 << "-----------------------------------------------------------------------------" << std::endl;
-				// std::cout << "vector size is " << size_ << std::endl;
-				// std::cout << "vector capacity is " << capacity_ << std::endl;
-				// for (size_t i = 0; i < size_; i++)
-					// std::cout << this[i] << " | ";
-				// std::cout << std::endl;
-				// std::cout << DODGERBLUE2 << "-----------------------------------------------------------------------------" << RESET << std::endl;
-
 				if (capacity_ == 0)
 					return ;
 				for (size_type i = 0; i < size_; i++)
 					allocator_.destroy(array_ + i);
 
 				allocator_.deallocate(array_, capacity_);
+				// array_ = 0; // to make sure array_ is set to 0 because deallocate does not guaranty it.
 			};
 
 //	MEMBER FUNCTIONS ---------------------------------------------------------------------------------
@@ -234,7 +222,7 @@ namespace ft
 			vector<T,Allocator>& operator=(const vector<T,Allocator> & src)
 			{
 				if (this == &src)
-					return (*this);
+					return *this;
 
 				if (capacity_ > src.size_)
 				{

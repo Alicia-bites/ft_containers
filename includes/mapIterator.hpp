@@ -41,20 +41,36 @@ namespace ft
 
                 // constructor
                 mapIterator(node_ptr input_node)
-                :node_(input_node)
+                : node_(input_node)
                 {
+                    std::cout << PALETURQUOISE1 << "Calling mapIterator constructor " << RESET << std::endl;
+
                     pointer_ = allocator_.allocate(1);
                     allocator_.construct(pointer_, ft::make_pair(node_->key, node_->value));
                 };
 
                 // copy constructor
-                mapIterator(const mapIterator<Key, Value> & src)
-                : pointer_(src.getPointer())
-                {};
+                mapIterator(const mapIterator<Key, Value, Allocator> & original)
+                : node_(original.node_)
+                , allocator_(original.allocator_)
+                {
+                    std::cout << PALETURQUOISE1 << "Calling mapIterator copy constructor" << RESET << std::endl;
+
+                    pointer_ = allocator_.allocate(1);
+                    allocator_.construct(pointer_, ft::make_pair(node_->key, node_->value));
+                };
 
                 // destructor
                 ~mapIterator(void)
-                {};
+                {
+                    // std::cout << PALETURQUOISE1 << "Calling mapIterator destructor" << RESET << std::endl;
+                    if (pointer_)
+                    {
+                        allocator_.destroy(pointer_);
+                        allocator_.deallocate(pointer_, 1);
+                        pointer_ = 0;
+                    }
+                };
 
                 pointer base() const
                 {
@@ -73,7 +89,14 @@ namespace ft
                 // assignement operator
                 mapIterator<Key, Value>&    operator=(const mapIterator<Key, Value> & rhs)
                 {
-                    pointer_ = rhs.getPointer();
+                    std::cout << SEAGREEN3 << "Calling assignement operator" << RESET << std::endl;
+                    if (this == &rhs)
+                        return *this;
+                    node_ = rhs.node_;
+                    allocator_ = rhs.allocator_;
+                    this->~mapIterator();
+                    pointer_ = allocator_.allocate(1);
+                    allocator_.construct(pointer_, ft::make_pair(node_->key, node_->value));
                     return *this;
                 };
 
