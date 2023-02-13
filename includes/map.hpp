@@ -177,7 +177,7 @@ namespace ft
 				tree_[x];
 			};
 
-			RBTree	getTree() const
+			RBTree &	getTree()
 			{
 				return tree_;
 			}
@@ -216,7 +216,7 @@ namespace ft
 			{
 				return tree_.remove(input_key);
 			};
-			
+
 			// void	erase(iterator first, iterator last);
 			// void	swap(map<Key,T,Compare,Allocator>&);
 			// void	clear();
