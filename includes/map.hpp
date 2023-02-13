@@ -198,8 +198,25 @@ namespace ft
 			// iterator	insert(iterator position, const value_type& x);
 			// template <class InputIterator>
 			// 	void 	insert(InputIterator first, InputIterator last);
-			// void	erase(iterator position);
-			// size_type	erase(const key_type& x);
+
+			// Removes from the map container either a single element or a range of
+			// elements ([first,last)).
+			// This effectively reduces the container size by the number of elements
+			// removed, which are destroyed.
+			void	erase(iterator position)
+			{
+				tree_.remove(position.first);
+			};
+
+			// Removes from the map container either a single element or a range of
+			// elements ([first,last)).
+			// This effectively reduces the container size by the number of elements
+			// removed, which are destroyed.
+			size_type	erase(const key_type& input_key)
+			{
+				return tree_.remove(input_key);
+			};
+			
 			// void	erase(iterator first, iterator last);
 			// void	swap(map<Key,T,Compare,Allocator>&);
 			// void	clear();

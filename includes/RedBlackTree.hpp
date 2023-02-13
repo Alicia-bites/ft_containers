@@ -182,7 +182,6 @@ namespace ft
 				{
 					copy = nodeAllocator_.allocate(1);
 					nodeAllocator_.construct(copy, *original);
-					// copy = new Node<Key, Value>(original->key, original->value);
 					copyTree(copy->left, original->left);
 					copyTree(copy->right, original->right);
 				}

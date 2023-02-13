@@ -114,7 +114,7 @@ int	main(int argc, char **argv)
 			else
 				std::cout << "Key " << res.first->first << " already has the value "
 					<< res.first->second << " in the map" << std::endl;
-
+			
 			res = mappy.insert(make_pair(4, "second"));
 			if (res.second == true)
 				std::cout << "Inserted " << res.first->second << " into the map with key "
@@ -140,8 +140,18 @@ int	main(int argc, char **argv)
 					<< res.first->second << " in the map" << std::endl;
 			
 			std::cout << std::endl << std::endl;
-			std::cout << DODGERBLUE2 << "PRINTING TREE : " << RESET 	<< std::endl;
+			std::cout << DODGERBLUE2 << "PRINTING TREE : " << RESET << std::endl;
 			mappy.getTree().printTree(mappy.getTree().getRoot());
+
+			std::cout << "Testing copy constructor" << std::endl;
+			map<int, std::string> coppy(mappy);
+			
+			std::cout << std::endl << std::endl;
+			std::cout << DODGERBLUE2 << "PRINTING TREE : " << RESET << std::endl;
+			mappy.getTree().printTree(mappy.getTree().getRoot());
+
+			std::cout << "Removing one node : " << std::endl;
+			mappy.
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
 			<< std::endl << RESET;
