@@ -1,6 +1,6 @@
 #include "../../includes/map.hpp"
 #include "../../includes/pair.hpp"
-#include "../../includes/RBTree.hpp"
+#include "../../includes/RedBlackTree.hpp"
 #include "../../includes/BST.hpp"
 #include "../../colors/colors.hpp"
 
@@ -138,7 +138,9 @@ int	main(int argc, char **argv)
 			else
 				std::cout << "Key " << res.first->first << " already has the value "
 					<< res.first->second << " in the map" << std::endl;
-
+			
+			std::cout << std::endl << std::endl;
+			std::cout << DODGERBLUE2 << "PRINTING TREE : " << RESET 	<< std::endl;
 			mappy.getTree().printTree(mappy.getTree().getRoot());
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
@@ -180,10 +182,10 @@ int	main(int argc, char **argv)
 			std::cout << STEELBLUE3 << "Trying to get rid of leaks" 
 				<< RESET << std::endl << std::endl;
 
-			map<int, int> bob;
-			pair<map<int, int>::iterator, bool> res;
-			
-			res = bob.insert(make_pair(3, 4981));
+			// map<int, int> bob;
+			// pair<map<int, int>::iterator, bool> res;
+			// 
+			// res = bob.insert(make_pair(3, 4981));
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
@@ -193,10 +195,13 @@ int	main(int argc, char **argv)
 		if (test_number == 5)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing default constructor" 
+			std::cout << STEELBLUE3 << "Testing RedBlackTree insert node function" 
 				<< RESET << std::endl << std::endl;
 
+			map<int, int> ray;
+			pair<map<int, int>::iterator, bool> res;
 
+			res = ray.insert(make_pair(6, 999));
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
