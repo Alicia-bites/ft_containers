@@ -14,8 +14,8 @@
 #include "mapIterator.hpp"
 
 
-// #include "RBTree.hpp"
-#include "BST.hpp"
+#include "RedBlackTree.hpp"
+// #include "BST.hpp"
 
 namespace ft
 {
@@ -60,14 +60,13 @@ namespace ft
 
 		private :
 			// typedef RBTree<key_type, value_type, std::_Select1st<value_type>, key_compare, allocator_type>    RBTree;
-
-			// RBTree    tree;
+			typedef RedBlackTree<key_type, mapped_type, key_compare, Allocator>	RBTree;	
+			RBTree    tree_;
 
 			typedef BinarySearchTree<key_type, mapped_type>			BST;
+			// BST	tree_;
 
 			ft::Node<Key, Value> *node_ptr;
-
-			BST	tree_;
 
 //	CONSTRUCTORS ----------------------------------------------------------------------------
 
@@ -178,7 +177,7 @@ namespace ft
 				tree_[x];
 			};
 
-			BST	getTree() const
+			RBTree	getTree() const
 			{
 				return tree_;
 			}
