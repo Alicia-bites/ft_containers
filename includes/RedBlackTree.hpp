@@ -222,7 +222,7 @@ namespace ft
 					if (node->left == 0)
 					{
 						node->left = new Node<Key, Value> (key, value);
-						node->parent = node;
+						node->left->parent = node;
 						return node->left;
 					}
 					return insertHelper(node->left, key, value);
@@ -230,7 +230,7 @@ namespace ft
 				if (node->right == 0)
 				{
 					node->right = new Node<Key, Value> (key, value);
-					node->parent = node;
+					node->right->parent = node;
 					return node->right;
 				}
 				return insertHelper(node->right, key, value);
