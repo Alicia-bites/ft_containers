@@ -115,43 +115,60 @@ namespace ft
 				return ft::make_pair(node, true);
 			};
 
+			size_t	remove(const key_type & key)
+			{
+				size_t n = 0;
+				node_ptr node = findNode(root_, key);
+				while (findNode(node, key))
+				{
+					removeHelper(root_, key);
+					n++;
+				}
+				return n;
+			}
+
 			// remove node from tree.
 			// !! when calling function, always set first parameter to tree.getroot()
 			// second parameter should be the key of the item you want to remove.
-			node_ptr remove(node_ptr root, int key)
+			node_ptr removeHelper(node_ptr node, int key)
 			{
-				if (root == NULL)
-					return root;
-				if (key < root->key)
-					root->left = remove(root->left, key);
-				else if (key > root->key)
-					root->right = remove(root->right, key);
+				if (node == NULL)
+					return node;
+				if (key < node->key)
+					node->left = removeHelper(node->left, key);
+				else if (key > node->key)
+					node->right = removeHelper(node->right, key);
 				else 
 				{
-					if (root->left == NULL)
+					if (node->left == NULL)
 					{
-						node_ptr tmp = root->right;
-						delete root;
+						node_ptr tmp = node->right;
+						if (tmp)
+							tmp->parent = node->parent;
+						delete node;
 						return tmp;
 					}
-					else if (root->right == NULL)
+					else if (node->right == NULL)
 					{
-						node_ptr tmp = root->left;
-						delete root;
+						node_ptr tmp = node->left;
+						if (tmp)
+							tmp->parent = node->parent;
+						delete node;
 						return tmp;
 					} 
 					else
 					{
-						node_ptr tmp = root->right;
+						node_ptr tmp = node->right;
 						while (tmp->left)
 							tmp = tmp->left;
-						root->key = tmp->key;
-						root->value = tmp->value;
-						root->right = remove(root->right, tmp->key);
+						node->key = tmp->key;
+						node->value = tmp->value;
+						node->right = removeHelper(node->right, tmp->key);
 					}
 				}
-				return root;
+				return node;
 			}
+
 
 			void deleteTree(node_ptr node)
 			{
