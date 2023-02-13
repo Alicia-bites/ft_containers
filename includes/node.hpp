@@ -79,9 +79,8 @@ namespace ft
 				<< rhs.left->key
 				<< std::endl
 				<< "left->value = "
-				<< rhs.left->key
+				<< rhs.left->value
 				<< std::endl
-
 				<< "color = "
 				<< rhs.color
 				<< RESET
@@ -93,7 +92,7 @@ namespace ft
 			<< rhs.right->key
 			<< std::endl
 			<< "right->value = "
-			<< rhs.right->key
+			<< rhs.right->value
 			<< std::endl
 			<< "color = "
 			<< rhs.color
@@ -102,11 +101,11 @@ namespace ft
 		}
 		if (rhs.parent)
 		{
-			o << DEEPPINK1 << "right->key = "
+			o << DEEPPINK1 << "parent->key = "
 			<< rhs.parent->key
 			<< std::endl
-			<< "right->value = "
-			<< rhs.parent->key
+			<< "parent->value = "
+			<< rhs.parent->value
 			<< std::endl
 			<< "color = "
 			<< rhs.color
