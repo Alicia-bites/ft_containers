@@ -65,7 +65,10 @@ namespace ft
 //	DESTRUCTORS --------------------------------------------------------------------------------------
 
 			~RedBlackTree()
-			{}
+			{
+				std::cout << MAGENTA3 << "Calling RedBlackTree destructor" << std::endl;
+				deleteTree(root_);
+			}
 
 //	MEMBER FUNCTIONS ---------------------------------------------------------------------------------
 
@@ -83,13 +86,13 @@ namespace ft
 			};
 
 			// print all the keys and values of the tree.
-			void	printTree(node_ptr root)
+			void	printTree(node_ptr node)
 			{
-				if (root != NULL)
+				if (node != NULL)
 				{
-					printTree(root->left);
-					std::cout << "key = " << root->key << " | value = " << root->value << std::endl;
-					printTree(root->right);
+					printTree(node->left);
+					std::cout << *node << std::endl;
+					printTree(node->right);
 				}
 			};
 
@@ -104,11 +107,12 @@ namespace ft
 				
 				if (node)
 					return ft::make_pair(node, false);
+				node = insertHelper(root_, input_pair.first, input_pair.second);
+				if (!root_)
+					root_ = node;
 
-				root_ = insertHelper(root_, input_pair.first, input_pair.second);
-				// fixViolation(root_, )
-
-				return ft::make_pair(root_, true);
+				// fixViolation(root_);
+				return ft::make_pair(node, true);
 			};
 
 			// remove node from tree.
@@ -148,6 +152,18 @@ namespace ft
 				}
 				return root;
 			}
+
+			void deleteTree(node_ptr node)
+			{
+				if (node == NULL) return;
+			
+				deleteTree(node->left);
+				deleteTree(node->right);
+			
+				std::cout << MEDIUMORCHID3 << "Deleting node: " << node->value << RESET << std::endl;
+				delete node;
+			}
+
 //		GETTERS --------------------------------------------------------------------------------------
 
 			// return a pointer to root node
@@ -204,12 +220,20 @@ namespace ft
 				if (key < node->key)
 				{
 					if (node->left == 0)
-						return new Node<Key, Value> (key, value);
+					{
+						node->left = new Node<Key, Value> (key, value);
+						node->parent = node;
+						return node->left;
+					}
 					return insertHelper(node->left, key, value);
 				}
 				if (node->right == 0)
-						return new Node<Key, Value> (key, value);
-					return insertHelper(node->right, key, value);
+				{
+					node->right = new Node<Key, Value> (key, value);
+					node->parent = node;
+					return node->right;
+				}
+				return insertHelper(node->right, key, value);
 			};
 
 			// a function that searches a specific node and returns it
