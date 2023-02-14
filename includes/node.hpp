@@ -68,10 +68,22 @@ namespace ft
 			<< std::endl
 			<< "value = "
 			<< rhs.value
-			<< std::endl
-			<< "color = "
-			<< rhs.color
-			<< RESET
+			<< std::endl;
+			if (rhs.color == RED)
+			{
+				o << "color = "
+				<< RED1
+				<< "RED"
+				<< RESET;
+			}
+			else
+			{
+				o << "color = "
+				<< ROSYBROWN
+				<< "BLACK"
+				<< RESET;
+			}
+			o << RESET
 			<< std::endl;
 		if (rhs.left)
 		{
@@ -80,10 +92,22 @@ namespace ft
 				<< std::endl
 				<< "left->value = "
 				<< rhs.left->value
-				<< std::endl
-				<< "color = "
-				<< rhs.color
-				<< RESET
+				<< std::endl;
+				if (rhs.color == RED)
+				{
+					o << "color = "
+					<< RED1
+					<< "RED"
+					<< RESET;
+				}
+				else
+				{
+					o << "color = "
+					<< ROSYBROWN
+					<< "BLACK"
+					<< RESET;
+				}
+				o << RESET
 				<< std::endl;
 		}
 		if (rhs.right)
@@ -93,10 +117,22 @@ namespace ft
 			<< std::endl
 			<< "right->value = "
 			<< rhs.right->value
-			<< std::endl
-			<< "color = "
-			<< rhs.color
-			<< RESET
+			<< std::endl;
+			if (rhs.color == RED)
+			{
+				o << "color = "
+				<< RED1
+				<< "RED"
+				<< RESET;
+			}
+			else
+			{
+				o << "color = "
+				<< ROSYBROWN
+				<< "BLACK"
+				<< RESET;
+			}
+			o << RESET
 			<< std::endl;
 		}
 		if (rhs.parent)
@@ -106,10 +142,22 @@ namespace ft
 			<< std::endl
 			<< "parent->value = "
 			<< rhs.parent->value
-			<< std::endl
-			<< "color = "
-			<< rhs.color
-			<< RESET
+			<< std::endl;
+			if (rhs.color == RED)
+			{
+				o << "color = "
+				<< RED1
+				<< "RED"
+				<< RESET;
+			}
+			else
+			{
+				o << "color = "
+				<< ROSYBROWN
+				<< "BLACK"
+				<< RESET;
+			}
+			o << RESET
 			<< std::endl;
 		}
 
