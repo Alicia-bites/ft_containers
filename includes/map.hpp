@@ -125,9 +125,10 @@ namespace ft
 				return iterator(tree_.getRoot());
 			};
 
-			// iterator	end()
-			// {
-			// };
+			iterator	end()
+			{
+				return (iterator(tree_.))
+			};
 
 			// const_iterator	end() const
 			// {
