@@ -77,17 +77,14 @@ void RedBlackTree<Key, Value>::fixViolation(node_ptr root, node_ptr pt)
     node_ptr parent_pt = NULL;
     node_ptr grand_parent_pt = NULL;
 
-    while ((pt != root) && (pt->color != BLACK) &&
-           (pt->parent->color == RED))
+    while ((pt != root) && (pt->color != BLACK) && (pt->parent->color == RED))
     {
-
         parent_pt = pt->parent;
         grand_parent_pt = pt->parent->parent;
 
         if (parent_pt == grand_parent_pt->left)
         {
-
-            node_ptr uncle_pt = grand_parent_pt->right;
+`            node_ptr uncle_pt = grand_parent_pt->right;
 
             if (uncle_pt != NULL && uncle_pt->color == RED)
             {
@@ -99,7 +96,7 @@ void RedBlackTree<Key, Value>::fixViolation(node_ptr root, node_ptr pt)
 
             else
             {
-                if (pt == parent_right)
+                if (pt == parent_pt->right)
 				{
 					rotateLeft(root, parent_pt);
 					pt = parent_pt;
@@ -108,6 +105,7 @@ void RedBlackTree<Key, Value>::fixViolation(node_ptr root, node_ptr pt)
 				parent_pt->color = BLACK;
 				grand_parent_pt->color = RED;
 				rotateRight(root, grand_parent_pt);
+            }
         }
         else
         {
@@ -134,10 +132,9 @@ void RedBlackTree<Key, Value>::fixViolation(node_ptr root, node_ptr pt)
                 rotateLeft(root, grand_parent_pt);
             }
         }
-    }
+     }
     root->color = BLACK;
-}
-}
+ }
 
 template <typename Key, typename Value>
 void RedBlackTree<Key, Value>::insert(const int &key)

@@ -6,6 +6,8 @@
 #include "node.hpp"
 #include "../colors/colors.hpp"
 
+// #define RED 0
+// #define BLACK 1
 // #1 A node is eather RED or BLACK
 
 // #2 The root and leaves are BLACK
@@ -108,12 +110,51 @@ namespace ft
 				if (node)
 					return ft::make_pair(node, false);
 				node = insertHelper(root_, input_pair.first, input_pair.second);
+				node->color = RED;
 				if (!root_)
 					root_ = node;
 
-				// fixViolation(root_);
+				fixViolation(node);
 				return ft::make_pair(node, true);
 			};
+
+			void	fixViolation(node_ptr node)
+			{
+				node_ptr	parent = NULL;
+				node_ptr	grand_parent = NULL;
+
+				while (node != root_ && node->color != BLACK && node->parent->color == RED)
+				{
+					parent = node->parent;
+					grand_parent = node->parent->parent;
+
+					if (parent == grand_parent->left) // grand_parent left child
+					{
+						node_ptr uncle = grand_parent->right;
+
+						if (uncle != NULL && uncle->color == RED) // case 1 --> node's uncle is red
+						{
+							grand_parent->color = RED;
+							parent->color = BLACK;
+							uncle->color = BLACK;
+							node = grand_parent; // we go up the tree to the root_ node
+						}
+					}
+					else
+					{
+						node_ptr uncle = grand_parent->left;
+
+						if (uncle != NULL && uncle->color == RED) // case 1 --> node's uncle is red
+						{
+							grand_parent->color = RED;
+							parent->color = BLACK;
+							uncle->color = BLACK;
+							node = grand_parent;
+						}
+					}
+				}
+				root_->color = BLACK; // case 0 --> root node is red (root_ must always be black)
+			}
 
 			size_t	remove(const key_type & key)
 			{
