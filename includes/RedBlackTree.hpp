@@ -111,7 +111,7 @@ namespace ft
 				node->color = RED;
 				if (!root_)
 					root_ = node;
-
+				size_++;
 				fixViolation(node);
 				return ft::make_pair(node, true);
 			};
@@ -250,6 +250,7 @@ namespace ft
 					root_ = removeHelper(root_, key);
 					n++;
 				}
+				size_ -= n;
 				return n;
 			}
 
@@ -315,6 +316,16 @@ namespace ft
 			{
 				return root_;
 			};
+
+			size_t		getSize() const
+			{
+				return size_;
+			}
+
+			node_ptr	getSmallestNode() const
+			{
+				while (node->key > node->)
+			}
 
 //		COPY TOOL --------------------------------------------------------------------------------------
 
