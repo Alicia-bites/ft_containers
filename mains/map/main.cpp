@@ -204,13 +204,18 @@ int	main(int argc, char **argv)
 		if (test_number == 4)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Trying to get rid of leaks" 
+			std::cout << STEELBLUE3 << "Building rotations" 
 				<< RESET << std::endl << std::endl;
 
-			// map<int, int> bob;
-			// pair<map<int, int>::iterator, bool> res;
-			// 
-			// res = bob.insert(make_pair(3, 4981));
+			map<int, int> june;
+			june.insert(make_pair(7, 777));
+			june.insert(make_pair(3, 333));
+			june.insert(make_pair(10, 101010));
+			june.insert(make_pair(5, 555));
+			// june.insert(make_pair(7, 777));
+
+
+			june.getTree().printTree(june.getTree().getRoot());
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"

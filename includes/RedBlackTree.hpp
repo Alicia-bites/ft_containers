@@ -147,7 +147,7 @@ namespace ft
 					node->parent->right = right_child; // N becomes G's right child
 				
 				right_child->left = node; // P becomes N's left child
-				node->parent = right_child // N becomes P's parent
+				node->parent = right_child; // N becomes P's parent
 			}
 
 			// rotate a node in the right direction.
@@ -165,7 +165,7 @@ namespace ft
 				left_child->parent = node->parent;
 			
 				if (node->parent == NULL)
-					root = left_child;
+					root_ = left_child;
 				else if (node == node->parent->left)
 					node->parent->left = left_child;
 				else
@@ -179,7 +179,7 @@ namespace ft
 			// #1 A node is eather RED or BLACK
 			// #2 The root and leaves are BLACK
 			// #3 If a node is RED, then its children are BLACK
-			// #4 All paths to a node's leaf descendant contains the same number of black nodes 
+			// #4 All paths to a node's leaf (=e.i NULL node) descendant contains the same number of black nodes 
 			void	fixViolation(node_ptr node)
 			{
 				node_ptr	parent = NULL;
