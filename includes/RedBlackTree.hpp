@@ -118,10 +118,9 @@ namespace ft
 			size_t	remove(const key_type & key)
 			{
 				size_t n = 0;
-				node_ptr node = findNode(root_, key);
-				while (findNode(node, key))
+				while (findNode(root_, key))
 				{
-					removeHelper(root_, key);
+					root_ = removeHelper(root_, key);
 					n++;
 				}
 				return n;
@@ -172,7 +171,8 @@ namespace ft
 
 			void deleteTree(node_ptr node)
 			{
-				if (node == NULL) return;
+				if (node == NULL)
+					return;
 			
 				deleteTree(node->left);
 				deleteTree(node->right);

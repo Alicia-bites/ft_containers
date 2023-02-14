@@ -11,9 +11,9 @@
 #include <map>
 
 #ifndef STD
-// # define NAMESPACE ft
+# define NAMESPACE ft
 // #else
-# define NAMESPACE std
+// # define NAMESPACE std
 #endif
 
 using namespace NAMESPACE;
@@ -141,28 +141,31 @@ int	main(int argc, char **argv)
 			
 			std::cout << std::endl << std::endl;
 			std::cout << DODGERBLUE2 << "PRINTING MAPPY : " << RESET << std::endl;
-			// mappy.getTree().printTree(mappy.getTree().getRoot());
+			mappy.getTree().printTree(mappy.getTree().getRoot());
 
 			std::cout << "Testing copy constructor" << std::endl;
 			map<int, std::string> coppy(mappy);
 			std::cout << DODGERBLUE2 << "PRINTING COPPY  : " << RESET << std::endl;
-			// mappy.getTree().printTree(coppy.getTree().getRoot());
+			mappy.getTree().printTree(coppy.getTree().getRoot());
 
 			std::cout << "Removing one node with key 10 " << std::endl;
 			size_t output = mappy.erase(10);
 			std::cout << "output = " << output << std::endl;
+			std::cout << "root_ is : " << *(mappy.getTree().getRoot()) << std::endl;
+
 
 			std::cout << "Removing one node with key 15 " << std::endl;
 			output = mappy.erase(15);
 			std::cout << "output = " << output << std::endl;
+			std::cout << "root_ is : " << *(mappy.getTree().getRoot()) << std::endl;
 
 			std::cout << "Removing one node with key 7 " << std::endl;
 			output = mappy.erase(7);
 			std::cout << "output = " << output << std::endl;
-			// std::cout << "root_ is : " << *(mappy.getTree().getRoot()) << std::endl;
+			std::cout << "root_ is : " << *(mappy.getTree().getRoot()) << std::endl;
 			std::cout << std::endl << std::endl;
 			std::cout << DODGERBLUE2 << "PRINTING MAPPY : " << RESET << std::endl;
-			// mappy.getTree().printTree(mappy.getTree().getRoot());
+			mappy.getTree().printTree(mappy.getTree().getRoot());
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
