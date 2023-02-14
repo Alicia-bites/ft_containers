@@ -6,8 +6,6 @@
 #include "node.hpp"
 #include "../colors/colors.hpp"
 
-// #define RED 0
-// #define BLACK 1
 // #1 A node is eather RED or BLACK
 
 // #2 The root and leaves are BLACK
@@ -118,6 +116,70 @@ namespace ft
 				return ft::make_pair(node, true);
 			};
 
+
+			/*         G                    G
+			          / \                  / \
+					 P   U      ->        N   U
+					/ \                  / \
+			       B   N                P   RC
+				      / \              / \
+					 LC  RC           B   LC
+			*/
+			// rotate a node in the left direction.
+			// the node's right child will take its place.
+			// node correspond to P.
+			void	rotateLeft(node_ptr node)
+			{
+				node_ptr right_child = node->right; // right_child is a copy of N
+
+				node->right = right_child->left; // LC becomes P's right child
+
+				if (node->right) // if LC exists
+					node->right->parent = node; // P becomes LC's parent
+				
+				right_child->parent = node->parent; // N's parent becomes G
+
+				if (node->parent == NULL) // if G is NULL
+					root_ = right_child; // then N needs to be root_
+				else if (node == node->parent->left) // if P is a left child
+					node->parent->left = right_child; // N becomes G's left's child
+				else // if P is a right child
+					node->parent->right = right_child; // N becomes G's right child
+				
+				right_child->left = node; // P becomes N's left child
+				node->parent = right_child // N becomes P's parent
+			}
+
+			// rotate a node in the right direction.
+			// the node's left child will take its place.
+			// if confused, see rotateLeft, rotateRIght is its mirror.
+			void	rotateRight(node_ptr node)
+			{
+				node_ptr left_child = node->left;
+
+				node->left = left_child->right;
+			
+				if (node->left != NULL)
+					node->left->parent = node;
+			
+				left_child->parent = node->parent;
+			
+				if (node->parent == NULL)
+					root = left_child;
+				else if (node == node->parent->left)
+					node->parent->left = left_child;
+				else
+					node->parent->right = left_child;
+			
+				left_child->right = node;
+				node->parent = left_child;
+			}
+
+			// rebalance the tree to respect to following rules ;
+			// #1 A node is eather RED or BLACK
+			// #2 The root and leaves are BLACK
+			// #3 If a node is RED, then its children are BLACK
+			// #4 All paths to a node's leaf descendant contains the same number of black nodes 
 			void	fixViolation(node_ptr node)
 			{
 				node_ptr	parent = NULL;
@@ -128,28 +190,52 @@ namespace ft
 					parent = node->parent;
 					grand_parent = node->parent->parent;
 
-					if (parent == grand_parent->left) // grand_parent left child
+					if (parent == grand_parent->left) // if parent is a left child
 					{
-						node_ptr uncle = grand_parent->right;
+						node_ptr uncle = grand_parent->right; // then the uncle is the right child
 
-						if (uncle != NULL && uncle->color == RED) // case 1 --> node's uncle is red
+						if (uncle != NULL && uncle->color == RED) // case 2 --> node's uncle is red
 						{
 							grand_parent->color = RED;
 							parent->color = BLACK;
 							uncle->color = BLACK;
 							node = grand_parent; // we go up the tree to the root_ node
 						}
+						else // case 3 --> node's uncle is black
+						{
+							if (node == parent->right) // if our node is a right child --> case 3.1 : triangle
+							{
+								rotateLeft(parent); // rotate in the opposite direction
+								node = parent; // we go up the tree 
+								parent = node->parent; // updating parent
+							}
+							parent->color = BLACK;
+							grand_parent->color = RED;
+							rotateRight(grand_parent);
+						}
 					}
-					else
+					else // if parent is a right child
 					{
 						node_ptr uncle = grand_parent->left;
 
-						if (uncle != NULL && uncle->color == RED) // case 1 --> node's uncle is red
+						if (uncle != NULL && uncle->color == RED) // case 2 --> node's uncle is red
 						{
 							grand_parent->color = RED;
 							parent->color = BLACK;
 							uncle->color = BLACK;
 							node = grand_parent;
+						}
+						else // case 3 --> node's uncle is black
+						{
+							if (node == parent->left) // if  our node is a left child --> case 3.1 : triangle
+							{
+								rotateRight(parent); // we rotate in the opposite direction
+								node = parent;
+								parent = node->parent;
+							}
+							parent->color = BLACK;
+							parent->color = RED;
+							rotateLeft(grand_parent);
 						}
 					}
 				}
