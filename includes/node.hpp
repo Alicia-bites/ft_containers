@@ -93,7 +93,7 @@ namespace ft
 				<< "left->value = "
 				<< rhs.left->value
 				<< std::endl;
-				if (rhs.color == RED)
+				if (rhs.left->color == RED)
 				{
 					o << "color = "
 					<< RED1
@@ -118,7 +118,7 @@ namespace ft
 			<< "right->value = "
 			<< rhs.right->value
 			<< std::endl;
-			if (rhs.color == RED)
+			if (rhs.right->color == RED)
 			{
 				o << "color = "
 				<< RED1
@@ -143,7 +143,7 @@ namespace ft
 			<< "parent->value = "
 			<< rhs.parent->value
 			<< std::endl;
-			if (rhs.color == RED)
+			if (rhs.parent->color == RED)
 			{
 				o << "color = "
 				<< RED1
