@@ -339,14 +339,6 @@ namespace ft
 			size_type							size_; // total number of nodes
 
 		private :		
-			
-			bool	KeyisTaken(const Key &key)
-			{
-				if (findNode(root_, key))
-					return 1;
-				else
-					return 0;
-			};
 
 			// recursive function, used to insert a new node
 			// from root_, find the next available place to create new Node
