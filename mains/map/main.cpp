@@ -208,13 +208,23 @@ int	main(int argc, char **argv)
 				<< RESET << std::endl << std::endl;
 
 			map<int, int> june;
-			june.insert(make_pair(7, 777));
-			june.insert(make_pair(3, 333));
-			june.insert(make_pair(10, 101010));
-			june.insert(make_pair(5, 555));
-			// june.insert(make_pair(7, 777));
-
-
+			june.insert(make_pair(8, 777));
+			june.insert(make_pair(4, 333));
+			june.insert(make_pair(12, 101010));
+			june.insert(make_pair(2, 555));
+			june.insert(make_pair(6, 888));
+			june.insert(make_pair(10, 888));
+			june.insert(make_pair(14, 888));
+			june.insert(make_pair(1, 888));
+			june.insert(make_pair(3, 888));
+			june.insert(make_pair(5, 888));
+			june.insert(make_pair(7, 888));
+			june.insert(make_pair(9, 888));
+			june.insert(make_pair(11, 888));
+			june.insert(make_pair(13, 888));
+			june.insert(make_pair(15, 888));
+			// june.insert(make_pair(5, 888));
+			
 			june.getTree().printTree(june.getTree().getRoot());
 
 			std::cout << std::endl << STEELBLUE2
