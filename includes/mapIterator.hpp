@@ -43,7 +43,7 @@ namespace ft
                 mapIterator(node_ptr input_node)
                 : node_(input_node)
                 {
-                    std::cout << PALETURQUOISE1 << "Calling mapIterator constructor " << RESET << std::endl;
+                    // std::cout << PALETURQUOISE1 << "Calling mapIterator constructor " << RESET << std::endl;
 
                     pointer_ = allocator_.allocate(1);
                     allocator_.construct(pointer_, ft::make_pair(node_->key, node_->value));
@@ -54,7 +54,7 @@ namespace ft
                 : node_(original.node_)
                 , allocator_(original.allocator_)
                 {
-                    std::cout << PALETURQUOISE1 << "Calling mapIterator copy constructor" << RESET << std::endl;
+                    // std::cout << PALETURQUOISE1 << "Calling mapIterator copy constructor" << RESET << std::endl;
 
                     pointer_ = allocator_.allocate(1);
                     allocator_.construct(pointer_, ft::make_pair(node_->key, node_->value));
@@ -89,7 +89,7 @@ namespace ft
                 // assignement operator
                 mapIterator<Key, Value>&    operator=(const mapIterator<Key, Value> & rhs)
                 {
-                    std::cout << SEAGREEN3 << "Calling assignement operator" << RESET << std::endl;
+                    // std::cout << SEAGREEN3 << "Calling assignement operator" << RESET << std::endl;
                     if (this == &rhs)
                         return *this;
                     node_ = rhs.node_;
