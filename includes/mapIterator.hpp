@@ -37,13 +37,19 @@ namespace ft
                 // default constructor
                 mapIterator()
                 : pointer_(0)
-                {};
+                {
+                    #if DEBUG
+                        std::cout << PALETURQUOISE1 << "Calling mapIterator default constructor" << RESET << std::endl;
+                    #endif
+                };
 
                 // constructor
                 mapIterator(node_ptr input_node)
                 : node_(input_node)
                 {
-                    // std::cout << PALETURQUOISE1 << "Calling mapIterator constructor " << RESET << std::endl;
+                    #if DEBUG
+                        std::cout << PALETURQUOISE1 << "Calling mapIterator constructor from node" << RESET << std::endl;
+                    #endif
 
                     pointer_ = allocator_.allocate(1);
                     allocator_.construct(pointer_, ft::make_pair(node_->key, node_->value));
@@ -54,7 +60,9 @@ namespace ft
                 : node_(original.node_)
                 , allocator_(original.allocator_)
                 {
-                    // std::cout << PALETURQUOISE1 << "Calling mapIterator copy constructor" << RESET << std::endl;
+                    # if DEBUG
+                        std::cout << PALETURQUOISE1 << "Calling mapIterator copy constructor" << RESET << std::endl;
+                    #endif
 
                     pointer_ = allocator_.allocate(1);
                     allocator_.construct(pointer_, ft::make_pair(node_->key, node_->value));
@@ -63,7 +71,10 @@ namespace ft
                 // destructor
                 ~mapIterator(void)
                 {
-                    // std::cout << PALETURQUOISE1 << "Calling mapIterator destructor" << RESET << std::endl;
+                    # if DEBUG
+                        std::cout << PALETURQUOISE1 << "Calling mapIterator destructor" << RESET << std::endl;
+                    #endif
+                    
                     if (pointer_)
                     {
                         allocator_.destroy(pointer_);
@@ -89,7 +100,10 @@ namespace ft
                 // assignement operator
                 mapIterator<Key, Value>&    operator=(const mapIterator<Key, Value> & rhs)
                 {
-                    // std::cout << SEAGREEN3 << "Calling assignement operator" << RESET << std::endl;
+                    # if DEBUG
+                        std::cout << SEAGREEN3 << "Calling assignement operator" << RESET << std::endl;
+                    # endif
+
                     if (this == &rhs)
                         return *this;
                     node_ = rhs.node_;

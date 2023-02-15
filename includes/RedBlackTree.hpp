@@ -58,6 +58,8 @@ namespace ft
 			: comp_(original.comp_)
 			, allocator_(original.allocator_)
 			{
+				#if DEBUG
+					std::cout << MAGENTA3 << "Callind RedBlackTree copy constructor" << RESET << std::endl;
 				if (this != &original)
 					copyTree(root_, original.root_);
 			};
@@ -66,7 +68,9 @@ namespace ft
 
 			~RedBlackTree()
 			{
-				// std::cout << MAGENTA3 << "Calling RedBlackTree destructor" << std::endl;
+				#if DEBUG
+					std::cout << MAGENTA3 << "Calling RedBlackTree destructor" << RESET << std::endl;
+				#endif
 				deleteTree(root_);
 			}
 
@@ -88,6 +92,9 @@ namespace ft
 			// print all the keys and values of the tree.
 			void	printTree(node_ptr node)
 			{
+				#if DEBUG
+					std::cout << MAGENTA3 << "Calling RedBlackTree assignement operator" << RESET << std::endl;
+				#endif
 				if (node != NULL)
 				{
 					printTree(node->left);
@@ -304,8 +311,10 @@ namespace ft
 			
 				deleteTree(node->left);
 				deleteTree(node->right);
-			
-				// std::cout << MEDIUMORCHID3 << "Deleting node: " << node->value << RESET << std::endl;
+				
+				#if DEBUG
+					std::cout << MEDIUMORCHID3 << "Deleting node: " << node->value << RESET << std::endl;
+				#endif
 				delete node;
 			}
 

@@ -74,7 +74,11 @@ namespace ft
 			// Constructs an empty container, with no elements.
 			explicit map(const Compare& comp = Compare(), const Allocator & allocator = Allocator())
 			: tree_(comp, allocator)
-			{};
+			{
+				#if DEBUG
+					std::cout << LIGHTSEAGREEN << "Calling map default constructor" << RESET << std::endl;
+				#endif
+			};
 
 			// Constructs a container with as many elements as the range [first,last),
 			// with each element constructed from its corresponding element in that range.
@@ -86,6 +90,10 @@ namespace ft
 				map(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Allocator & allocator = Allocator())
 				: tree_(comp, allocator)
 				{
+					#if DEBUG
+						std::cout << LIGHTSEAGREEN << "Calling map range constructor" << RESET << std::endl;
+					#endif
+
 					insert(first, last);
 				};
 			
@@ -93,14 +101,23 @@ namespace ft
 			// Constructs a container with a copy of each of the elements in x
 			map(const map<Key,Value,Compare,Allocator>& src)
 			: tree_(src.tree_)
-			{};
+			{
+				#if DEBUG
+					std::cout << LIGHTSEAGREEN << "Calling map copy constructor" << RESET << std::endl;
+				#endif
+			};
 
 
 //	DESTRUCTORS --------------------------------------------------------------------------------------
 
 			// This destroys all container elements, and deallocates all the storage capacity allocated by the map container using its allocator.
 			~map()
-			{};
+			{
+				#if DEBUG
+					std::cout << LIGHTSEAGREEN << "Calling map destructor" << RESET << std::endl;
+				#endif
+
+			};
 
 //	MEMBER FUNCTIONS ---------------------------------------------------------------------------------
 
@@ -108,6 +125,10 @@ namespace ft
 
 			map<Key,Value,Compare,Allocator> & operator=(const map<Key,Value,Compare,Allocator>& rhs)
 			{
+				#if DEBUG
+					std::cout << LIGHTSEAGREEN << "Calling map assignement operator" << RESET << std::endl;
+				#endif
+
                 if (this != &rhs)
                     this->tree_ = rhs.tree_;
                 return (*this);
