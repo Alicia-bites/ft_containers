@@ -322,9 +322,14 @@ namespace ft
 				return size_;
 			}
 
-			node_ptr	getSmallestNode() const
+			node_ptr	getSmallestNode(node_ptr node) const
 			{
-				while (node->key > node->)
+				while (node->left != NULL)
+				{
+					if (node->key > node->left->key)
+						node = node->left;
+				}
+				return node;
 			}
 
 //		COPY TOOL --------------------------------------------------------------------------------------
