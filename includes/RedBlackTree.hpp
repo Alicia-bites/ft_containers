@@ -66,7 +66,7 @@ namespace ft
 
 			~RedBlackTree()
 			{
-				std::cout << MAGENTA3 << "Calling RedBlackTree destructor" << std::endl;
+				// std::cout << MAGENTA3 << "Calling RedBlackTree destructor" << std::endl;
 				deleteTree(root_);
 			}
 
@@ -305,7 +305,7 @@ namespace ft
 				deleteTree(node->left);
 				deleteTree(node->right);
 			
-				std::cout << MEDIUMORCHID3 << "Deleting node: " << node->value << RESET << std::endl;
+				// std::cout << MEDIUMORCHID3 << "Deleting node: " << node->value << RESET << std::endl;
 				delete node;
 			}
 
@@ -328,6 +328,16 @@ namespace ft
 				{
 					if (node->key > node->left->key)
 						node = node->left;
+				}
+				return node;
+			}
+
+			node_ptr	getBiggestNode(node_ptr node) const
+			{
+				while (node->right != NULL)
+				{
+					if (node->key < node->right->key)
+						node = node->right;
 				}
 				return node;
 			}
