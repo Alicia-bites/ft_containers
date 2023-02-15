@@ -25,31 +25,27 @@ namespace ft
 
 			// copy constructor
 			vectorIterator(const vectorIterator<typename remove_cv<value_type>::type> & src)
-			: pointer_(src.getPointer())
+			: pointer_(src.base())
 			{};
 
 			// destructor
 			~vectorIterator(void)
 			{};
 
+// GETTERS ---------------------------------------------------------------------------------------------
+				
 			pointer base() const
 			{
 				return pointer_;
 			}
 
-// GETTERS ---------------------------------------------------------------------------------------------
-				
-			pointer getPointer(void) const 
-			{
-				return (pointer_);
-			}
 
 // OPERATOR OVERLOADS ---------------------------------------------------------------------------------------------
 				
 			// assignement operator
 			vectorIterator<T>&    operator=(const vectorIterator<typename remove_cv<value_type>::type> & rhs)
 			{
-				pointer_ = rhs.getPointer();
+				pointer_ = rhs.base();
 				return *this;
 			};
 
@@ -151,7 +147,7 @@ namespace ft
 	template <typename T>
 		std::ostream &  operator<<(std::ostream & o, const vectorIterator<T> & gandalf)
 		{
-			o << gandalf.getPointer();
+			o << gandalf.base();
 			return (o);
 		};
 
@@ -160,19 +156,19 @@ namespace ft
 	template <typename T>
 		vectorIterator<T> operator+(typename vectorIterator<T>::difference_type x, const vectorIterator<T> & y)
 		{
-			return x + y.getPointer();
+			return x + y.base();
 		};
 
 	template <typename T>
 		typename vectorIterator<T>::difference_type operator-(const vectorIterator<T>& x, const vectorIterator<T> & y)
 		{
-			return x.getPointer() - y.getPointer();
+			return x.base() - y.base();
 		};
 
 	template <typename T, typename U>
 		typename vectorIterator<T>::difference_type operator-(const vectorIterator<T>& gandalf, const vectorIterator<U>& sauron)
 		{
-			return (gandalf.getPointer() - sauron.getPointer());
+			return (gandalf.base() - sauron.base());
 		}
 
 	// RELATIONNAL OPERATOR OVERLOADS ---------------------------------------------------------------------------------------------
@@ -180,73 +176,73 @@ namespace ft
 	template <typename T>
 		bool	operator==(const vectorIterator<T> & gandalf, const vectorIterator<T> & sauron)
 		{
-			return gandalf.getPointer() == sauron.getPointer();
+			return gandalf.base() == sauron.base();
 		};
 
 	template <typename T>
 		bool	operator!=(const vectorIterator<T> & gandalf, const vectorIterator<T> & sauron)
 		{
-			return gandalf.getPointer() != sauron.getPointer();
+			return gandalf.base() != sauron.base();
 		};
 
 	template <typename T>
 		bool operator<(const vectorIterator<T> & gandalf, const vectorIterator<T> & sauron)
 		{
-			return gandalf.getPointer() < sauron.getPointer();
+			return gandalf.base() < sauron.base();
 		};
 
 	template <typename T>	
 		bool operator>(const vectorIterator<T> & gandalf, const vectorIterator<T>& sauron)
 		{
-			return gandalf.getPointer() > sauron.getPointer();
+			return gandalf.base() > sauron.base();
 		};
 
 	template <typename T>
 		bool operator<=(const vectorIterator<T> & gandalf, const vectorIterator<T>& sauron)
 		{
-			return gandalf.getPointer() <= sauron.getPointer();
+			return gandalf.base() <= sauron.base();
 		};
 	
 	template <typename T>
 		bool operator>=(const vectorIterator<T> & gandalf, const vectorIterator<T>& sauron)
 		{
-			return gandalf.getPointer() >= sauron.getPointer();
+			return gandalf.base() >= sauron.base();
 		};
 
 	template <class T, class U>
 		bool operator==(const vectorIterator<T> & gandalf, const vectorIterator<U> & sauron)
 		{
-			return gandalf.getPointer() == sauron.getPointer();
+			return gandalf.base() == sauron.base();
 		}
 	
 	template <class T, class U>
 		bool operator!=(const vectorIterator<T> & gandalf, const vectorIterator<U> & sauron)
 		{
-			return gandalf.getPointer() != sauron.getPointer();
+			return gandalf.base() != sauron.base();
 		}
 	
 	template <class T, class U>
 		bool operator<(const vectorIterator<T> & gandalf, const vectorIterator<U> & sauron)
 		{
-			return gandalf.getPointer() < sauron.getPointer();
+			return gandalf.base() < sauron.base();
 		}
 	
 	template <class T, class U>
 		bool operator>(const vectorIterator<T> & gandalf, const vectorIterator<U> & sauron)
 		{
-			return gandalf.getPointer() > sauron.getPointer();
+			return gandalf.base() > sauron.base();
 		}
 	
 	template <class T, class U>
 		bool operator<=(const vectorIterator<T> & gandalf, const vectorIterator<U> & sauron)
 		{
-			return gandalf.getPointer() <= sauron.getPointer();
+			return gandalf.base() <= sauron.base();
 		}
 	
 	template <class T, class U>
 		bool operator>=(const vectorIterator<T> & gandalf, const vectorIterator<U> & sauron)
 		{
-			return gandalf.getPointer() >= sauron.getPointer();
+			return gandalf.base() >= sauron.base();
 		}
 
 }
