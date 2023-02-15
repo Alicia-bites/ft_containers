@@ -51,8 +51,9 @@ namespace ft
                         std::cout << PALETURQUOISE1 << "Calling mapIterator constructor from node" << RESET << std::endl;
                     #endif
 
+                    // *pointer_ = ft::make_pair(node_->key, node_->value);
                     pointer_ = allocator_.allocate(1);
-                    allocator_.construct(pointer_, ft::pair<Key, Value>(node_->key, node_->value));
+                    allocator_.construct(pointer_, ft::make_pair(node_->key, node_->value));
                 };
 
                 // copy constructor
@@ -65,7 +66,7 @@ namespace ft
                     #endif
 
                     pointer_ = allocator_.allocate(1);
-                    allocator_.construct(pointer_, ft::pair<Key, Value>(node_->key, node_->value));
+                    allocator_.construct(pointer_, ft::make_pair(node_->key, node_->value));
                 };
 
                 // destructor
@@ -107,7 +108,7 @@ namespace ft
                     allocator_ = rhs.allocator_;
                     this->~mapIterator();
                     pointer_ = allocator_.allocate(1);
-                    allocator_.construct(pointer_, ft::pair<Key, Value>(node_->key, node_->value));
+                    allocator_.construct(pointer_, ft::make_pair(node_->key, node_->value));
                     return *this;
                 };
 
@@ -157,6 +158,8 @@ namespace ft
                         if (node_->right != parent)
                             node_ = parent;
                     }
+                    // allocator_.destroy(pointer_);
+                    // allocator_.construct(pointer_, ft::make_pair(node_->key, node_->value));
                     return *this;
                 };
 
@@ -164,7 +167,25 @@ namespace ft
                 // state. (--i)
                 mapIterator<Key, Value> &	operator--(void)
                 {
-                    pointer_--;
+                    if (node_->left)
+                    {
+                        node_ = node_->left;
+                        while (node_->right)
+                            node_ = node_->right;
+                    }
+                    else
+                    {
+                        node_ptr parent = node_->parent;
+                        while (node_ == parent->left)
+                        {
+                            node_ = parent;
+                            parent = parent->parent;
+                        }
+                        if (node_->left != parent)
+                            node_ = parent;
+                    }
+                    allocator_.destroy(pointer_);
+                    allocator_.construct(pointer_, ft::make_pair(node_->key, node_->value));
                     return *this;
                 };
 
@@ -198,7 +219,25 @@ namespace ft
                 mapIterator<Key, Value>	operator--(int)
                 {
                     mapIterator<Key, Value> tmp(*this);
-                    pointer_--;
+                    if (node_->left)
+                    {
+                        node_ = node_->left;
+                        while (node_->right)
+                            node_ = node_->right;
+                    }
+                    else
+                    {
+                        node_ptr parent = node_->parent;
+                        while (node_ == parent->left)
+                        {
+                            node_ = parent;
+                            parent = parent->parent;
+                        }
+                        if (node_->left != parent)
+                            node_ = parent;
+                    }
+                    allocator_.destroy(pointer_);
+                    allocator_.construct(pointer_, ft::make_pair(node_->key, node_->value));
                     return (tmp);
                 };
     	};
