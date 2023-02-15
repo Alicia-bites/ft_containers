@@ -107,7 +107,7 @@ namespace ft
                     allocator_ = rhs.allocator_;
                     this->~mapIterator();
                     pointer_ = allocator_.allocate(1);
-                    allocator_.construct(pointer_, ft::make_pair(node_->key, node_->value));
+                    allocator_.construct(pointer_, ft::pair<Key, Value>(node_->key, node_->value));
                     return *this;
                 };
 
