@@ -96,10 +96,10 @@ int	main(int argc, char **argv)
 			std::cout << STEELBLUE3 << "Testing insert(const value_type & input_pair)" 
 				<< RESET << std::endl << std::endl;
 
-			map<int, std::string> mappy;
-			pair<map<int, std::string>::iterator, bool> res;
+			ft::map<int, std::string> mappy;
+			ft::pair<ft::map<int, std::string>::iterator, bool> res;
 
-			res = mappy.insert(make_pair(7, "first"));
+			res = mappy.insert(ft::make_pair(7, "first"));
 			if (res.second == true)
 				std::cout << "Inserted " << res.first->second << " into the map with key "
 					<< res.first->first << std::endl;
@@ -107,7 +107,7 @@ int	main(int argc, char **argv)
 				std::cout << "Key " << res.first->first << " already has the value "
 					<< res.first->second << " in the map" << std::endl;
 
-			res = mappy.insert(make_pair(7, "error"));
+			res = mappy.insert(ft::make_pair(7, "error"));
 			if (res.second == true)
 				std::cout << "Inserted " << res.first->second << " into the map with key "
 					<< res.first->first << std::endl;
@@ -115,7 +115,7 @@ int	main(int argc, char **argv)
 				std::cout << "Key " << res.first->first << " already has the value "
 					<< res.first->second << " in the map" << std::endl;
 			
-			res = mappy.insert(make_pair(4, "second"));
+			res = mappy.insert(ft::make_pair(4, "second"));
 			if (res.second == true)
 				std::cout << "Inserted " << res.first->second << " into the map with key "
 					<< res.first->first << std::endl;
@@ -123,7 +123,7 @@ int	main(int argc, char **argv)
 				std::cout << "Key " << res.first->first << " already has the value "
 					<< res.first->second << " in the map" << std::endl;
 
-			res = mappy.insert(make_pair(10, "third"));
+			res = mappy.insert(ft::make_pair(10, "third"));
 			if (res.second == true)
 				std::cout << "Inserted " << res.first->second << " into the map with key "
 					<< res.first->first << std::endl;
@@ -131,7 +131,7 @@ int	main(int argc, char **argv)
 				std::cout << "Key " << res.first->first << " already has the value "
 					<< res.first->second << " in the map" << std::endl;
 
-			res = mappy.insert(make_pair(15, "fourth"));
+			res = mappy.insert(ft::make_pair(15, "fourth"));
 			if (res.second == true)
 				std::cout << "Inserted " << res.first->second << " into the map with key "
 					<< res.first->first << std::endl;
@@ -144,7 +144,7 @@ int	main(int argc, char **argv)
 			mappy.getTree().printTree(mappy.getTree().getRoot());
 
 			std::cout << "Testing copy constructor" << std::endl;
-			map<int, std::string> coppy(mappy);
+			ft::map<int, std::string> coppy(mappy);
 			std::cout << DODGERBLUE2 << "PRINTING COPPY  : " << RESET << std::endl;
 			mappy.getTree().printTree(coppy.getTree().getRoot());
 
@@ -178,23 +178,25 @@ int	main(int argc, char **argv)
 			std::cout << STEELBLUE3 << "Testing iterator" << std::endl 
 				<< RESET << std::endl << std::endl;
 
-			map<int, int> bob;
-			bob.insert(make_pair(8, 647823));
-			bob.insert(make_pair(2, 4156));
-			bob.insert(make_pair(5, 4156));
+			map<int, int> june;
+			june.insert(make_pair(8, 777));
+			june.insert(make_pair(4, 333));
+			june.insert(make_pair(12, 101010));
+			june.insert(make_pair(2, 555));
+			june.insert(make_pair(6, 888));
+			june.insert(make_pair(10, 888));
+			june.insert(make_pair(14, 888));
+			june.insert(make_pair(1, 888));
+			june.insert(make_pair(3, 888));
+			june.insert(make_pair(5, 888));
+			june.insert(make_pair(7, 888));
+			june.insert(make_pair(9, 888));
+			june.insert(make_pair(11, 888));
+			june.insert(make_pair(13, 888));
+			june.insert(make_pair(15, 888));
 
-			map<int, int>::iterator it1 = bob.begin();
-			std::cout << "begin / " << std::endl;
-			std::cout << it1->first << std::endl;
-			std::cout << it1->second << std::endl << std::endl;
-
-			// map<int, int>::iterator it2 = bob.end();
-			// std::cout << "end / " << std::endl;
-			// std::cout << it2->first << std::endl;
-			// std::cout << it2->second << std::endl << std::endl;
-
-
-			// map<int, int>::iterator it2 = bob.end();
+			std::cout << "June's begin is = " << june.begin()->first << std::endl;
+			std::cout << "June's end is = " << june.end()->first << std::endl;
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
@@ -225,7 +227,7 @@ int	main(int argc, char **argv)
 			june.insert(make_pair(15, 888));
 			// june.insert(make_pair(5, 888));
 			
-			june.getTree().printTree(june.getTree().getRoot());
+			// june.getTree().printTree(june.getTree().getRoot());
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
@@ -238,11 +240,26 @@ int	main(int argc, char **argv)
 			std::cout << STEELBLUE3 << "Testing RedBlackTree insert node function" 
 				<< RESET << std::endl << std::endl;
 
-			map<int, int> ray;
-			pair<map<int, int>::iterator, bool> res;
-
-			res = ray.insert(make_pair(6, 999));
-
+			map<int, int> june;
+			june.insert(make_pair(8, 777));
+			june.insert(make_pair(4, 333));
+			june.insert(make_pair(12, 101010));
+			june.insert(make_pair(2, 555));
+			june.insert(make_pair(6, 888));
+			june.insert(make_pair(10, 888));
+			june.insert(make_pair(14, 888));
+			june.insert(make_pair(1, 888));
+			june.insert(make_pair(3, 888));
+			june.insert(make_pair(5, 888));
+			june.insert(make_pair(7, 888));
+			june.insert(make_pair(9, 888));
+			june.insert(make_pair(11, 888));
+			june.insert(make_pair(13, 888));
+			june.insert(make_pair(15, 888));
+			// june.insert(make_pair(5, 888));
+			
+			// june.getTree().printTree(june.getTree().getRoot());
+			std::cout << "smallest item is = " << june.end()->first << std::endl;
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
 			<< std::endl << RESET;
