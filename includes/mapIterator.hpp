@@ -52,7 +52,7 @@ namespace ft
                     #endif
 
                     pointer_ = allocator_.allocate(1);
-                    allocator_.construct(pointer_, ft::make_pair(node_->key, node_->value));
+                    allocator_.construct(pointer_, ft::pair<Key, Value>(node_->key, node_->value));
                 };
 
                 // copy constructor
@@ -65,7 +65,7 @@ namespace ft
                     #endif
 
                     pointer_ = allocator_.allocate(1);
-                    allocator_.construct(pointer_, ft::make_pair(node_->key, node_->value));
+                    allocator_.construct(pointer_, ft::pair<Key, Value>(node_->key, node_->value));
                 };
 
                 // destructor
