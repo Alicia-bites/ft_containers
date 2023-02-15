@@ -5,6 +5,8 @@
 
 #include "node.hpp"
 #include "../colors/colors.hpp"
+#include "iterator.hpp"
+#include "mapIterator.hpp"
 
 // #1 A node is eather RED or BLACK
 
@@ -32,6 +34,8 @@ namespace ft
 			typedef typename allocator_type::const_pointer				const_pointer;	 // for the default allocator: const value_type*
 			typedef typename allocator_type::difference_type			difference_type; // a signed integral type, identical to: iterator_traits<iterator>::difference_type	usually the same as ptrdiff_t
 			typedef typename allocator_type::size_type					size_type;		 // an unsigned integral type that can represent any non-negative value of difference_type	usually the same as size_t
+			typedef ft::mapIterator<Key, Value>							iterator; 		 // a bidirectional iterator to value_type
+			typedef ft::mapIterator<const Key, Value>					const_iterator;  // a bidirectional iterator to const value_type
 
 			typedef Node<Key, Value>									*node_ptr;
 
@@ -60,6 +64,8 @@ namespace ft
 			{
 				#if DEBUG
 					std::cout << MAGENTA3 << "Callind RedBlackTree copy constructor" << RESET << std::endl;
+				#endif
+
 				if (this != &original)
 					copyTree(root_, original.root_);
 			};
@@ -71,6 +77,7 @@ namespace ft
 				#if DEBUG
 					std::cout << MAGENTA3 << "Calling RedBlackTree destructor" << RESET << std::endl;
 				#endif
+
 				deleteTree(root_);
 			}
 
@@ -95,6 +102,7 @@ namespace ft
 				#if DEBUG
 					std::cout << MAGENTA3 << "Calling RedBlackTree assignement operator" << RESET << std::endl;
 				#endif
+
 				if (node != NULL)
 				{
 					printTree(node->left);
@@ -365,6 +373,48 @@ namespace ft
 					copyTree(copy->right, original->right);
 				}
 			};
+		
+		//		ITERATORS --------------------------------------------------------------------------------------
+	
+			iterator	begin()
+			{
+				return iterator(getSmallestNode(root_));
+			};
+
+			const_iterator	begin() const
+			{
+				return iterator(getSmallestNode(root_));
+			};
+
+			iterator	end()
+			{
+				return iterator(getBiggestNode(root_));
+			};
+
+			const_iterator	end() const
+			{
+				return iterator(getBiggestNode(root_));
+			};
+
+			// reverse_iterator	rbegin()
+			// {
+			// 	return tree_.rebgin();
+			// };
+
+			// const_reverse_iterator rbegin() const
+			// {
+			// 	return tree_.rebgin();
+			// };
+
+			// reverse_iterator	rend()
+			// {
+			// 	return tree_.rend();
+			// };
+
+			// const_reverse_iterator rend() const
+			// {
+			// 	return tree_.rend();
+			// };
 
 		protected:
 			node_ptr							root_;

@@ -63,7 +63,7 @@ namespace ft
 			typedef RedBlackTree<key_type, mapped_type, key_compare, Allocator>	RBTree;	
 			RBTree    tree_;
 
-			typedef BinarySearchTree<key_type, mapped_type>			BST;
+			// typedef BinarySearchTree<key_type, mapped_type>			BST;
 			// BST	tree_;
 
 			ft::Node<Key, Value> *node_ptr;
@@ -138,22 +138,22 @@ namespace ft
 	
 			iterator	begin()
 			{
-				return iterator(tree_.getSmallestNode(tree_.getRoot()));
+				return tree_.begin();
 			};
 
 			const_iterator	begin() const
 			{
-				return iterator(tree_.getSmallestNode(tree_.getRoot()));
+				return tree_.begin();
 			};
 
 			iterator	end()
 			{
-				return iterator(tree_.getBiggestNode(tree_.getRoot()));
+				return tree_.end();
 			};
 
 			const_iterator	end() const
 			{
-				return iterator(tree_.getBiggestNode(tree_.getRoot()));
+				return tree_.end();
 			};
 
 			// reverse_iterator	rbegin()

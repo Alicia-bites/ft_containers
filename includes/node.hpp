@@ -56,7 +56,7 @@ namespace ft
 					parent = original.parent;
 				}
 			}
-	};
+	};	
 
 	template<typename Key, typename Value>
 	std::ostream & operator<<(std::ostream & o, const Node<Key, Value> & rhs)

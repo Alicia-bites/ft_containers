@@ -10,6 +10,7 @@
 #include <utility>
 #include <map>
 
+// change default namespace
 #ifndef STD
 # define NAMESPACE ft
 // #else

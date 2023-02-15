@@ -2,11 +2,10 @@
 
 #include <iostream>
 #include <cstddef>
-
+#include "node.hpp"
 #include "iterator.hpp"
 #include "pair.hpp"
 #include "utils.hpp"
-#include "RedBlackTree.hpp"
 
 // FOR DEBUG
 // #include <utility>
@@ -88,9 +87,9 @@ namespace ft
 
 // GETTERS ---------------------------------------------------------------------------------------------
 				
-                pointer base() const
+                node_ptr    getNode() const
                 {
-                    return pointer_;
+                    return node_;
                 }
 
 // OPERATOR OVERLOADS ---------------------------------------------------------------------------------------------
@@ -135,29 +134,29 @@ namespace ft
                     return pointer_;
                 };
 
-                // allows access to the element at position n.
-                reference	operator[](difference_type n) const
-                {
-                    return *(pointer_ + n);
-                };
-
 	// ARITHMETIC OPERATOR OVERLOADS ---------------------------------------------------------------------------------------------
 	
-                mapIterator<Key, Value>	operator+(difference_type n) const
-                {
-                    return pointer;
-                };
-
-                mapIterator<Key, Value>	operator-(difference_type n) const
-                {
-                    return pointer_ - n;
-                };
-
                 // increment pointer and return a reference to its new
                 // state. (++i)
                 mapIterator<Key, Value> &	operator++(void)
                 {
-                    pointer_++;
+                    if (node_->right)
+                    {
+                        node_ = node_->right;
+                        while (node_->left)
+                            node_ = node_->left;
+                    }
+                    else
+                    {
+                        node_ptr parent = node_->parent;
+                        while (node_ == parent->right)
+                        {
+                            node_ = parent;
+                            parent = parent->parent;
+                        }
+                        if (node_->right != parent)
+                            node_ = parent;
+                    }
                     return *this;
                 };
 
@@ -173,7 +172,25 @@ namespace ft
                 mapIterator<Key, Value>	operator++(int)
                 {
                     mapIterator<Key, Value> tmp(*this);
-                    pointer_++;
+                    if (node_->right)
+                    {
+                        node_ = node_->right;
+                        while (node_->left)
+                            node_ = node_->left;
+                    }
+                    else
+                    {
+                        node_ptr parent = node_->parent;
+                        while (node_ == parent->right)
+                        {
+                            node_ = parent;
+                            parent = parent->parent;
+                        }
+                        if (node_->right != parent)
+                            node_ = parent;
+                    }
+                    allocator_.destroy(pointer_);
+                    allocator_.construct(pointer_, ft::make_pair(node_->key, node_->value));
                     return (tmp);
                 };
 
@@ -184,127 +201,21 @@ namespace ft
                     pointer_--;
                     return (tmp);
                 };
-
-                // add n to the current position of the pointer and
-                // returns its new state.
-                mapIterator<Key, Value> &	operator+=(difference_type n)
-                {
-                    pointer_ += n;
-                    return (*this);
-                };
-
-                // substract n to the current position of the pointer and
-                // returns its new state.
-                mapIterator<Key, Value> &	operator-=(difference_type n)
-                {
-                    pointer_ -= n;
-                    return (*this);
-                };
-		
     	};
-
-// DISPLAY OPERATOR OVERLOAD ---------------------------------------------------------------------------------------------
-	
-	template <typename Key, typename Value>
-		std::ostream &  operator<<(std::ostream & o, const mapIterator<Key, Value> & gandalf)
-		{
-			o << gandalf.getPointer();
-			return (o);
-		};
-
-// ARITHMETIC OPERATOR OVERLOADS ---------------------------------------------------------------------------------------------
-
-	template <typename Key, typename Value>
-		mapIterator<Key, Value> operator+(typename mapIterator<Key, Value>::difference_type x, const mapIterator<Key, Value> & y)
-		{
-			return x + y.getPointer();
-		};
-
-	template <typename Key, typename Value>
-		typename mapIterator<Key, Value>::difference_type operator-(const mapIterator<Key, Value>& x, const mapIterator<Key, Value> & y)
-		{
-			return x.getPointer() - y.getPointer();
-		};
-
-	// template <typename T, typename U>
-	// 	typename mapIterator<Key, Value>::difference_type operator-(const mapIterator<Key, Value>& gandalf, const mapIterator<U>& sauron)
-	// 	{
-	// 		return (gandalf.getPointer() - sauron.getPointer());
-	// 	}
 
 	// RELATIONNAL OPERATOR OVERLOADS ---------------------------------------------------------------------------------------------
 
 	template <typename Key, typename Value>
 		bool	operator==(const mapIterator<Key, Value> & gandalf, const mapIterator<Key, Value> & sauron)
 		{
-			return gandalf.getPointer() == sauron.getPointer();
+			return gandalf.getNode()->key == sauron.getNode()->key;
 		};
 
 	template <typename Key, typename Value>
 		bool	operator!=(const mapIterator<Key, Value> & gandalf, const mapIterator<Key, Value> & sauron)
 		{
-			return gandalf.getPointer() != sauron.getPointer();
+			return gandalf.getNode()->key != sauron.getNode()->key;
 		};
-
-	template <typename Key, typename Value>
-		bool operator<(const mapIterator<Key, Value> & gandalf, const mapIterator<Key, Value> & sauron)
-		{
-			return gandalf.getPointer() < sauron.getPointer();
-		};
-
-	template <typename Key, typename Value>	
-		bool operator>(const mapIterator<Key, Value> & gandalf, const mapIterator<Key, Value>& sauron)
-		{
-			return gandalf.getPointer() > sauron.getPointer();
-		};
-
-	template <typename Key, typename Value>
-		bool operator<=(const mapIterator<Key, Value> & gandalf, const mapIterator<Key, Value>& sauron)
-		{
-			return gandalf.getPointer() <= sauron.getPointer();
-		};
-	
-	template <typename Key, typename Value>
-		bool operator>=(const mapIterator<Key, Value> & gandalf, const mapIterator<Key, Value>& sauron)
-		{
-			return gandalf.getPointer() >= sauron.getPointer();
-		};
-
-	// template <class T, class U>
-	// 	bool operator==(const mapIterator<Key, Value> & gandalf, const mapIterator<U> & sauron)
-	// 	{
-	// 		return gandalf.getPointer() == sauron.getPointer();
-	// 	}
-	
-	// template <class T, class U>
-	// 	bool operator!=(const mapIterator<Key, Value> & gandalf, const mapIterator<U> & sauron)
-	// 	{
-	// 		return gandalf.getPointer() != sauron.getPointer();
-	// 	}
-	
-	// template <class T, class U>
-	// 	bool operator<(const mapIterator<Key, Value> & gandalf, const mapIterator<U> & sauron)
-	// 	{
-	// 		return gandalf.getPointer() < sauron.getPointer();
-	// 	}
-	
-	// template <class T, class U>
-	// 	bool operator>(const mapIterator<Key, Value> & gandalf, const mapIterator<U> & sauron)
-	// 	{
-	// 		return gandalf.getPointer() > sauron.getPointer();
-	// 	}
-	
-	// template <class T, class U>
-	// 	bool operator<=(const mapIterator<Key, Value> & gandalf, const mapIterator<U> & sauron)
-	// 	{
-	// 		return gandalf.getPointer() <= sauron.getPointer();
-	// 	}
-	
-	// template <class T, class U>
-	// 	bool operator>=(const mapIterator<Key, Value> & gandalf, const mapIterator<U> & sauron)
-	// 	{
-	// 		return gandalf.getPointer() >= sauron.getPointer();
-	// 	}
 
     template <typename Key, typename Value, typename Allocator>
     std::ostream & operator<<(std::ostream & o, const mapIterator<Key, Value, Allocator> & rhs)
