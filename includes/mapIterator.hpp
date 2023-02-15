@@ -2,11 +2,11 @@
 
 #include <iostream>
 #include <cstddef>
+
 #include "iterator.hpp"
 #include "pair.hpp"
-#include "BST.hpp"
 #include "utils.hpp"
-#include "iterator.hpp"
+#include "RedBlackTree.hpp"
 
 // FOR DEBUG
 // #include <utility>
@@ -31,6 +31,7 @@ namespace ft
                 node_ptr        node_;
                 pointer         pointer_;
                 Allocator       allocator_;
+
                 
             public:
 
@@ -74,7 +75,7 @@ namespace ft
                     # if DEBUG
                         std::cout << PALETURQUOISE1 << "Calling mapIterator destructor" << RESET << std::endl;
                     #endif
-                    
+
                     if (pointer_)
                     {
                         allocator_.destroy(pointer_);
@@ -83,16 +84,13 @@ namespace ft
                     }
                 };
 
-                pointer base() const
-                {
-                    return pointer_;
-                }
+
 
 // GETTERS ---------------------------------------------------------------------------------------------
 				
-                pointer getPointer(void) const 
+                pointer base() const
                 {
-                    return (pointer_);
+                    return pointer_;
                 }
 
 // OPERATOR OVERLOADS ---------------------------------------------------------------------------------------------
@@ -147,7 +145,7 @@ namespace ft
 	
                 mapIterator<Key, Value>	operator+(difference_type n) const
                 {
-                    return pointer_ + n;
+                    return pointer;
                 };
 
                 mapIterator<Key, Value>	operator-(difference_type n) const

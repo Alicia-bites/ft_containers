@@ -198,6 +198,10 @@ int	main(int argc, char **argv)
 			std::cout << "June's begin is = " << june.begin()->first << std::endl;
 			std::cout << "June's end is = " << june.end()->first << std::endl;
 
+			map<int, int>::iterator it = june.begin();
+			for(; it != june.end(); it++)
+				std::cout << it->first << std::endl;
+
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
 			<< std::endl << RESET;
