@@ -24,19 +24,19 @@ namespace ft
 				typedef std::bidirectional_iterator_tag iterator_category;
 				typedef std::ptrdiff_t                  difference_type;
 
-            private:
-                typedef Node<Key, Value>  *  node_ptr;
+                private:
+                    typedef Node<Key, Value>  *  node_ptr;
 
-                node_ptr        node_;
-                pointer         pointer_;
-                
-            public:
+                    node_ptr        node_;
+                    pointer         pointer_;
 
-                // default constructor
-                mapIterator()
-                : node_(0)
-                , pointer_(0)
-                {
+                public:
+
+                    // default constructor
+                    mapIterator()
+                    : node_(0)
+                    , pointer_(0)
+                    {
                     #if DEBUG
                         std::cout << PALETURQUOISE1 << "Calling mapIterator default constructor" << RESET << std::endl;
                     #endif
@@ -75,6 +75,11 @@ namespace ft
 
 // GETTERS ---------------------------------------------------------------------------------------------
 				
+                pointer base() const
+                {
+                    return pointer_;
+                }
+                
                 node_ptr    getNode() const
                 {
                     return node_;
@@ -93,17 +98,6 @@ namespace ft
                     pointer_ = rhs.pointer_;
                     return *this;
                 };
-
-                // // this is a type conversion operator function. Its genereic form is
-                // // operator type() 
-                // // where type is the type to which the class should be converted.
-                // // Here, we convert to mapIterator<const T>
-                // // wich allows conversion to a constant type T
-                // // (initially, our class is mapIterator<Key, Value>).
-                // operator mapIterator<const T>() const
-                // {
-                // 	return (mapIterator<const T>(pointer_));
-                // }
                 
                 // dereference
                 reference operator*(void) const
@@ -170,6 +164,7 @@ namespace ft
                             if (!parent)
                             {
                                 node_ = 0;
+                                pointer_ = 0;
                                 return ;
                             }
                         }
@@ -194,6 +189,12 @@ namespace ft
                         {
                             node_ = parent;
                             parent = parent->parent;
+                            if (!parent)
+                            {
+                                node_ = 0;
+                                pointer_ = 0;
+                                return ;
+                            }
                         }
                         if (node_->left != parent)
                             node_ = parent;
@@ -227,16 +228,4 @@ namespace ft
                 return true;
 			return lhs.getNode()->key != rhs.getNode()->key;
 		};
-
-    // template <typename Key, typename Value, typename Allocator>
-    // std::ostream & operator<<(std::ostream & o, const mapIterator<Key, Value, Allocator> & rhs)
-    // {
-    //     o << LIGHTGREEN1 << "Printing pair iterator point to --> " << std::endl
-    //         << "Key = " << rhs->first << std::endl
-    //         << "Value = " << rhs->second << std::endl
-    //         << RESET
-    //         << std::endl;
-    //     return o;
-    // }
-
 }

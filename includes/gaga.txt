@@ -1,4 +1,1 @@
-note: synthesized method 
-
-‘std::pair<const int, std::__cxx11::basic_string<char> >& 
-std::pair<const int, std::__cxx11::basic_string<char> >::operator=(const std::pair<const int, std::__cxx11::basic_string<char> >&)’ first required here
+ft::mapIterator<int, int>::mapIterator(ft::mapIterator<int, int>::pointer)

@@ -156,25 +156,25 @@ namespace ft
 				return tree_.end();
 			};
 
-			// reverse_iterator	rbegin()
-			// {
-			// 	return tree_.rebgin();
-			// };
+			reverse_iterator	rbegin()
+			{
+				return tree_.rbegin();
+			};
 
-			// const_reverse_iterator rbegin() const
-			// {
-			// 	return tree_.rebgin();
-			// };
+			const_reverse_iterator rbegin() const
+			{
+				return tree_.rbegin();
+			};
 
-			// reverse_iterator	rend()
-			// {
-			// 	return tree_.rend();
-			// };
+			reverse_iterator	rend()
+			{
+				return tree_.rend();
+			};
 
-			// const_reverse_iterator rend() const
-			// {
-			// 	return tree_.rend();
-			// };
+			const_reverse_iterator rend() const
+			{
+				return tree_.rend();
+			};
 
 //		CAPACITY --------------------------------------------------------------------------------------
 			bool	empty() const

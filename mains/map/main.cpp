@@ -202,9 +202,6 @@ int	main(int argc, char **argv)
 			for(; it != june.end(); it++)
 				std::cout << it->first << std::endl;
 
-
-
-
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
 			<< std::endl << RESET;
@@ -232,10 +229,10 @@ int	main(int argc, char **argv)
 			june.insert(make_pair(11, 888));
 			june.insert(make_pair(13, 888));
 			june.insert(make_pair(15, 888));
-			// june.insert(make_pair(5, 888));
 			
-			// june.getTree().printTree(june.getTree().getRoot());
-
+			map<int, int>::reverse_iterator rit = june.rbegin();
+			for (; rit != june.rend(); ++rit)
+				std::cout << rit->first << std::endl;
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
 			<< std::endl << RESET;

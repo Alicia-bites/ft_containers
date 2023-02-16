@@ -256,22 +256,24 @@ namespace ft
 
 			reverse_iterator	rbegin()
 			{
-				return reverse_iterator(end());
+				iterator it(getBiggestNode(root_));
+				return reverse_iterator(it);
 			};
 
-			const_reverse_iterator rbegin() const
-			{
-				return const_reverse_iterator(end());
-			};
-
-			// reverse_iterator	rend()
+			// const_reverse_iterator rbegin() const
 			// {
-			// 	return tree_.rend();
+				// return const_reverse_iterator(getBiggestNode(root_));
 			// };
+
+			reverse_iterator	rend()
+			{
+				iterator it(NULL);
+				return reverse_iterator(it);
+			};
 
 			// const_reverse_iterator rend() const
 			// {
-			// 	return tree_.rend();
+				// return NULL;
 			// };
 
 		protected:
