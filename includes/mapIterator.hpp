@@ -14,7 +14,7 @@
 // mapIterator point to a pair<const Key, Value> of type value_type
 namespace ft
 {
-	template <typename Key, typename Value, typename Allocator = std::allocator<ft::pair<const Key, Value> > >
+	template <typename Key, typename Value>
 		class mapIterator
 		{
 			public:
@@ -29,14 +29,13 @@ namespace ft
 
                 node_ptr        node_;
                 pointer         pointer_;
-                Allocator       allocator_;
-
                 
             public:
 
                 // default constructor
                 mapIterator()
-                : pointer_(0)
+                : node_(0)
+                , pointer_(0)
                 {
                     #if DEBUG
                         std::cout << PALETURQUOISE1 << "Calling mapIterator default constructor" << RESET << std::endl;
@@ -46,27 +45,22 @@ namespace ft
                 // constructor
                 mapIterator(node_ptr input_node)
                 : node_(input_node)
+                , pointer_(&input_node->data)
                 {
                     #if DEBUG
                         std::cout << PALETURQUOISE1 << "Calling mapIterator constructor from node" << RESET << std::endl;
                     #endif
-
-                    // *pointer_ = ft::make_pair(node_->key, node_->value);
-                    pointer_ = allocator_.allocate(1);
-                    allocator_.construct(pointer_, ft::make_pair(node_->key, node_->value));
                 };
 
                 // copy constructor
-                mapIterator(const mapIterator<Key, Value, Allocator> & original)
-                : node_(original.node_)
-                , allocator_(original.allocator_)
+                mapIterator(const mapIterator<Key, Value> & original)
                 {
                     # if DEBUG
                         std::cout << PALETURQUOISE1 << "Calling mapIterator copy constructor" << RESET << std::endl;
                     #endif
 
-                    pointer_ = allocator_.allocate(1);
-                    allocator_.construct(pointer_, ft::make_pair(node_->key, node_->value));
+                    node_ = original.node_;
+                    pointer_ = original.pointer_;
                 };
 
                 // destructor
@@ -75,13 +69,6 @@ namespace ft
                     # if DEBUG
                         std::cout << PALETURQUOISE1 << "Calling mapIterator destructor" << RESET << std::endl;
                     #endif
-
-                    if (pointer_)
-                    {
-                        allocator_.destroy(pointer_);
-                        allocator_.deallocate(pointer_, 1);
-                        pointer_ = 0;
-                    }
                 };
 
 
@@ -102,13 +89,8 @@ namespace ft
                         std::cout << SEAGREEN3 << "Calling assignement operator" << RESET << std::endl;
                     # endif
 
-                    if (this == &rhs)
-                        return *this;
                     node_ = rhs.node_;
-                    allocator_ = rhs.allocator_;
-                    this->~mapIterator();
-                    pointer_ = allocator_.allocate(1);
-                    allocator_.construct(pointer_, ft::make_pair(node_->key, node_->value));
+                    pointer_ = rhs.pointer_;
                     return *this;
                 };
 
@@ -141,25 +123,7 @@ namespace ft
                 // state. (++i)
                 mapIterator<Key, Value> &	operator++(void)
                 {
-                    if (node_->right)
-                    {
-                        node_ = node_->right;
-                        while (node_->left)
-                            node_ = node_->left;
-                    }
-                    else
-                    {
-                        node_ptr parent = node_->parent;
-                        while (node_ == parent->right)
-                        {
-                            node_ = parent;
-                            parent = parent->parent;
-                        }
-                        if (node_->right != parent)
-                            node_ = parent;
-                    }
-                    // allocator_.destroy(pointer_);
-                    // allocator_.construct(pointer_, ft::make_pair(node_->key, node_->value));
+                    increment();
                     return *this;
                 };
 
@@ -167,25 +131,7 @@ namespace ft
                 // state. (--i)
                 mapIterator<Key, Value> &	operator--(void)
                 {
-                    if (node_->left)
-                    {
-                        node_ = node_->left;
-                        while (node_->right)
-                            node_ = node_->right;
-                    }
-                    else
-                    {
-                        node_ptr parent = node_->parent;
-                        while (node_ == parent->left)
-                        {
-                            node_ = parent;
-                            parent = parent->parent;
-                        }
-                        if (node_->left != parent)
-                            node_ = parent;
-                    }
-                    allocator_.destroy(pointer_);
-                    allocator_.construct(pointer_, ft::make_pair(node_->key, node_->value));
+                    decrement();
                     return *this;
                 };
 
@@ -193,6 +139,21 @@ namespace ft
                 mapIterator<Key, Value>	operator++(int)
                 {
                     mapIterator<Key, Value> tmp(*this);
+                    increment();
+                    return (tmp);
+                };
+
+                // decrement pointer but return its initial state (i--)
+                mapIterator<Key, Value>	operator--(int)
+                {
+                    mapIterator<Key, Value> tmp(*this);
+                    decrement();
+                    return (tmp);
+                };
+
+            private :
+                void    increment()
+                {
                     if (node_->right)
                     {
                         node_ = node_->right;
@@ -203,22 +164,23 @@ namespace ft
                     {
                         node_ptr parent = node_->parent;
                         while (node_ == parent->right)
-                        {
+                        { 
                             node_ = parent;
                             parent = parent->parent;
+                            if (!parent)
+                            {
+                                node_ = 0;
+                                return ;
+                            }
                         }
                         if (node_->right != parent)
                             node_ = parent;
                     }
-                    allocator_.destroy(pointer_);
-                    allocator_.construct(pointer_, ft::make_pair(node_->key, node_->value));
-                    return (tmp);
-                };
+                    pointer_ = &node_->data;
+                }
 
-                // decrement pointer but return its initial state (i--)
-                mapIterator<Key, Value>	operator--(int)
+                void    decrement()
                 {
-                    mapIterator<Key, Value> tmp(*this);
                     if (node_->left)
                     {
                         node_ = node_->left;
@@ -236,35 +198,45 @@ namespace ft
                         if (node_->left != parent)
                             node_ = parent;
                     }
-                    allocator_.destroy(pointer_);
-                    allocator_.construct(pointer_, ft::make_pair(node_->key, node_->value));
-                    return (tmp);
-                };
+                    pointer_ = &node_->data;
+                }
     	};
 
 	// RELATIONNAL OPERATOR OVERLOADS ---------------------------------------------------------------------------------------------
 
 	template <typename Key, typename Value>
-		bool	operator==(const mapIterator<Key, Value> & gandalf, const mapIterator<Key, Value> & sauron)
+		bool	operator==(const mapIterator<Key, Value> & lhs, const mapIterator<Key, Value> & rhs)
 		{
-			return gandalf.getNode()->key == sauron.getNode()->key;
+            if (lhs.getNode() == 0 && rhs.getNode() == 0)
+                return true;
+            else if (lhs.getNode() == 0 && rhs.getNode() != 0)
+                return false;
+            else if (lhs.getNode() != 0 && rhs.getNode() == 0)
+                return false;
+			return lhs.getNode()->key == rhs.getNode()->key;
 		};
 
 	template <typename Key, typename Value>
-		bool	operator!=(const mapIterator<Key, Value> & gandalf, const mapIterator<Key, Value> & sauron)
+		bool	operator!=(const mapIterator<Key, Value> & lhs, const mapIterator<Key, Value> & rhs)
 		{
-			return gandalf.getNode()->key != sauron.getNode()->key;
+            if (lhs.getNode() == 0 && rhs.getNode() == 0)
+                return false;
+            else if (lhs.getNode() == 0 && rhs.getNode() != 0)
+                return true;
+            else if (lhs.getNode() != 0 && rhs.getNode() == 0)
+                return true;
+			return lhs.getNode()->key != rhs.getNode()->key;
 		};
 
-    template <typename Key, typename Value, typename Allocator>
-    std::ostream & operator<<(std::ostream & o, const mapIterator<Key, Value, Allocator> & rhs)
-    {
-        o << LIGHTGREEN1 << "Printing pair iterator point to --> " << std::endl
-            << "Key = " << rhs->first << std::endl
-            << "Value = " << rhs->second << std::endl
-            << RESET
-            << std::endl;
-        return o;
-    }
+    // template <typename Key, typename Value, typename Allocator>
+    // std::ostream & operator<<(std::ostream & o, const mapIterator<Key, Value, Allocator> & rhs)
+    // {
+    //     o << LIGHTGREEN1 << "Printing pair iterator point to --> " << std::endl
+    //         << "Key = " << rhs->first << std::endl
+    //         << "Value = " << rhs->second << std::endl
+    //         << RESET
+    //         << std::endl;
+    //     return o;
+    // }
 
 }
