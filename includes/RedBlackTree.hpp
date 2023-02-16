@@ -179,6 +179,21 @@ namespace ft
 				}
 				return node;
 			}
+
+			// void inorder()
+			// {
+			// 	inorderHelper(root_);
+			// }
+			
+			// void inorderHelper(node_ptr node)
+			// {
+			// 	if (node == NULL)
+			// 		return;
+			
+			// 	inorderHelper(node->left);
+			// 	cout << node->key << " ";
+			// 	inorderHelper(node->right);
+			// }
 			
 			// print tree level by level
 			void	printLevelOrder()
@@ -186,6 +201,8 @@ namespace ft
 				printLevelOrderHelper(root_);
 			}
 
+			// If x is a power of 2, it will have only one bit set to 1,
+			// which will be the leftmost (most significant) bit. 
 			bool isPowerOfTwo(int x)
 			{ 
 				return (x != 0) && ((x & (x - 1)) == 0);
@@ -228,12 +245,13 @@ namespace ft
 
 			iterator	end()
 			{
-				return iterator(getBiggestNode(root_));
+				// return iterator(getBiggestNode(root_));
+				return NULL;
 			};
 
 			const_iterator	end() const
 			{
-				return iterator(getBiggestNode(root_));
+				return NULL;
 			};
 
 			reverse_iterator	rbegin()
