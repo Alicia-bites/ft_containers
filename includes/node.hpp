@@ -22,6 +22,7 @@ namespace ft
 			Node<Key, Value>	*left;
 			Node<Key, Value>	*right;
 			Node<Key, Value>	*parent;
+			ft::pair<const Key, Value> data;
 
 			// default constructor
 			Node()
@@ -31,6 +32,7 @@ namespace ft
 			, left(0)
 			, right(0)
 			, parent(0)
+			, data(0)
 			{};
 
 			// constructor #1
@@ -41,10 +43,12 @@ namespace ft
 			, left(0)
 			, right(0)
 			, parent(0)
+			, data(ft::make_pair(key, value))
 			{};
 
 			// copy constructor
 			Node(const Node & original)
+			: data(ft::make_pair(key, value))
 			{
 				if (this != &original)
 				{
@@ -56,7 +60,12 @@ namespace ft
 					parent = original.parent;
 				}
 			}
-	};	
+
+			// ~Node()
+			// {
+				// delete data;
+			// }
+	};
 
 	template<typename Key, typename Value>
 	std::ostream & operator<<(std::ostream & o, const Node<Key, Value> & rhs)
