@@ -285,10 +285,27 @@ int	main(int argc, char **argv)
 		if (test_number == 6)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing default constructor" 
+			std::cout << STEELBLUE3 << "Testing printLevelOrderHelper" 
 				<< RESET << std::endl << std::endl;
 
+			map<int, int> joe;
+			joe.insert(make_pair(8, 777));
+			joe.insert(make_pair(4, 333));
+			joe.insert(make_pair(12, 101010));
+			joe.insert(make_pair(2, 555));
+			joe.insert(make_pair(6, 888));
+			joe.insert(make_pair(10, 888));
+			joe.insert(make_pair(14, 888));
+			joe.insert(make_pair(1, 888));
+			joe.insert(make_pair(3, 888));
+			joe.insert(make_pair(5, 888));
+			joe.insert(make_pair(7, 888));
+			joe.insert(make_pair(9, 888));
+			joe.insert(make_pair(11, 888));
+			joe.insert(make_pair(13, 888));
+			joe.insert(make_pair(15, 888));
 
+			joe.getTree().printLevelOrder();
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"

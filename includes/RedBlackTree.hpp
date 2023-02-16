@@ -2,6 +2,8 @@
 
 #include <cstdio>
 #include <iostream>
+#include <queue>
+#include <cmath>
 
 #include "node.hpp"
 #include "../colors/colors.hpp"
@@ -133,8 +135,254 @@ namespace ft
 				return ft::make_pair(node, true);
 			};
 
+			size_t	remove(const key_type & key)
+			{
+				size_t n = 0;
+				while (findNode(root_, key))
+				{
+					root_ = removeHelper(root_, key);
+					n++;
+				}
+				size_ -= n;
+				return n;
+			}
 
-			/*         G                    G
+//		GETTERS --------------------------------------------------------------------------------------
+
+			// return a pointer to root node
+			node_ptr	getRoot() const
+			{
+				return root_;
+			};
+
+			size_t		getSize() const
+			{
+				return size_;
+			}
+
+			node_ptr	getSmallestNode(node_ptr node) const
+			{
+				while (node->left != NULL)
+				{
+					if (node->key > node->left->key)
+						node = node->left;
+				}
+				return node;
+			}
+
+			node_ptr	getBiggestNode(node_ptr node) const
+			{
+				while (node->right != NULL)
+				{
+					if (node->key < node->right->key)
+						node = node->right;
+				}
+				return node;
+			}
+			
+			// print tree level by level
+			void	printLevelOrder()
+			{
+				printLevelOrderHelper(root_);
+			}
+
+			bool isPowerOfTwo(int x)
+			{ 
+				return (x != 0) && ((x & (x - 1)) == 0);
+			}
+
+			void	printLevelOrderHelper(node_ptr node)
+			{
+				if (node == NULL)
+					return;
+				std::queue<node_ptr > q;
+				q.push(node);
+
+				int n = 1;
+				while (!q.empty())
+				{
+					if (isPowerOfTwo(n))
+						std::cout << std::endl;
+					node_ptr tmp = q.front();
+					std::cout << tmp->key << " ";
+					q.pop();
+					n++;
+					if (tmp->left != NULL)
+						q.push(tmp->left);
+					if (tmp->right != NULL)
+						q.push(tmp->right);
+				}
+			}
+		
+		//		ITERATORS --------------------------------------------------------------------------------------
+	
+			iterator	begin()
+			{
+				return iterator(getSmallestNode(root_));
+			};
+
+			const_iterator	begin() const
+			{
+				return iterator(getSmallestNode(root_));
+			};
+
+			iterator	end()
+			{
+				return iterator(getBiggestNode(root_));
+			};
+
+			const_iterator	end() const
+			{
+				return iterator(getBiggestNode(root_));
+			};
+
+			reverse_iterator	rbegin()
+			{
+				return reverse_iterator(end());
+			};
+
+			const_reverse_iterator rbegin() const
+			{
+				return const_reverse_iterator(end());
+			};
+
+			// reverse_iterator	rend()
+			// {
+			// 	return tree_.rend();
+			// };
+
+			// const_reverse_iterator rend() const
+			// {
+			// 	return tree_.rend();
+			// };
+
+		protected:
+			node_ptr							root_;
+			std::allocator<Node<Key, Value> >	nodeAllocator_;
+			key_compare							comp_; // key comparator
+			allocator_type						allocator_;
+			size_type							size_; // total number of nodes
+
+		private :		
+
+			// recursive function, used to insert a new node
+			// from root_, find the next available place to create new Node
+			// !! WITHOUT CARING ABOUT BALANCE
+			node_ptr	insertHelper(node_ptr node, const Key &key, const Value &value)
+			{
+				if (node == 0)
+					return new Node<Key, Value>(key, value);
+				if (key == node->key)
+				{
+					node->value = value;
+					return node;
+				}
+				if (key < node->key)
+				{
+					if (node->left == 0)
+					{
+						node->left = new Node<Key, Value> (key, value);
+						node->left->parent = node;
+						return node->left;
+					}
+					return insertHelper(node->left, key, value);
+				}
+				if (node->right == 0)
+				{
+					node->right = new Node<Key, Value> (key, value);
+					node->right->parent = node;
+					return node->right;
+				}
+				return insertHelper(node->right, key, value);
+			};
+
+			// a function that searches a specific node and returns it
+			node_ptr findNode(node_ptr node, const Key &key) const
+			{
+				while (node != 0 && node->key != key)
+				{
+					if (key < node->key)
+						node = node->left;
+					else
+						node = node->right;
+				}
+				return node;
+			};
+
+			//		COPY TOOL --------------------------------------------------------------------------------------
+
+			void copyTree(node_ptr & copy, node_ptr original)
+			{
+				if (original == 0)
+					copy = 0;
+				else
+				{
+					copy = nodeAllocator_.allocate(1);
+					nodeAllocator_.construct(copy, *original);
+					copyTree(copy->left, original->left);
+					copyTree(copy->right, original->right);
+				}
+			};
+
+//		MODIFIERS --------------------------------------------------------------------------------------
+
+			// remove node from tree.
+			// !! when calling function, always set first parameter to tree.getroot()
+			// second parameter should be the key of the item you want to remove.
+			node_ptr removeHelper(node_ptr node, int key)
+			{
+				if (node == NULL)
+					return node;
+				if (key < node->key)
+					node->left = removeHelper(node->left, key);
+				else if (key > node->key)
+					node->right = removeHelper(node->right, key);
+				else 
+				{
+					if (node->left == NULL)
+					{
+						node_ptr tmp = node->right;
+						if (tmp)
+							tmp->parent = node->parent;
+						delete node;
+						return tmp;
+					}
+					else if (node->right == NULL)
+					{
+						node_ptr tmp = node->left;
+						if (tmp)
+							tmp->parent = node->parent;
+						delete node;
+						return tmp;
+					} 
+					else
+					{
+						node_ptr tmp = node->right;
+						while (tmp->left)
+							tmp = tmp->left;
+						node->key = tmp->key;
+						node->value = tmp->value;
+						node->right = removeHelper(node->right, tmp->key);
+					}
+				}
+				return node;
+			}
+
+			void deleteTree(node_ptr node)
+			{
+				if (node == NULL)
+					return;
+			
+				deleteTree(node->left);
+				deleteTree(node->right);
+				
+				#if DEBUG
+					std::cout << MEDIUMORCHID3 << "Deleting node: " << node->value << RESET << std::endl;
+				#endif
+				delete node;
+			}
+
+						/*         G                    G
 			          / \                  / \
 					 P   U      ->        N   U
 					/ \                  / \
@@ -258,217 +506,5 @@ namespace ft
 				}
 				root_->color = BLACK; // case 0 --> root node is red (root_ must always be black)
 			}
-
-			size_t	remove(const key_type & key)
-			{
-				size_t n = 0;
-				while (findNode(root_, key))
-				{
-					root_ = removeHelper(root_, key);
-					n++;
-				}
-				size_ -= n;
-				return n;
-			}
-
-			// remove node from tree.
-			// !! when calling function, always set first parameter to tree.getroot()
-			// second parameter should be the key of the item you want to remove.
-			node_ptr removeHelper(node_ptr node, int key)
-			{
-				if (node == NULL)
-					return node;
-				if (key < node->key)
-					node->left = removeHelper(node->left, key);
-				else if (key > node->key)
-					node->right = removeHelper(node->right, key);
-				else 
-				{
-					if (node->left == NULL)
-					{
-						node_ptr tmp = node->right;
-						if (tmp)
-							tmp->parent = node->parent;
-						delete node;
-						return tmp;
-					}
-					else if (node->right == NULL)
-					{
-						node_ptr tmp = node->left;
-						if (tmp)
-							tmp->parent = node->parent;
-						delete node;
-						return tmp;
-					} 
-					else
-					{
-						node_ptr tmp = node->right;
-						while (tmp->left)
-							tmp = tmp->left;
-						node->key = tmp->key;
-						node->value = tmp->value;
-						node->right = removeHelper(node->right, tmp->key);
-					}
-				}
-				return node;
-			}
-
-
-			void deleteTree(node_ptr node)
-			{
-				if (node == NULL)
-					return;
-			
-				deleteTree(node->left);
-				deleteTree(node->right);
-				
-				#if DEBUG
-					std::cout << MEDIUMORCHID3 << "Deleting node: " << node->value << RESET << std::endl;
-				#endif
-				delete node;
-			}
-
-//		GETTERS --------------------------------------------------------------------------------------
-
-			// return a pointer to root node
-			node_ptr	getRoot() const
-			{
-				return root_;
-			};
-
-			size_t		getSize() const
-			{
-				return size_;
-			}
-
-			node_ptr	getSmallestNode(node_ptr node) const
-			{
-				while (node->left != NULL)
-				{
-					if (node->key > node->left->key)
-						node = node->left;
-				}
-				return node;
-			}
-
-			node_ptr	getBiggestNode(node_ptr node) const
-			{
-				while (node->right != NULL)
-				{
-					if (node->key < node->right->key)
-						node = node->right;
-				}
-				return node;
-			}
-
-//		COPY TOOL --------------------------------------------------------------------------------------
-
-			void copyTree(node_ptr & copy, node_ptr original)
-			{
-				if (original == 0)
-					copy = 0;
-				else
-				{
-					copy = nodeAllocator_.allocate(1);
-					nodeAllocator_.construct(copy, *original);
-					copyTree(copy->left, original->left);
-					copyTree(copy->right, original->right);
-				}
-			};
-		
-		//		ITERATORS --------------------------------------------------------------------------------------
-	
-			iterator	begin()
-			{
-				return iterator(getSmallestNode(root_));
-			};
-
-			const_iterator	begin() const
-			{
-				return iterator(getSmallestNode(root_));
-			};
-
-			iterator	end()
-			{
-				return iterator(getBiggestNode(root_));
-			};
-
-			const_iterator	end() const
-			{
-				return iterator(getBiggestNode(root_));
-			};
-
-			reverse_iterator	rbegin()
-			{
-				return reverse_iterator(end());
-			};
-
-			const_reverse_iterator rbegin() const
-			{
-				return const_reverse_iterator(end());
-			};
-
-			// reverse_iterator	rend()
-			// {
-			// 	return tree_.rend();
-			// };
-
-			// const_reverse_iterator rend() const
-			// {
-			// 	return tree_.rend();
-			// };
-
-		protected:
-			node_ptr							root_;
-			std::allocator<Node<Key, Value> >	nodeAllocator_;
-			key_compare							comp_; // key comparator
-			allocator_type						allocator_;
-			size_type							size_; // total number of nodes
-
-		private :		
-
-			// recursive function, used to insert a new node
-			// from root_, find the next available place to create new Node
-			// !! WITHOUT CARING ABOUT BALANCE
-			node_ptr	insertHelper(node_ptr node, const Key &key, const Value &value)
-			{
-				if (node == 0)
-					return new Node<Key, Value>(key, value);
-				if (key == node->key)
-				{
-					node->value = value;
-					return node;
-				}
-				if (key < node->key)
-				{
-					if (node->left == 0)
-					{
-						node->left = new Node<Key, Value> (key, value);
-						node->left->parent = node;
-						return node->left;
-					}
-					return insertHelper(node->left, key, value);
-				}
-				if (node->right == 0)
-				{
-					node->right = new Node<Key, Value> (key, value);
-					node->right->parent = node;
-					return node->right;
-				}
-				return insertHelper(node->right, key, value);
-			};
-
-			// a function that searches a specific node and returns it
-			node_ptr findNode(node_ptr node, const Key &key) const
-			{
-				while (node != 0 && node->key != key)
-				{
-					if (key < node->key)
-						node = node->left;
-					else
-						node = node->right;
-				}
-				return node;
-			};
 	};
 }
