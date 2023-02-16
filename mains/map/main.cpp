@@ -197,17 +197,6 @@ int	main(int argc, char **argv)
 			june.insert(make_pair(15, 888));
 
 			std::cout << "June's begin is = " << june.begin()->first << std::endl;
-			std::cout << "June's end is = " << june.end()->first << std::endl;
-
-			map<int, int>::iterator itEnd = june.end();
-			itEnd++;
-			itEnd++;
-			itEnd++;
-			itEnd++;
-			itEnd++;
-
-			std::cout << itEnd->first << std::endl;
-			std::cout << itEnd->second << std::endl;
 
 			map<int, int>::iterator it = june.begin();
 			for(; it != june.end(); it++)
@@ -305,7 +294,7 @@ int	main(int argc, char **argv)
 			joe.insert(make_pair(13, 888));
 			joe.insert(make_pair(15, 888));
 
-			joe.getTree().printLevelOrder();
+			// joe.getTree().printLevelOrder();
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
