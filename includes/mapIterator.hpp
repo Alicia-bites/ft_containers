@@ -25,7 +25,7 @@ namespace ft
 				typedef std::ptrdiff_t                  difference_type;
 
                 private:
-                    typedef Node<Key, Value>  *  node_ptr;
+                    typedef Node<typename remove_cv<Key>::type, Value>  *  node_ptr;
 
                     node_ptr        node_;
                     pointer         pointer_;
@@ -53,14 +53,14 @@ namespace ft
                 };
 
                 // copy constructor
-                mapIterator(const mapIterator<Key, Value> & original)
+                mapIterator(const mapIterator<typename remove_cv<Key>::type, Value> & original)
                 {
                     # if DEBUG
                         std::cout << PALETURQUOISE1 << "Calling mapIterator copy constructor" << RESET << std::endl;
                     #endif
 
-                    node_ = original.node_;
-                    pointer_ = original.pointer_;
+                    node_ = original.getNode();
+                    pointer_ = original.base();
                 };
 
                 // destructor
@@ -88,7 +88,7 @@ namespace ft
 // OPERATOR OVERLOADS ---------------------------------------------------------------------------------------------
 				
                 // assignement operator
-                mapIterator<Key, Value>&    operator=(const mapIterator<Key, Value> & rhs)
+                mapIterator<Key, Value>&    operator=(const mapIterator<typename remove_cv<Key>::type, Value> & rhs)
                 {
                     # if DEBUG
                         std::cout << SEAGREEN3 << "Calling assignement operator" << RESET << std::endl;
