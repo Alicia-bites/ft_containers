@@ -198,9 +198,18 @@ int	main(int argc, char **argv)
 
 			std::cout << "June's begin is = " << june.begin()->first << std::endl;
 
+			std::cout << AQUAMARINE3 << "Testing incrementation of iterator --> " << "First with i++ : "
+				<< RESET << std::endl; 
 			map<int, int>::iterator it = june.begin();
 			for(; it != june.end(); it++)
 				std::cout << it->first << std::endl;
+
+			std::cout << AQUAMARINE3 << "Then with ++i : "
+				<< RESET << std::endl; 
+
+			map<int, int>::iterator it1 = june.begin();
+			for(; it1 != june.end(); ++it1)
+				std::cout << it1->first << std::endl;
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
@@ -230,6 +239,15 @@ int	main(int argc, char **argv)
 			june.insert(make_pair(13, 888));
 			june.insert(make_pair(15, 888));
 			
+			std::cout << AQUAMARINE3 << "Testing incrementation of iterator --> " << "First with i++ : "
+				<< RESET << std::endl; 
+			map<int, int>::reverse_iterator rit1 = june.rbegin();
+			std::cout << rit1->first << std::endl << std::endl;
+			for (; rit1 != june.rend(); rit1++)
+				std::cout << rit1->first << std::endl;
+
+			std::cout << AQUAMARINE3 << "Then with ++i : "
+				<< RESET << std::endl; 
 			map<int, int>::reverse_iterator rit = june.rbegin();
 			for (; rit != june.rend(); ++rit)
 				std::cout << rit->first << std::endl;
