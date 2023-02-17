@@ -177,9 +177,9 @@ namespace ft
 					node->color = RED;
 					if (!root_)
 						root_ = node;
-					size_++;
 					fixViolation(node);
 				}
+				size_++;
 				return iterator(node);
 			};
 
@@ -521,7 +521,6 @@ namespace ft
 				
 				right_child->left = node; // P becomes N's left child
 				node->parent = right_child; // N becomes P's parent
-				printTree(root_);
 			}
 
 			// rotate a node in the right direction.
