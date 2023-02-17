@@ -3,8 +3,11 @@
 // C++98 doesn't have std::ptrdiff_t so we use std::ptrdiff_t with an additional include <cstddef>.
 #include <cstddef>
 #include <iterator>
+#include <typeinfo>
 
 #include "remove_cv.hpp"
+#include "mapIterator.hpp"
+
 
 namespace ft
 {
@@ -71,7 +74,7 @@ namespace ft
 
 
 // std::reverse_iterator is an iterator adaptor that reverses the direction of a given iterator,
-	template <typename Iterator>
+	template <typename Iterator, typename Key = int, typename Value = int>
 	class reverse_iterator
 	{
 		protected:
@@ -111,7 +114,10 @@ namespace ft
 
 			reference operator*() const
 			{ 
-				Iterator tmp(current_position); return *--tmp;
+				Iterator tmp(current_position);
+				if (typeid(current_position) == typeid(mapIterator<Key, Value>))
+					return *tmp;
+				return *--tmp;
 			};
 
 	// 	OPERATOR OVERLOADS --------------------------------------------------------------------------------------------------------------
