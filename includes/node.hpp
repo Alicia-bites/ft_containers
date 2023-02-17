@@ -48,12 +48,14 @@ namespace ft
 
 			// copy constructor
 			Node(const Node & original)
-			: data(ft::make_pair(key, value))
+			: key(original.key)
+			, value(original.value)
+			, data(ft::make_pair(key, value))
 			{
 				if (this != &original)
 				{
-					key = original.key;
-					value = original.value;
+					// key = original.key;
+					// value = original.value;
 					color = original.color;
 					left = original.left;
 					right = original.right;
