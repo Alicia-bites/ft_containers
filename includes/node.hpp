@@ -33,7 +33,11 @@ namespace ft
 			, right(0)
 			, parent(0)
 			, data(0)
-			{};
+			{
+				# if DEBUG
+					std::cout << LIGHTSEAGREEN << "Calling Node default constructor" << RESET << std::endl;
+				# endif
+			};
 
 			// constructor #1
 			Node(const Key & key, const Value & value)
@@ -44,18 +48,24 @@ namespace ft
 			, right(0)
 			, parent(0)
 			, data(ft::make_pair(key, value))
-			{};
+			{
+				# if DEBUG
+					std::cout << LIGHTSEAGREEN << "Calling Node constructor #1" << RESET << std::endl;
+				# endif
+			};
 
 			// copy constructor
-			Node(const Node & original)
+			Node(const Node<typename remove_cv<Key>::type, Value> & original)
 			: key(original.key)
 			, value(original.value)
 			, data(ft::make_pair(key, value))
 			{
+				# if DEBUG
+					std::cout << LIGHTSEAGREEN << "Calling Node copy constructor" << RESET << std::endl;
+				# endif
+
 				if (this != &original)
 				{
-					// key = original.key;
-					// value = original.value;
 					color = original.color;
 					left = original.left;
 					right = original.right;
@@ -63,10 +73,35 @@ namespace ft
 				}
 			}
 
-			// ~Node()
-			// {
-				// delete data;
-			// }
+			// destructor
+			~Node()
+			{
+				# if DEBUG
+					std::cout << LIGHTSEAGREEN << "Calling Node destructor" << RESET << std::endl;
+				# endif
+			}
+
+			// assignement operator
+			Node<Key, Value>&    operator=(const Node<typename remove_cv<Key>::type, Value> & rhs)
+			{
+				# if DEBUG
+					std::cout << LIGHTSEAGREEN << "Calling Node assignement operator" << RESET << std::endl;
+				# endif
+
+				if (this == &rhs)
+					return *this;
+
+				key = rhs.key;
+				value = rhs.value;
+				color = rhs.color;
+				left = rhs.left;
+				right = rhs.right;
+				parent = rhs.parent;
+				data = ft::make_pair(key, value);
+
+				return *this;
+			};
+			
 	};
 
 	template<typename Key, typename Value>
