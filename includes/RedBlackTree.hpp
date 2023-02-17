@@ -89,6 +89,22 @@ namespace ft
 
 //		ASSIGNEMENT ----------------------------------------------------------------------------------------------------------------------------
 
+//		CAPACITY --------------------------------------------------------------------------------------
+			bool	empty() const
+			{
+				return (size_ == 0 ? true : false);
+			};
+
+			size_type	size() const
+			{
+				return size_;
+			};
+
+			size_type	max_size() const
+			{
+				return allocator_.max_size();
+			};
+
 //		ACCESSORS --------------------------------------------------------------------------------------
 
 			Value &operator[](const Key &key)
@@ -122,6 +138,9 @@ namespace ft
 			// the newly inserted element or to the element with an equivalent key in the map
 			ft::pair<node_ptr, bool>	insert(const value_type & input_pair)
 			{
+				if (size_ == allocator_.max_size())
+					throw (std::length_error("map::insert"));
+
 				node_ptr node = findNode(root_, input_pair.first);
 				
 				if (node)
@@ -133,6 +152,35 @@ namespace ft
 				size_++;
 				fixViolation(node);
 				return ft::make_pair(node, true);
+			};
+
+			// inserts a new node.
+			// optimizes its insertion time if position points to the element that will
+			// precede the inserted element.
+			// returns an iterator pointing to either the newly inserted element or to the
+			// element that already had an equivalent key in the map.
+			iterator	insert(iterator position, const value_type & input_pair)
+			{
+				if (size_ == allocator_.max_size())
+					throw (std::length_error("map::insert"));
+
+				node_ptr node = findNode(root_, input_pair.first);
+				if (node)
+					return iterator(node);
+				
+				if (position == begin() || (--position)->first < input_pair.first)
+					node = insertHelper(root_, input_pair.first, input_pair.second, position);
+
+				else
+				{
+					node = insertHelper(root_, input_pair.first, input_pair.second);
+					node->color = RED;
+					if (!root_)
+						root_ = node;
+					size_++;
+					fixViolation(node);
+				}
+				return iterator(node);
 			};
 
 			size_t	remove(const key_type & key)
@@ -240,7 +288,7 @@ namespace ft
 
 			const_iterator	begin() const
 			{
-				return iterator(getSmallestNode(root_));
+				return const_iterator(getSmallestNode(root_));
 			};
 
 			iterator	end()
@@ -260,10 +308,10 @@ namespace ft
 				return reverse_iterator(it);
 			};
 
-			// const_reverse_iterator rbegin() const
-			// {
-				// return const_reverse_iterator(getBiggestNode(root_));
-			// };
+			const_reverse_iterator rbegin() const
+			{
+				return const_reverse_iterator(getBiggestNode(root_));
+			};
 
 			reverse_iterator	rend()
 			{
@@ -271,10 +319,10 @@ namespace ft
 				return reverse_iterator(it);
 			};
 
-			// const_reverse_iterator rend() const
-			// {
-				// return NULL;
-			// };
+			const_reverse_iterator rend() const
+			{
+				return NULL;
+			};
 
 		protected:
 			node_ptr							root_;
@@ -315,6 +363,46 @@ namespace ft
 				}
 				return insertHelper(node->right, key, value);
 			};
+
+			// optimized insertHelper if iterator position points to the element that
+			// would be BEFORE the newly inserted element
+			node_ptr insertHelper(node_ptr node, const Key& key, const Value& value, const_iterator position)
+			{
+				if (node == 0)
+					return new Node<Key, Value>(key, value);
+
+				if (key == node->key)
+				{
+					node->value = value;
+					return node;
+				}
+
+				if (key < node->key)
+				{
+					if (node->left == 0)
+					{
+						node->left = new Node<Key, Value>(key, value);
+						node->left->parent = node;
+						if (node == position.getNode())
+							node = node->left;
+						return node->left;
+					}
+					return insertHelper(node->left, key, value, position);
+				}
+				else
+				{
+					if (node->right == 0)
+					{
+						node->right = new Node<Key, Value>(key, value);
+						node->right->parent = node;
+						if (node == position.getNode()->left)
+							position.getNode()->left = node->right;
+						return node->right;
+					}
+					return insertHelper(node->right, key, value, position);
+				}
+			}
+
 
 			// a function that searches a specific node and returns it
 			node_ptr findNode(node_ptr node, const Key &key) const
@@ -433,6 +521,7 @@ namespace ft
 				
 				right_child->left = node; // P becomes N's left child
 				node->parent = right_child; // N becomes P's parent
+				printTree(root_);
 			}
 
 			// rotate a node in the right direction.
@@ -519,7 +608,7 @@ namespace ft
 								parent = node->parent;
 							}
 							parent->color = BLACK;
-							parent->color = RED;
+							grand_parent->color = RED;
 							rotateLeft(grand_parent);
 						}
 					}
