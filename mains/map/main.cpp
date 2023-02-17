@@ -312,14 +312,14 @@ int	main(int argc, char **argv)
 			print_map(joe, "joe");
 
 			map<int,int>::iterator it = joe.begin();
-			int n = 4;
+			int n = 7;
 			while (n--)
 				it++;
 			std::cout << "it = " << it->first << std::endl;
 
-			joe.insert (it, make_pair(9, 99999999));  // no max efficiency inserting
+			joe.insert (it, make_pair(9, 99999999));  // max efficiency inserting
 
-			joe.insert (it, make_pair(2, 33333333));  // max efficiency inserting
+			joe.insert (it, make_pair(2, 33333333));  // no max efficiency inserting
 
 
 			print_map(joe, "joe");
