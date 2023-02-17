@@ -196,13 +196,13 @@ namespace ft
 			
 			Value &	operator[](const key_type& x)	
 			{
-				tree_[x];
+				return tree_[x];
 			};
 
 			RBTree &	getTree()
 			{
 				return tree_;
-			}
+			};
 
 //		MODIFIERS --------------------------------------------------------------------------------------
 			
@@ -217,7 +217,11 @@ namespace ft
 				return tree_.insert(input_pair);
 			};
 			
-			// iterator	insert(iterator position, const value_type& x);
+			iterator	insert(iterator position, const value_type& input_pair)
+			{
+				return tree_.insert(position, input_pair);
+			}
+
 			// template <class InputIterator>
 			// 	void 	insert(InputIterator first, InputIterator last);
 
