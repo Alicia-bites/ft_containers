@@ -9,6 +9,8 @@
 #include <iostream>
 #include <utility>
 #include <map>
+#include <ctime>
+
 
 // change default namespace
 #ifndef STD
@@ -19,27 +21,25 @@
 
 using namespace NAMESPACE;
 
-template <typename T>
-	void	print_map(T map)
-	{
-		std::cout << "map size is " << map.size() << std::endl;
-		std::cout << "map capacity is " << map.capacity() << std::endl;
-		for (size_t i = 0; i < map.size(); i++)
-			std::cout << map[i] << " | ";
-		std::cout << std::endl;
-	}
-
-template <typename T>
-	void	print_map(T map, std::string map_name)
+template <typename Key, typename Value>
+	void	print_map(const ::map<Key, Value> & map, std::string map_name)
 	{
 		std::cout << DODGERBLUE2 << "-----------------------------------------------------------------------------" << std::endl;
 		std::cout << "Printing " << map_name << std::endl;
-		std::cout << "map size is " << map.size() << std::endl;
-		std::cout << "map capacity is " << map.capacity() << std::endl;
-		for (size_t i = 0; i < map.size(); i++)
-			std::cout << map[i] << " | ";
+		std::cout << DEEPSKYBLUE1 << "map size is " << map.size() << std::endl;
+
+		typename ::map<Key, Value>::const_iterator it;
+		std::cout << "Key " << " = " << "Value" << std::endl;
+		for (it = map.begin(); it != map.end(); it++)
+			std::cout << ORANGERED1 << it->first << "    =    " << DARKTURQUOISE << it->second << std::endl;
+
+		// FOR DEBUG
+		// typename ::map<Key, Value>::const_reverse_iterator rit;
+		// for (rit = map.rbegin(); rit != map.rend(); ++rit)
+		// 	std::cout << rit->first << std::endl;
+
 		std::cout << std::endl;
-		std::cout << DODGERBLUE2 << "-----------------------------------------------------------------------------" << RESET << std::endl;
+		std::cout << NAVY << "-----------------------------------------------------------------------------" << RESET << std::endl;
 	}
 
 int	main(int argc, char **argv)
@@ -219,7 +219,7 @@ int	main(int argc, char **argv)
 		if (test_number == 4)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Building rotations" 
+			std::cout << STEELBLUE3 << "Testing reverse_iterator" 
 				<< RESET << std::endl << std::endl;
 
 			map<int, int> june;
@@ -239,7 +239,7 @@ int	main(int argc, char **argv)
 			june.insert(make_pair(13, 888));
 			june.insert(make_pair(15, 888));
 			
-			std::cout << AQUAMARINE3 << "Testing incrementation of iterator --> " << "First with i++ : "
+			std::cout << AQUAMARINE3 << "Testing incrementation of reverse_iterator --> " << "First with i++ : "
 				<< RESET << std::endl; 
 			map<int, int>::reverse_iterator rit1 = june.rbegin();
 			std::cout << rit1->first << std::endl << std::endl;
@@ -251,6 +251,7 @@ int	main(int argc, char **argv)
 			map<int, int>::reverse_iterator rit = june.rbegin();
 			for (; rit != june.rend(); ++rit)
 				std::cout << rit->first << std::endl;
+
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
 			<< std::endl << RESET;
@@ -289,26 +290,41 @@ int	main(int argc, char **argv)
 		if (test_number == 6)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing printLevelOrderHelper" 
+			std::cout << STEELBLUE3 << "Testing second insert function version (with hint position)" 
 				<< RESET << std::endl << std::endl;
 
 			map<int, int> joe;
 			joe.insert(make_pair(8, 777));
-			joe.insert(make_pair(4, 333));
-			joe.insert(make_pair(12, 101010));
-			joe.insert(make_pair(2, 555));
-			joe.insert(make_pair(6, 888));
-			joe.insert(make_pair(10, 888));
-			joe.insert(make_pair(14, 888));
-			joe.insert(make_pair(1, 888));
-			joe.insert(make_pair(3, 888));
-			joe.insert(make_pair(5, 888));
-			joe.insert(make_pair(7, 888));
-			joe.insert(make_pair(9, 888));
-			joe.insert(make_pair(11, 888));
-			joe.insert(make_pair(13, 888));
-			joe.insert(make_pair(15, 888));
+			joe.insert(make_pair(2, 777));
+			joe.insert(make_pair(4, 777));
+			joe.insert(make_pair(12, 777));
+			joe.insert(make_pair(6, 777));
+			joe.insert(make_pair(14, 777));
+			joe.insert(make_pair(1, 777));
+			joe.insert(make_pair(3, 777));
+			joe.insert(make_pair(5, 777));
+			joe.insert(make_pair(7, 777));
+			joe.insert(make_pair(10, 777));
+			joe.insert(make_pair(11, 777));
+			joe.insert(make_pair(13, 777));
+			joe.insert(make_pair(15, 777));
 
+			print_map(joe, "joe");
+
+			map<int,int>::iterator it = joe.begin();
+			int n = 4;
+			while (n--)
+				it++;
+			std::cout << "it = " << it->first << std::endl;
+
+			joe.insert (it, make_pair(9, 99999999));  // no max efficiency inserting
+
+			joe.insert (it, make_pair(2, 33333333));  // max efficiency inserting
+
+
+			print_map(joe, "joe");
+
+			// joe.getTree().printTree(joe.getTree().getRoot());
 			// joe.getTree().printLevelOrder();
 
 			std::cout << std::endl << STEELBLUE2
