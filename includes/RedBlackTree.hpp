@@ -215,6 +215,34 @@ namespace ft
 				return iterator(node);
 			};
 
+			// returns a fresh key, guarantied unused
+			Key 	extractKey()
+			{
+				Key lastKey = '0';
+				if (root_ == NULL)
+					return lastKey++;
+				lastKey = getBiggestNode(root_)->key;
+				Key newKey = lastKey + 1;
+				return newKey;
+			}
+
+			template <class InputIterator>
+				void	insert(InputIterator first, InputIterator last)
+				{
+					if (size_ == allocator_.max_size())
+						throw (std::length_error("map::insert"));
+	
+					for (; first != last; first++)
+					{
+						node_ptr node = insertHelper(root_, first->first, first->second);
+						node->color = RED;
+						if (!root_)
+							root_ = node;
+						size_++;
+						fixViolation(node);
+					}
+				};
+
 			size_t	remove(const key_type & key)
 			{
 				size_t n = 0;
@@ -242,6 +270,8 @@ namespace ft
 
 			node_ptr	getSmallestNode(node_ptr node) const
 			{
+				if (node == 0)
+					return node;
 				while (node->left != NULL)
 				{
 					if (node->key > node->left->key)
@@ -252,6 +282,8 @@ namespace ft
 
 			node_ptr	getBiggestNode(node_ptr node) const
 			{
+				if (node == 0)
+					return node;
 				while (node->right != NULL)
 				{
 					if (node->key < node->right->key)
@@ -355,6 +387,16 @@ namespace ft
 			{
 				return NULL;
 			};
+
+//		TREE OPERATIONS --------------------------------------------------------------------------------------
+
+			node_ptr	 find(const key_type & key)
+			{
+				node_ptr node = findNode(root_, key);
+				if (!node)
+					return NULL;
+				return node;
+			}
 
 		protected:
 			node_ptr							root_;
