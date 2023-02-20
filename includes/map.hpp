@@ -217,13 +217,25 @@ namespace ft
 				return tree_.insert(input_pair);
 			};
 			
+			//  Extends the container by inserting new elements, effectively increasing 
+			// the container size by the number of elements inserted.
+			// This versions with a hint return an iterator pointing to either the 
+			// newly inserted element or to the element that already had an equivalent key in the map.
 			iterator	insert(iterator position, const value_type& input_pair)
 			{
 				return tree_.insert(position, input_pair);
 			}
 
-			// template <class InputIterator>
-			// 	void 	insert(InputIterator first, InputIterator last);
+			// Iterators specifying a range of elements. Copies of the elements
+			// in the range [first,last) are inserted in the container.
+			// Notice that the range includes all the elements between first and
+			// last, including the element pointed by first but not the one
+			// pointed by last.
+			template <class InputIterator>
+				void 	insert(InputIterator first, InputIterator last)
+				{
+					return tree_.insert(first, last);
+				};
 
 			// Removes from the map container either a single element or a range of
 			// elements ([first,last)).
@@ -253,8 +265,19 @@ namespace ft
 
 //		MAP OPERATIONS --------------------------------------------------------------------------------------
 
-			// iterator	find(const key_type& x);
-			// const_iterator find(const key_type& x) const;
+			// Searches the container for an element with a key equivalent to k
+			// and returns an iterator to it if found, otherwise it returns an
+			// iterator to map::end.
+			iterator	find(const key_type& key)
+			{
+				return tree_.find(key);
+			};
+
+			const_iterator find(const key_type& key) const
+			{
+				return tree_.find(key);
+			};
+
 			size_type	count(const key_type& x) const;
 			// iterator	lower_bound(const key_type& x);
 			// const_iterator lower_bound(const key_type& x) const;
