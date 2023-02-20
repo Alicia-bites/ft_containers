@@ -94,8 +94,8 @@ namespace ft
                         std::cout << SEAGREEN3 << "Calling assignement operator" << RESET << std::endl;
                     # endif
 
-                    node_ = rhs.node_;
-                    pointer_ = rhs.pointer_;
+                    node_ = rhs.getNode();
+                    pointer_ = rhs.base();
                     return *this;
                 };
                 
@@ -217,8 +217,32 @@ namespace ft
 			return lhs.getNode()->key == rhs.getNode()->key;
 		};
 
+    template <typename Key, typename Value>
+		bool	operator==(const mapIterator<Key, Value> & lhs, const mapIterator<typename remove_cv<Key>::type, Value> & rhs)
+		{
+            if (lhs.getNode() == 0 && rhs.getNode() == 0)
+                return true;
+            else if (lhs.getNode() == 0 && rhs.getNode() != 0)
+                return false;
+            else if (lhs.getNode() != 0 && rhs.getNode() == 0)
+                return false;
+			return lhs.getNode()->key == rhs.getNode()->key;
+		};
+
 	template <typename Key, typename Value>
 		bool	operator!=(const mapIterator<Key, Value> & lhs, const mapIterator<Key, Value> & rhs)
+		{
+            if (lhs.getNode() == 0 && rhs.getNode() == 0)
+                return false;
+            else if (lhs.getNode() == 0 && rhs.getNode() != 0)
+                return true;
+            else if (lhs.getNode() != 0 && rhs.getNode() == 0)
+                return true;
+			return lhs.getNode()->key != rhs.getNode()->key;
+		};
+    
+    template <typename Key, typename Value>
+		bool	operator!=(const mapIterator<Key, Value> & lhs, const mapIterator<typename remove_cv<Key>::type, Value> & rhs)
 		{
             if (lhs.getNode() == 0 && rhs.getNode() == 0)
                 return false;
