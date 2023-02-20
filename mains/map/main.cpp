@@ -448,9 +448,32 @@ int	main(int argc, char **argv)
 		if (test_number == 10)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing " 
+			std::cout << STEELBLUE3 << "Testing key_comp" 
 				<< RESET << std::endl << std::endl;
 
+			map<char, int> mymap;
+			
+			map<char, int>::key_compare mycomp = mymap.key_comp();
+			
+			// mymap['a'] = 100;
+			// mymap['b'] = 200;
+			// mymap['c'] = 300;
+
+			mymap.insert(make_pair('a', 100));
+			mymap.insert(make_pair('b', 200));
+			mymap.insert(make_pair('c', 300));
+
+			
+			std::cout << "mymap contains:\n";
+			
+			char highest = mymap.rbegin()->first;     // key value of last element
+			
+			map<char,int>::iterator it = mymap.begin();
+			do {
+				std::cout << it->first << " => " << it->second << '\n';
+			} while ( mycomp((*it++).first, highest) );
+			
+			std::cout << '\n';
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"

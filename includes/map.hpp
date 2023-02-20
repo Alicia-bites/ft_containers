@@ -260,7 +260,13 @@ namespace ft
 			// void	clear();
 
 //		OBSERVERS --------------------------------------------------------------------------------------
-			key_compare	key_comp() const;
+			
+			// Returns a copy of the comparison object used by the container to compare keys.
+			key_compare	key_comp() const
+			{
+				return key_compare();
+			};
+
 			value_compare	value_comp() const;
 
 //		MAP OPERATIONS --------------------------------------------------------------------------------------
