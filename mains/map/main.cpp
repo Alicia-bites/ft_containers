@@ -33,11 +33,6 @@ template <typename Key, typename Value>
 		for (it = map.begin(); it != map.end(); it++)
 			std::cout << ORANGERED1 << it->first << "    =    " << DARKTURQUOISE << it->second << std::endl;
 
-		// FOR DEBUG
-		// typename ::map<Key, Value>::const_reverse_iterator rit;
-		// for (rit = map.rbegin(); rit != map.rend(); ++rit)
-		// 	std::cout << rit->first << std::endl;
-
 		std::cout << std::endl;
 		std::cout << NAVY << "-----------------------------------------------------------------------------" << RESET << std::endl;
 	}
@@ -310,24 +305,32 @@ int	main(int argc, char **argv)
 			joe.insert(make_pair(13, 777));
 			joe.insert(make_pair(15, 777));
 
-			// print_map(joe, "joe");
+			print_map(joe, "joe");
 
 			map<int,int>::iterator it = joe.begin();
 			int n = 9;
 			while (n--)
 				it++;
-			std::cout << "it = " << it->first << std::endl;
+			std::cout << "We create a iterator that points to node with key " << it->first << "." << std::endl;
 
-			// joe.getTree().printRBTree(joe.getTree().getRoot());
+			map<int,int>::iterator res;
 
-			joe.insert (it, make_pair(12, 1010101010));  // max efficiency inserting
+			std::cout << "Inserting element with key 12 (max efficiency inserting)... " << std::endl;
+			res = joe.insert (it, make_pair(12, 1010101010));  // max efficiency inserting
+			std::cout << "RES = " << res->first << " -- " << res->second << std::endl;
 
-			joe.insert (it, make_pair(2, 33333333));  // no max efficiency inserting
+			std::cout << "Inserting element with key 2 (no max efficiency inserting)... " << std::endl;
+			res = joe.insert (it, make_pair(2, 33333333));  // no max efficiency inserting
+			std::cout << "RES = " << res->first << " -- " << res->second << std::endl;
 
-			// print_map(joe, "joe");
+			std::cout << "Inserting element with key that is already taken" << std::endl;
+			res = joe.insert (it, make_pair(2, 33333333));  // no max efficiency inserting
+			std::cout << "RES = " << res->first << " -- " << res->second << std::endl;
+
+			print_map(joe, "joe");
 
 			// joe.getTree().printTree(joe.getTree().getRoot());
-			joe.getTree().printRBTree(joe.getTree().getRoot());
+			// joe.getTree().printRBTree(joe.getTree().getRoot());
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
