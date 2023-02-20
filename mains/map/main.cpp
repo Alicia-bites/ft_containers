@@ -30,9 +30,12 @@ template <typename Key, typename Value>
 
 		typename ::map<Key, Value>::const_iterator it;
 		std::cout << "Key " << " = " << "Value" << std::endl;
-		for (it = map.begin(); it != map.end(); it++)
+		it = map.begin();
+		while (it != map.end())
+		{
 			std::cout << ORANGERED1 << it->first << "    =    " << DARKTURQUOISE << it->second << std::endl;
-
+			it++;
+		}
 		std::cout << std::endl;
 		std::cout << NAVY << "-----------------------------------------------------------------------------" << RESET << std::endl;
 	}
@@ -344,13 +347,14 @@ int	main(int argc, char **argv)
 				<< RESET << std::endl << std::endl;
 
 			map<char, int> lily;
-			lily.insert(make_pair('a', 777));
-			lily.insert(make_pair('b', 777));
-			lily.insert(make_pair('c', 777));
+			// lily.insert(make_pair('a', 777));
+			// lily.insert(make_pair('b', 777));
+			// lily.insert(make_pair('c', 777));
 
 
   			map<char,int> anothermap;
   			anothermap.insert(lily.begin(),lily.find('c'));
+			print_map(anothermap, "anothermap");
 
 			map<char, int>::iterator first = anothermap.begin();
 			map<char, int>::iterator last = anothermap.end();
