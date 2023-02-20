@@ -209,37 +209,37 @@ namespace ft
 			return gandalf.base() >= sauron.base();
 		};
 
-	template <class T, class U>
+	template <typename T, typename U>
 		bool operator==(const vectorIterator<T> & gandalf, const vectorIterator<U> & sauron)
 		{
 			return gandalf.base() == sauron.base();
 		}
 	
-	template <class T, class U>
+	template <typename T, typename U>
 		bool operator!=(const vectorIterator<T> & gandalf, const vectorIterator<U> & sauron)
 		{
 			return gandalf.base() != sauron.base();
 		}
 	
-	template <class T, class U>
+	template <typename T, typename U>
 		bool operator<(const vectorIterator<T> & gandalf, const vectorIterator<U> & sauron)
 		{
 			return gandalf.base() < sauron.base();
 		}
 	
-	template <class T, class U>
+	template <typename T, typename U>
 		bool operator>(const vectorIterator<T> & gandalf, const vectorIterator<U> & sauron)
 		{
 			return gandalf.base() > sauron.base();
 		}
 	
-	template <class T, class U>
+	template <typename T, typename U>
 		bool operator<=(const vectorIterator<T> & gandalf, const vectorIterator<U> & sauron)
 		{
 			return gandalf.base() <= sauron.base();
 		}
 	
-	template <class T, class U>
+	template <typename T, typename U>
 		bool operator>=(const vectorIterator<T> & gandalf, const vectorIterator<U> & sauron)
 		{
 			return gandalf.base() >= sauron.base();
