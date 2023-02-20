@@ -146,6 +146,7 @@ namespace ft
                 };
 
             private :
+
                 void    increment()
                 {
                     if (node_->right)
@@ -157,6 +158,12 @@ namespace ft
                     else
                     {
                         node_ptr parent = node_->parent;
+                        if (!parent)
+                        {
+                            node_ = NULL;
+                            pointer_ = NULL;
+                            return ;
+                        }
                         while (node_ == parent->right)
                         { 
                             node_ = parent;
@@ -185,6 +192,12 @@ namespace ft
                     else
                     {
                         node_ptr parent = node_->parent;
+                        if (!parent)
+                        {
+                            node_ = NULL;
+                            pointer_ = NULL;
+                            return ;
+                        }
                         while (node_ == parent->left)
                         {
                             node_ = parent;
