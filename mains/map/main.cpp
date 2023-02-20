@@ -295,37 +295,39 @@ int	main(int argc, char **argv)
 
 			map<int, int> joe;
 			joe.insert(make_pair(8, 777));
-			joe.insert(make_pair(2, 777));
+			// joe.insert(make_pair(2, 777));
 			joe.insert(make_pair(4, 777));
-			joe.insert(make_pair(12, 777));
+			// joe.insert(make_pair(12, 777));
 			joe.insert(make_pair(6, 777));
 			joe.insert(make_pair(14, 777));
 			joe.insert(make_pair(1, 777));
 			joe.insert(make_pair(3, 777));
 			joe.insert(make_pair(5, 777));
 			joe.insert(make_pair(7, 777));
+			joe.insert(make_pair(9, 777));
 			joe.insert(make_pair(10, 777));
 			joe.insert(make_pair(11, 777));
 			joe.insert(make_pair(13, 777));
 			joe.insert(make_pair(15, 777));
 
-			print_map(joe, "joe");
+			// print_map(joe, "joe");
 
 			map<int,int>::iterator it = joe.begin();
-			int n = 7;
+			int n = 9;
 			while (n--)
 				it++;
 			std::cout << "it = " << it->first << std::endl;
 
-			joe.insert (it, make_pair(9, 99999999));  // max efficiency inserting
+			// joe.getTree().printRBTree(joe.getTree().getRoot());
+
+			joe.insert (it, make_pair(12, 1010101010));  // max efficiency inserting
 
 			joe.insert (it, make_pair(2, 33333333));  // no max efficiency inserting
 
-
-			print_map(joe, "joe");
+			// print_map(joe, "joe");
 
 			// joe.getTree().printTree(joe.getTree().getRoot());
-			// joe.getTree().printLevelOrder();
+			joe.getTree().printRBTree(joe.getTree().getRoot());
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"

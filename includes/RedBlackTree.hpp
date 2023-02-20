@@ -116,6 +116,8 @@ namespace ft
 				return node->value;
 			};
 
+//		VISUALIZERS --------------------------------------------------------------------------------------
+			
 			// print all the keys and values of the tree.
 			void	printTree(node_ptr node)
 			{
@@ -130,6 +132,34 @@ namespace ft
 					printTree(node->right);
 				}
 			};
+
+			bool isRed(node_ptr node)
+			{
+				 if (node->color == RED)
+				 	return 1;
+				return 0;
+			}
+
+			void printRBTree(Node<Key, Value>* node, int depth = 0, bool isLeft = false)
+			{
+				if (node == 0)
+					return;
+			
+				// Print right child
+				printRBTree(node->right, depth + 1, false);
+			
+				// Print current node
+				for (int i = 0; i < depth; i++)
+					std::cout << "    ";
+				std::cout << (isLeft ? "└──" : "┌──");
+				if (isRed(node))
+					std::cout << RED1;
+				std::cout << "(" << node->key << ")" << RESET;
+				std::cout << std::endl;
+			
+				// Print left child
+				printRBTree(node->left, depth + 1, true);
+			}
 
 //		MODIFIERS --------------------------------------------------------------------------------------
 
@@ -167,9 +197,11 @@ namespace ft
 				node_ptr node = findNode(root_, input_pair.first);
 				if (node)
 					return iterator(node);
-				
 				if (position == begin() || (--position)->first < input_pair.first)
-					node = insertHelper(root_, input_pair.first, input_pair.second, position);
+				{
+					++position;
+					node = insertHelper(position.getNode(), input_pair.first, input_pair.second);
+				}
 
 				else
 				{
@@ -244,40 +276,40 @@ namespace ft
 			// }
 			
 			// print tree level by level
-			void	printLevelOrder()
-			{
-				printLevelOrderHelper(root_);
-			}
-
+			// void	printLevelOrder()
+			// {
+				// printLevelOrderHelper(root_);
+			// }
+// 
 			// If x is a power of 2, it will have only one bit set to 1,
 			// which will be the leftmost (most significant) bit. 
-			bool isPowerOfTwo(int x)
-			{ 
-				return (x != 0) && ((x & (x - 1)) == 0);
-			}
-
-			void	printLevelOrderHelper(node_ptr node)
-			{
-				if (node == NULL)
-					return;
-				std::queue<node_ptr > q;
-				q.push(node);
-
-				int n = 1;
-				while (!q.empty())
-				{
-					if (isPowerOfTwo(n))
-						std::cout << std::endl;
-					node_ptr tmp = q.front();
-					std::cout << tmp->key << " ";
-					q.pop();
-					n++;
-					if (tmp->left != NULL)
-						q.push(tmp->left);
-					if (tmp->right != NULL)
-						q.push(tmp->right);
-				}
-			}
+			// bool isPowerOfTwo(int x)
+			// { 
+				// return (x != 0) && ((x & (x - 1)) == 0);
+			// }
+// 
+			// void	printLevelOrderHelper(node_ptr node)
+			// {
+				// if (node == NULL)
+					// return;
+				// std::queue<node_ptr > q;
+				// q.push(node);
+// 
+				// int n = 1;
+				// while (!q.empty())
+				// {
+					// if (isPowerOfTwo(n))
+						// std::cout << std::endl;
+					// node_ptr tmp = q.front();
+					// std::cout << tmp->key << " ";
+					// q.pop();
+					// n++;
+					// if (tmp->left != NULL)
+						// q.push(tmp->left);
+					// if (tmp->right != NULL)
+						// q.push(tmp->right);
+				// }
+			// }
 		
 		//		ITERATORS --------------------------------------------------------------------------------------
 	
@@ -364,44 +396,44 @@ namespace ft
 				return insertHelper(node->right, key, value);
 			};
 
-			// optimized insertHelper if iterator position points to the element that
-			// would be BEFORE the newly inserted element
-			node_ptr insertHelper(node_ptr node, const Key& key, const Value& value, const_iterator position)
-			{
-				if (node == 0)
-					return new Node<Key, Value>(key, value);
+			// // optimized insertHelper if iterator position points to the element that
+			// // would be BEFORE the newly inserted element
+			// node_ptr insertHelper(node_ptr node, const Key& key, const Value& value, const_iterator position)
+			// {
+			// 	if (node == 0)
+			// 		return new Node<Key, Value>(key, value);
 
-				if (key == node->key)
-				{
-					node->value = value;
-					return node;
-				}
+			// 	if (key == node->key)
+			// 	{
+			// 		node->value = value;
+			// 		return node;
+			// 	}
 
-				if (key < node->key)
-				{
-					if (node->left == 0)
-					{
-						node->left = new Node<Key, Value>(key, value);
-						node->left->parent = node;
-						if (node == position.getNode())
-							node = node->left;
-						return node->left;
-					}
-					return insertHelper(node->left, key, value, position);
-				}
-				else
-				{
-					if (node->right == 0)
-					{
-						node->right = new Node<Key, Value>(key, value);
-						node->right->parent = node;
-						if (node == position.getNode()->left)
-							position.getNode()->left = node->right;
-						return node->right;
-					}
-					return insertHelper(node->right, key, value, position);
-				}
-			}
+			// 	if (key < node->key)
+			// 	{
+			// 		if (node->left == 0)
+			// 		{
+			// 			node->left = new Node<Key, Value>(key, value);
+			// 			node->left->parent = node;
+			// 			if (node == position.getNode())
+			// 				node = node->left;
+			// 			return node->left;
+			// 		}
+			// 		return insertHelper(node->left, key, value, position);
+			// 	}
+			// 	else
+			// 	{
+			// 		if (node->right == 0)
+			// 		{
+			// 			node->right = new Node<Key, Value>(key, value);
+			// 			node->right->parent = node;
+			// 			if (node == position.getNode()->left)
+			// 				position.getNode()->left = node->right;
+			// 			return node->right;
+			// 		}
+			// 		return insertHelper(node->right, key, value, position);
+			// 	}
+			// }
 
 
 			// a function that searches a specific node and returns it
