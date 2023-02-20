@@ -3,7 +3,6 @@
 #include "../../includes/RedBlackTree.hpp"
 #include "../../includes/BST.hpp"
 #include "../../colors/colors.hpp"
-#include "../../includes/vector.hpp"
 
 #include <string>
 #include <algorithm>
@@ -11,7 +10,6 @@
 #include <utility>
 #include <map>
 #include <ctime>
-#include <vector>
 
 
 // change default namespace
@@ -357,7 +355,7 @@ int	main(int argc, char **argv)
 			map<char, int>::iterator first = anothermap.begin();
 			map<char, int>::iterator last = anothermap.end();
 
-			// lily.insert(make_pair(777, 777));
+			lily.insert(make_pair('z', 777));
 			lily.insert(first, last);
 
 			print_map(lily, "lily");
@@ -405,6 +403,190 @@ int	main(int argc, char **argv)
 			<< "#########################################################"
 			<< std::endl << RESET;
 		}
+
+		if (test_number == 9)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing find -- const version" 
+				<< RESET << std::endl << std::endl;
+
+			map<char, int> lily;
+
+			map<char, int>::const_iterator res = lily.find('c');
+
+			if (res != lily.end())
+				std::cout << "res = " << res->first << " -- " << res->second << std::endl;
+			else
+				std::cout << "No key found" << std::endl;
+
+			lily.insert(make_pair('a', 777));
+			lily.insert(make_pair('b', 777));
+			lily.insert(make_pair('c', 777));
+			print_map(lily, "lily");
+
+			res = lily.find('c');
+			if (res != lily.end())
+				std::cout << "res = " << res->first << " -- " << res->second << std::endl;
+			else
+				std::cout << "No key found" << std::endl;
+
+			res = lily.find('d');
+			if (res != lily.end())
+				std::cout << "res = " << res->first << " -- " << res->second << std::endl;
+			else
+				std::cout << "No key found" << std::endl;
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		if (test_number == 10)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing " 
+				<< RESET << std::endl << std::endl;
+
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		if (test_number == 11)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing " 
+				<< RESET << std::endl << std::endl;
+
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		if (test_number == 12)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing " 
+				<< RESET << std::endl << std::endl;
+
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		if (test_number == 13)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing " 
+				<< RESET << std::endl << std::endl;
+
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		if (test_number == 14)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing " 
+				<< RESET << std::endl << std::endl;
+
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		if (test_number == 15)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing " 
+				<< RESET << std::endl << std::endl;
+
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		if (test_number == 16)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing " 
+				<< RESET << std::endl << std::endl;
+
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		if (test_number == 17)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing " 
+				<< RESET << std::endl << std::endl;
+
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+		
+		if (test_number == 18)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing " 
+				<< RESET << std::endl << std::endl;
+
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+		
+		if (test_number == 19)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing " 
+				<< RESET << std::endl << std::endl;
+
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		
+		if (test_number == 20)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing " 
+				<< RESET << std::endl << std::endl;
+
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		
+		if (test_number == 21)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing " 
+				<< RESET << std::endl << std::endl;
+
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
 	}
 	catch(const std::exception& e)
 	{
