@@ -3,6 +3,7 @@
 #include "../../includes/RedBlackTree.hpp"
 #include "../../includes/BST.hpp"
 #include "../../colors/colors.hpp"
+#include "../../includes/vector.hpp"
 
 #include <string>
 #include <algorithm>
@@ -10,6 +11,7 @@
 #include <utility>
 #include <map>
 #include <ctime>
+#include <vector>
 
 
 // change default namespace
@@ -340,10 +342,64 @@ int	main(int argc, char **argv)
 		if (test_number == 7)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing default constructor" 
+			std::cout << STEELBLUE3 << "Testing insert range" 
 				<< RESET << std::endl << std::endl;
 
+			map<char, int> lily;
+			lily.insert(make_pair('a', 777));
+			lily.insert(make_pair('b', 777));
+			lily.insert(make_pair('c', 777));
 
+
+  			map<char,int> anothermap;
+  			anothermap.insert(lily.begin(),lily.find('c'));
+
+			map<char, int>::iterator first = anothermap.begin();
+			map<char, int>::iterator last = anothermap.end();
+
+			// lily.insert(make_pair(777, 777));
+			lily.insert(first, last);
+
+			print_map(lily, "lily");
+
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+		
+		if (test_number == 8)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing find" 
+				<< RESET << std::endl << std::endl;
+
+			map<char, int> lily;
+
+			map<char, int>::iterator res = lily.find('c');
+			if (res != lily.end())
+				std::cout << "res = " << res->first << " -- " << res->second << std::endl;
+			else
+				std::cout << "No key found" << std::endl;
+
+			lily.insert(make_pair('a', 777));
+			lily.insert(make_pair('b', 777));
+			lily.insert(make_pair('c', 777));
+			print_map(lily, "lily");
+
+
+			res = lily.find('c');
+			if (res != lily.end())
+				std::cout << "res = " << res->first << " -- " << res->second << std::endl;
+			else
+				std::cout << "No key found" << std::endl;
+
+
+			res = lily.find('d');
+			if (res != lily.end())
+				std::cout << "res = " << res->first << " -- " << res->second << std::endl;
+			else
+				std::cout << "No key found" << std::endl;
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
