@@ -260,12 +260,13 @@ namespace ft
 				size_t n = 0;
 				while (findNode(root_, key))
 				{
-					node_ptr node = removeHelper(root_, key);
-					if (key == root_->key)
-						root_ = node;
+					root_ = removeHelper(root_, key);
 					n++;
 				}
+
+				fixViolation(root_);
 				size_ -= n;
+
 				return n;
 			}
 
@@ -274,12 +275,12 @@ namespace ft
 				size_t n = 0;
 				while (first != last && findNode(root_, first->first))
 				{
-					node_ptr node = removeHelper(root_, first->first);
-					if (first->first == root_->key)
-						root_ = node;
+					root_ = removeHelper(root_, first->first);
 					n++;
 					first++;
 				}
+
+				fixViolation(root_);
 				size_ -= n;
 			}
 
@@ -320,56 +321,10 @@ namespace ft
 				return node;
 			}
 
-			// void inorder()
-			// {
-			// 	inorderHelper(root_);
-			// }
-			
-			// void inorderHelper(node_ptr node)
-			// {
-			// 	if (node == NULL)
-			// 		return;
-			
-			// 	inorderHelper(node->left);
-			// 	cout << node->key << " ";
-			// 	inorderHelper(node->right);
-			// }
-			
-			// print tree level by level
-			// void	printLevelOrder()
-			// {
-				// printLevelOrderHelper(root_);
-			// }
-// 
-			// If x is a power of 2, it will have only one bit set to 1,
-			// which will be the leftmost (most significant) bit. 
-			// bool isPowerOfTwo(int x)
-			// { 
-				// return (x != 0) && ((x & (x - 1)) == 0);
-			// }
-// 
-			// void	printLevelOrderHelper(node_ptr node)
-			// {
-				// if (node == NULL)
-					// return;
-				// std::queue<node_ptr > q;
-				// q.push(node);
-// 
-				// int n = 1;
-				// while (!q.empty())
-				// {
-					// if (isPowerOfTwo(n))
-						// std::cout << std::endl;
-					// node_ptr tmp = q.front();
-					// std::cout << tmp->key << " ";
-					// q.pop();
-					// n++;
-					// if (tmp->left != NULL)
-						// q.push(tmp->left);
-					// if (tmp->right != NULL)
-						// q.push(tmp->right);
-				// }
-			// }
+			void inorder()
+			{
+				inorderHelper(root_);
+			}
 		
 		//		ITERATORS --------------------------------------------------------------------------------------
 	
@@ -546,45 +501,87 @@ namespace ft
 			// remove node from tree.
 			// !! when calling function, always set first parameter to tree.getroot()
 			// second parameter should be the key of the item you want to remove.
-			node_ptr removeHelper(node_ptr node, int key)
+			// node_ptr removeHelper(node_ptr node, Key key)
+			// {
+			// 	if (node == NULL)
+			// 		return node;
+			// 	if (/*key < node->key*/ comp_(key, node->key))
+			// 		node->left = removeHelper(node->left, key);
+			// 	else if (/*key > node->key*/ comp_(node->key, key))
+			// 		node->right = removeHelper(node->right, key);
+			// 	else 
+			// 	{
+			// 		if (node->left == NULL)
+			// 		{
+			// 			node_ptr tmp = node->right;
+			// 			if (tmp)
+			// 				tmp->parent = node->parent;
+			// 			delete node;
+			// 			return tmp;
+			// 		}
+			// 		else if (node->right == NULL)
+			// 		{
+			// 			node_ptr tmp = node->left;
+			// 			if (tmp)
+			// 				tmp->parent = node->parent;
+			// 			delete node;
+			// 			return tmp;
+			// 		} 
+			// 		else
+			// 		{
+			// 			node_ptr tmp = node->right;
+			// 			while (tmp->left)
+			// 				tmp = tmp->left;
+			// 			node->key = tmp->key;
+			// 			node->value = tmp->value;
+			// 			node->right = removeHelper(node->right, tmp->key);
+			// 		}
+			// 	}
+			// 	return node;
+			// }
+
+			node_ptr removeHelper(node_ptr node, Key key)
 			{
 				if (node == NULL)
 					return node;
-				if (/*key < node->key*/ comp_(key, node->key))
-					node->left = removeHelper(node->left, key);
-				else if (/*key > node->key*/ comp_(node->key, key))
-					node->right = removeHelper(node->right, key);
-				else 
+			
+				if (key < node->key)
+					node->left = removeHelper(node->left, key); // just looking for the key
+				else if (key > node->key)
+					node->right = removeHelper(node->right, key); // just looking for the key
+				// the key has been found, let's delete the corresponding node :
+				else
 				{
-					if (node->left == NULL)
+					if (node->left == NULL and node->right == NULL) // node has no child
+						return NULL;
+					else if (node->left == NULL) // node with only one child
 					{
 						node_ptr tmp = node->right;
-						if (tmp)
-							tmp->parent = node->parent;
-						delete node;
+						delete(node);
 						return tmp;
 					}
-					else if (node->right == NULL)
+					else if (node->right == NULL) // node with only one child
 					{
 						node_ptr tmp = node->left;
-						if (tmp)
-							tmp->parent = node->parent;
-						delete node;
+						delete(node);
 						return tmp;
-					} 
-					else
-					{
-						node_ptr tmp = node->right;
-						while (tmp->left)
-							tmp = tmp->left;
-						node->key = tmp->key;
-						node->value = tmp->value;
-						node->right = removeHelper(node->right, tmp->key);
 					}
+			
+					// node with two children: Get the inorder successor
+					// (smallest in the right subtree)
+					// node_ptr successor = getSmallestNode(node->right);
+					node_ptr successor = getBiggestNode(node->left);
+
+			
+					// Copy the inorder successor's content to this node
+					node->key = successor->key;
+			
+					// Delete the inorder successor
+					node->left = removeHelper(node->left, successor->key);
 				}
 				return node;
 			}
-
+			
 			void deleteTree(node_ptr node)
 			{
 				if (node == NULL)
@@ -722,6 +719,16 @@ namespace ft
 					}
 				}
 				root_->color = BLACK; // case 0 --> root node is red (root_ must always be black)
+			}
+
+			void inorderHelper(node_ptr node)
+			{
+				if (node == NULL)
+					return;
+			
+				inorderHelper(node->left);
+				std::cout << node->key << " ";
+				inorderHelper(node->right);
 			}
 	};
 }
