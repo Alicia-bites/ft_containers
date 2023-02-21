@@ -3,7 +3,7 @@
 #include <iostream>
 #include <cstddef>
 #include "node.hpp"
-#include "iterator.hpp"
+#include "mapReverseIterator.hpp"
 #include "pair.hpp"
 #include "utils.hpp"
 
@@ -18,6 +18,8 @@ namespace ft
 		class mapIterator
 		{
 			public:
+                typedef Key                             key_type;
+                typedef Value                           mapped_type;
 				typedef ft::pair<const Key, Value >     value_type;
 				typedef value_type&                     reference;
 				typedef value_type*                     pointer;
