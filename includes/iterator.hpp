@@ -6,7 +6,6 @@
 #include <typeinfo>
 
 #include "remove_cv.hpp"
-#include "mapIterator.hpp"
 
 
 namespace ft
@@ -74,7 +73,7 @@ namespace ft
 
 
 // std::reverse_iterator is an iterator adaptor that reverses the direction of a given iterator,
-	template <typename Iterator, typename Key = int, typename Value = int>
+	template <typename Iterator>
 	class reverse_iterator
 	{
 		protected:
@@ -104,6 +103,7 @@ namespace ft
 				: current_position(other.base())
 				{};
 
+
 	// MEMBER FUNCTIONS --------------------------------------------------------------------------------------------------------------
 
 			// returns the underlying base iterator (returns current_postion)
@@ -115,8 +115,6 @@ namespace ft
 			reference operator*() const
 			{ 
 				Iterator tmp(current_position);
-				if (typeid(current_position) == typeid(mapIterator<Key, Value>))
-					return *tmp;
 				return *--tmp;
 			};
 
