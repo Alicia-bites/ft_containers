@@ -3,6 +3,8 @@
 #include "../../includes/RedBlackTree.hpp"
 #include "../../includes/BST.hpp"
 #include "../../colors/colors.hpp"
+// #include "../../mapReverseIterator.hpp"
+
 
 #include <string>
 #include <algorithm>
@@ -333,7 +335,7 @@ int	main(int argc, char **argv)
 			print_map(joe, "joe");
 
 			// joe.getTree().printTree(joe.getTree().getRoot());
-			// joe.getTree().printRBTree(joe.getTree().getRoot());
+			joe.getTree().printRBTree(joe.getTree().getRoot());
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
@@ -363,7 +365,6 @@ int	main(int argc, char **argv)
 			lily.insert(first, last);
 
 			print_map(lily, "lily");
-
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
@@ -455,21 +456,21 @@ int	main(int argc, char **argv)
 			
 			map<char, int>::key_compare mycomp = mymap.key_comp();
 			
-			// mymap['a'] = 100;
-			// mymap['b'] = 200;
-			// mymap['c'] = 300;
+			mymap['a'] = 100;
+			mymap['b'] = 200;
+			mymap['c'] = 300;
 
-			mymap.insert(make_pair('a', 100));
-			mymap.insert(make_pair('b', 200));
-			mymap.insert(make_pair('c', 300));
+			// mymap.insert(make_pair('a', 100));
+			// mymap.insert(make_pair('b', 200));
+			// mymap.insert(make_pair('c', 300));
 
 			
 			std::cout << "mymap contains:\n";
 			
-			char highest = mymap.rbegin()->first;     // key value of last element
-			
+			char highest = mymap.rbegin()->first; // key value of last element
 			map<char,int>::iterator it = mymap.begin();
-			do {
+			do
+			{
 				std::cout << it->first << " => " << it->second << '\n';
 			} while ( mycomp((*it++).first, highest) );
 			
@@ -483,9 +484,27 @@ int	main(int argc, char **argv)
 		if (test_number == 11)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing " 
+			std::cout << STEELBLUE3 << "Testing value_comp" 
 				<< RESET << std::endl << std::endl;
 
+			map<char,int> mymap;
+
+			mymap['x']=1001;
+			mymap['y']=2002;
+			mymap['z']=3003;
+			
+			std::cout << "mymap contains:\n";
+			
+			pair<char,int> highest = *mymap.rbegin();          // last element
+			
+			map<char,int>::iterator it = mymap.begin();
+			do {
+				std::cout << it->first << " => " << it->second << '\n';
+			} while ( mymap.value_comp()(*it++, highest) );
+
+			pair<char, int> fifi = *mymap.begin();
+			pair<char, int> fafa = *mymap.rbegin();
+			std::cout << mymap.value_comp()(fifi, fafa) << std::endl;
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
@@ -495,9 +514,21 @@ int	main(int argc, char **argv)
 		if (test_number == 12)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing " 
+			std::cout << STEELBLUE3 << "Testing operator[]" 
 				<< RESET << std::endl << std::endl;
 
+			map<char,std::string> mymap;
+
+			mymap['a']="an element";
+			mymap['b']="another element";
+			mymap['c']=mymap['b'];
+			
+			std::cout << "mymap['a'] is " << mymap['a'] << '\n';
+			std::cout << "mymap['b'] is " << mymap['b'] << '\n';
+			std::cout << "mymap['c'] is " << mymap['c'] << '\n';
+			std::cout << "mymap['d'] is " << mymap['d'] << '\n';
+			
+			std::cout << "mymap now contains " << mymap.size() << " elements.\n";
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
