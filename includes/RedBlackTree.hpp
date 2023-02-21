@@ -155,6 +155,7 @@ namespace ft
 				// Print current node
 				for (int i = 0; i < depth; i++)
 					std::cout << "    ";
+				if (node->key != root_->key)
 				std::cout << (isLeft ? "└──" : "┌──");
 				if (isRed(node))
 					std::cout << RED1;
@@ -252,11 +253,27 @@ namespace ft
 				size_t n = 0;
 				while (findNode(root_, key))
 				{
-					root_ = removeHelper(root_, key);
+					node_ptr node = removeHelper(root_, key);
+					if (key == root_->key)
+						root_ = node;
 					n++;
 				}
 				size_ -= n;
 				return n;
+			}
+
+			void	remove(iterator first, iterator last)
+			{
+				size_t n = 0;
+				while (first != last && findNode(root_, first->first))
+				{
+					node_ptr node = removeHelper(root_, first->first);
+					if (first->first == root_->key)
+						root_ = node;
+					n++;
+					first++;
+				}
+				size_ -= n;
 			}
 
 //		GETTERS --------------------------------------------------------------------------------------
