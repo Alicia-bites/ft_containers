@@ -13,7 +13,6 @@
 #include <map>
 #include <ctime>
 
-
 // change default namespace
 #ifndef STD
 # define NAMESPACE ft
@@ -459,10 +458,6 @@ int	main(int argc, char **argv)
 			mymap['a'] = 100;
 			mymap['b'] = 200;
 			mymap['c'] = 300;
-
-			// mymap.insert(make_pair('a', 100));
-			// mymap.insert(make_pair('b', 200));
-			// mymap.insert(make_pair('c', 300));
 			
 			std::cout << "mymap contains:\n";
 			
@@ -559,19 +554,18 @@ int	main(int argc, char **argv)
 
 			print_map(bob, "bob");
 
-			std::cout << bob.getTree().getBiggestNode(bob.getTree().getRoot())->key << std::endl;
-			std::cout << bob.getTree().getSmallestNode(bob.getTree().getRoot())->key << std::endl;
+			// std::cout << bob.getTree().getBiggestNode(bob.getTree().getRoot())->key << std::endl;
+			// std::cout << bob.getTree().getSmallestNode(bob.getTree().getRoot())->key << std::endl;
 			
 			map<int, int>::iterator it = bob.find(8);
 			std::cout << it->first << " = " << it->second << std::endl;
 
-			bob.getTree().printRBTree(bob.getTree().getRoot());
+			// bob.getTree().printRBTree(bob.getTree().getRoot());
 
 			bob.erase(it);
 
-			bob.getTree().printRBTree(bob.getTree().getRoot());
+			// bob.getTree().printRBTree(bob.getTree().getRoot());
 
-			
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
@@ -581,9 +575,72 @@ int	main(int argc, char **argv)
 		if (test_number == 14)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing " 
+			std::cout << STEELBLUE3 << "Testing erase functions" 
 				<< RESET << std::endl << std::endl;
 
+			map<int, int> bob;
+			bob.insert(make_pair(8, 777));
+			bob.insert(make_pair(2, 777));
+			bob.insert(make_pair(4, 777));
+			bob.insert(make_pair(12, 777));
+			bob.insert(make_pair(6, 777));
+			bob.insert(make_pair(14, 777));
+			bob.insert(make_pair(1, 777));
+			bob.insert(make_pair(3, 777));
+			bob.insert(make_pair(5, 777));
+			bob.insert(make_pair(7, 777));
+			bob.insert(make_pair(9, 777));
+			bob.insert(make_pair(10, 777));
+			bob.insert(make_pair(11, 777));
+			bob.insert(make_pair(13, 777));
+			bob.insert(make_pair(15, 777));
+
+			bob.getTree().printRBTree(bob.getTree().getRoot());
+			// bob.getTree().printTree(bob.getTree().getRoot());
+			std::cout << "-----------------------------------------------------------------" << std::endl;
+
+			// print_map(bob, "bob");
+
+			std::cout << "Testing erase #1" << std::endl;
+			bob.erase(8);
+			bob.erase(9);
+			bob.erase(10);
+			bob.erase(15);
+			// bob.getTree().printNode(11);
+			bob.getTree().printRBTree(bob.getTree().getRoot());
+			std::cout << "-----------------------------------------------------------------" << std::endl;
+
+			// print_map(bob, "bob");
+
+			std::cout << std::endl;
+
+			std::cout << "Testing erase #2" << std::endl;
+			map<int, int>::iterator it = bob.find(2);
+			bob.erase(it);
+			it = bob.find(14);
+			bob.erase(it);
+			it = bob.find(1);
+			bob.erase(it);
+			it = bob.find(3);
+			bob.erase(it);
+			bob.getTree().printRBTree(bob.getTree().getRoot());
+			std::cout << "-----------------------------------------------------------------" << std::endl;
+
+			// print_map(bob, "bob");
+
+			std::cout << std::endl;
+
+			std::cout << "Testing erase #3" << std::endl;
+			map<int, int>::iterator first = bob.begin();
+			map<int, int>::iterator last = bob.find(13);
+
+			bob.erase(first, last);
+			
+			std::cout << "Tree should be empty : " << std::endl;
+			bob.getTree().printRBTree(bob.getTree().getRoot());
+			std::cout << "-----------------------------------------------------------------" << std::endl;
+
+			// print_map(bob, "bob");
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
