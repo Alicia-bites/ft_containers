@@ -239,25 +239,29 @@ namespace ft
 					return tree_.insert(first, last);
 				};
 
-			// Removes from the map container either a single element or a range of
-			// elements ([first,last)).
+			// Removes from the map container a single element.
 			// This effectively reduces the container size by the number of elements
 			// removed, which are destroyed.
 			void	erase(iterator position)
 			{
-				tree_.remove(position.first);
+				tree_.remove(position->first);
 			};
 
-			// Removes from the map container either a single element or a range of
-			// elements ([first,last)).
-			// This effectively reduces the container size by the number of elements
-			// removed, which are destroyed.
+			// Removes from the map container a single element.
+			// This effectively reduces the container size by the 
+			// number of elements removed, which are destroyed.
 			size_type	erase(const key_type& input_key)
 			{
 				return tree_.remove(input_key);
 			};
 
-			// void	erase(iterator first, iterator last);
+			// Removes the elements in the range [first, last), 
+			// which must be a valid range in *this.
+			void	erase(iterator first, iterator last)
+			{
+				return tree_.remove(first, last);
+			};
+			
 			// void	swap(map<Key,T,Compare,Allocator>&);
 			// void	clear();
 
@@ -295,10 +299,10 @@ namespace ft
 // 
 			// };
 			// const_iterator lower_bound(const key_type& x) const;
-			iterator	upper_bound(const key_type& key)
-			{
-				
-			};
+			// iterator	upper_bound(const key_type& key)
+			// {
+				// 
+			// };
 			// const_iterator upper_bound(const key_type& x) const;
 			// pair<iterator,iterator>	equal_range(const key_type& x);
 			// pair<const_iterator,const_iterator>	equal_range(const key_type& x) const;
