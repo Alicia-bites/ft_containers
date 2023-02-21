@@ -7,7 +7,9 @@
 
 #include "node.hpp"
 #include "../colors/colors.hpp"
-#include "iterator.hpp"
+// #include "iterator.hpp"
+#include "mapReverseIterator.hpp"
+
 #include "mapIterator.hpp"
 
 // #1 A node is eather RED or BLACK
@@ -113,6 +115,8 @@ namespace ft
 				
 				if (node == 0)
 					node = insertHelper(root_, key, Value());
+				if (root_ == 0)
+					root_ = node;
 				return node->value;
 			};
 
@@ -366,7 +370,7 @@ namespace ft
 				return NULL;
 			};
 
-			reverse_iterator	rbegin()
+			reverse_iterator rbegin()
 			{
 				iterator it(getBiggestNode(root_));
 				return reverse_iterator(it);
@@ -419,7 +423,7 @@ namespace ft
 					node->value = value;
 					return node;
 				}
-				if (key < node->key)
+				if (/*key < node->key*/ comp_(key, node->key))
 				{
 					if (node->left == 0)
 					{
