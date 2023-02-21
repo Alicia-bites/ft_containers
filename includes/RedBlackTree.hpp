@@ -122,6 +122,13 @@ namespace ft
 
 //		VISUALIZERS --------------------------------------------------------------------------------------
 			
+			// print one node whose key matches the key passed as argument
+			void printNode(const Key & key)
+			{
+				node_ptr node = findNode(root_, key);
+				std::cout << *node << std::endl;
+			}
+
 			// print all the keys and values of the tree.
 			void	printTree(node_ptr node)
 			{
