@@ -278,7 +278,7 @@ namespace ft
 					return node;
 				while (node->left != NULL)
 				{
-					if (node->key > node->left->key)
+					if (comp_(node->left->key, node->key))
 						node = node->left;
 				}
 				return node;
@@ -494,7 +494,7 @@ namespace ft
 			{
 				while (node != 0 && node->key != key)
 				{
-					if (key < node->key)
+					if (/*key < node->key*/ comp_(key, node->key))
 						node = node->left;
 					else
 						node = node->right;
@@ -526,9 +526,9 @@ namespace ft
 			{
 				if (node == NULL)
 					return node;
-				if (key < node->key)
+				if (/*key < node->key*/ comp_(key, node->key))
 					node->left = removeHelper(node->left, key);
-				else if (key > node->key)
+				else if (/*key > node->key*/ comp_(node->key, key))
 					node->right = removeHelper(node->right, key);
 				else 
 				{

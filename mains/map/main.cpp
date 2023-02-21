@@ -16,9 +16,9 @@
 
 // change default namespace
 #ifndef STD
-// # define NAMESPACE ft
+# define NAMESPACE ft
 // #else
-# define NAMESPACE std
+// # define NAMESPACE std
 #endif
 
 using namespace NAMESPACE;
@@ -463,7 +463,6 @@ int	main(int argc, char **argv)
 			// mymap.insert(make_pair('a', 100));
 			// mymap.insert(make_pair('b', 200));
 			// mymap.insert(make_pair('c', 300));
-
 			
 			std::cout << "mymap contains:\n";
 			
@@ -559,9 +558,20 @@ int	main(int argc, char **argv)
 			bob.insert(make_pair(15, 777));
 
 			print_map(bob, "bob");
-			// map<int, int>::iterator it = bob.begin();
-			std::cout << bob.upper_bound(2)->first << std::endl;
-			// bob.getTree().printRBTree(bob.getTree().getRoot());
+
+			std::cout << bob.getTree().getBiggestNode(bob.getTree().getRoot())->key << std::endl;
+			std::cout << bob.getTree().getSmallestNode(bob.getTree().getRoot())->key << std::endl;
+			
+			map<int, int>::iterator it = bob.find(8);
+			std::cout << it->first << " = " << it->second << std::endl;
+
+			bob.getTree().printRBTree(bob.getTree().getRoot());
+
+			bob.erase(it);
+
+			bob.getTree().printRBTree(bob.getTree().getRoot());
+
+			
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
