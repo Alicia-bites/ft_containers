@@ -16,9 +16,9 @@
 
 // change default namespace
 #ifndef STD
-# define NAMESPACE ft
+// # define NAMESPACE ft
 // #else
-// # define NAMESPACE std
+# define NAMESPACE std
 #endif
 
 using namespace NAMESPACE;
@@ -543,9 +543,9 @@ int	main(int argc, char **argv)
 
 			map<int, int> bob;
 			bob.insert(make_pair(8, 777));
-			// bob.insert(make_pair(2, 777));
+			bob.insert(make_pair(2, 777));
 			bob.insert(make_pair(4, 777));
-			// bob.insert(make_pair(12, 777));
+			bob.insert(make_pair(12, 777));
 			bob.insert(make_pair(6, 777));
 			bob.insert(make_pair(14, 777));
 			bob.insert(make_pair(1, 777));
@@ -559,8 +559,9 @@ int	main(int argc, char **argv)
 			bob.insert(make_pair(15, 777));
 
 			print_map(bob, "bob");
-
-			bob.getTree().printRBTree(bob.getTree().getRoot());
+			// map<int, int>::iterator it = bob.begin();
+			std::cout << bob.upper_bound(2)->first << std::endl;
+			// bob.getTree().printRBTree(bob.getTree().getRoot());
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"

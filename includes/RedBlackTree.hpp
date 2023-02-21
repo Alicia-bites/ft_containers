@@ -402,6 +402,13 @@ namespace ft
 				return node;
 			}
 
+			node_ptr	upper_bound(const key_type & key)
+			{
+				node_ptr node = findNode(root_, key);
+				node_ptr output = node->parent;
+				return output;
+			}
+
 		protected:
 			node_ptr							root_;
 			std::allocator<Node<Key, Value> >	nodeAllocator_;
