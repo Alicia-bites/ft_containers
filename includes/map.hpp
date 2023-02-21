@@ -193,10 +193,10 @@ namespace ft
 			};
 
 //		ACCESSORS --------------------------------------------------------------------------------------
-			
+
 			Value &	operator[](const key_type& x)	
 			{
-				return tree_[x];
+				return (*((this->insert(ft::make_pair(x, mapped_type()))).first)).second;
 			};
 
 			RBTree &	getTree()
@@ -267,7 +267,10 @@ namespace ft
 				return key_compare();
 			};
 
-			value_compare	value_comp() const;
+			value_compare	value_comp() const
+			{
+				return value_compare(key_compare());
+			};
 
 //		MAP OPERATIONS --------------------------------------------------------------------------------------
 
