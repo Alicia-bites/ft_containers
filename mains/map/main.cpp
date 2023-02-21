@@ -335,7 +335,7 @@ int	main(int argc, char **argv)
 			print_map(joe, "joe");
 
 			// joe.getTree().printTree(joe.getTree().getRoot());
-			joe.getTree().printRBTree(joe.getTree().getRoot());
+			// joe.getTree().printRBTree(joe.getTree().getRoot());
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
@@ -538,9 +538,29 @@ int	main(int argc, char **argv)
 		if (test_number == 13)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing " 
+			std::cout << STEELBLUE3 << "Testing replaced < by custom comp function" 
 				<< RESET << std::endl << std::endl;
 
+			map<int, int> bob;
+			bob.insert(make_pair(8, 777));
+			// bob.insert(make_pair(2, 777));
+			bob.insert(make_pair(4, 777));
+			// bob.insert(make_pair(12, 777));
+			bob.insert(make_pair(6, 777));
+			bob.insert(make_pair(14, 777));
+			bob.insert(make_pair(1, 777));
+			bob.insert(make_pair(3, 777));
+			bob.insert(make_pair(5, 777));
+			bob.insert(make_pair(7, 777));
+			bob.insert(make_pair(9, 777));
+			bob.insert(make_pair(10, 777));
+			bob.insert(make_pair(11, 777));
+			bob.insert(make_pair(13, 777));
+			bob.insert(make_pair(15, 777));
+
+			print_map(bob, "bob");
+
+			bob.getTree().printRBTree(bob.getTree().getRoot());
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"

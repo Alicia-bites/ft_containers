@@ -6,7 +6,7 @@
 #include <typeinfo>
 
 #include "remove_cv.hpp"
-
+#include "mapIterator.hpp"
 
 namespace ft
 {
@@ -111,6 +111,15 @@ namespace ft
 			{ 
 				return current_position;
 			};
+
+			// template <typename K, typename V>
+			// 	typename enable_if<is_same<Iterator, mapIterator<K, V> >::value, typename Iterator::reference>::type operator*() const
+			// 	{ 
+			// 		std::cout << DEEPPINK3 << "YOOOOOOOOOUHOOOOOOOOOOOOOOOOOOOOUUU" << RESET << std::endl;
+
+			// 		Iterator tmp(current_position);
+			// 		return *tmp;
+			// 	}
 
 			reference operator*() const
 			{ 

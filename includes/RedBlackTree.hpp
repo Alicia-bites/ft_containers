@@ -290,7 +290,7 @@ namespace ft
 					return node;
 				while (node->right != NULL)
 				{
-					if (node->key < node->right->key)
+					if (comp_(node->key, node->right->key))
 						node = node->right;
 				}
 				return node;
