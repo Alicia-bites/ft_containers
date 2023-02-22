@@ -9,8 +9,8 @@
 #include "../colors/colors.hpp"
 // #include "iterator.hpp"
 #include "mapReverseIterator.hpp"
-
 #include "mapIterator.hpp"
+#include "stack.hpp"
 
 // #1 A node is eather RED or BLACK
 
@@ -260,28 +260,37 @@ namespace ft
 				size_t n = 0;
 				while (findNode(root_, key))
 				{
-					root_ = removeHelper(root_, key);
+					removeHelper(root_, key);
 					n++;
 				}
-
-				fixViolation(root_);
 				size_ -= n;
-
 				return n;
 			}
 
 			void	remove(iterator first, iterator last)
 			{
-				size_t n = 0;
-				while (first != last && findNode(root_, first->first))
+				// creating a stack to store elements;
+				ft::stack<Key> to_delete_tmp;
+				for(; first != last; first++)
+					to_delete_tmp.push(first->first);
+				
+				// reversing order of stack to delete elements in the right order
+				Key item;
+				ft::stack<Key> to_delete;
+				while (!to_delete_tmp.empty())
 				{
-					root_ = removeHelper(root_, first->first);
-					n++;
-					first++;
+					item = to_delete_tmp.top();
+					to_delete_tmp.pop();
+					to_delete.push(item);
 				}
 
-				fixViolation(root_);
-				size_ -= n;
+				while (!to_delete.empty())
+				{
+					std::cout << "removing " << to_delete.top() << std::endl;
+					remove(to_delete.top());
+					to_delete.pop();
+				}
+				std::cout << "size_ = " << size_ << std::endl;
 			}
 
 //		GETTERS --------------------------------------------------------------------------------------
@@ -544,7 +553,7 @@ namespace ft
 			{
 				if (node == NULL)
 					return node;
-			
+				
 				if (key < node->key)
 					node->left = removeHelper(node->left, key); // just looking for the key
 				else if (key > node->key)
@@ -553,34 +562,82 @@ namespace ft
 				else
 				{
 					if (node->left == NULL and node->right == NULL) // node has no child
+					{
+						if (node == node->parent->left)
+							node->parent->left = 0;
+						if (node == node->parent->right)
+							node->parent->right = 0;
+						delete node;
 						return NULL;
+					} 
 					else if (node->left == NULL) // node with only one child
 					{
 						node_ptr tmp = node->right;
+						tmp->parent = node->parent;
 						delete(node);
+						fixViolation(tmp);
 						return tmp;
 					}
 					else if (node->right == NULL) // node with only one child
 					{
 						node_ptr tmp = node->left;
+						tmp->parent = node->parent;
 						delete(node);
+						fixViolation(tmp);
 						return tmp;
 					}
 			
-					// node with two children: Get the inorder successor
-					// (smallest in the right subtree)
 					// node_ptr successor = getSmallestNode(node->right);
 					node_ptr successor = getBiggestNode(node->left);
-
-			
-					// Copy the inorder successor's content to this node
 					node->key = successor->key;
-			
-					// Delete the inorder successor
+					
 					node->left = removeHelper(node->left, successor->key);
 				}
 				return node;
 			}
+
+			// remove node and return a pointer to its replacer
+			// node_ptr removeHelper(node_ptr root_, Key key)
+			// {
+			// 	// if (node == 0)
+			// 		// return node;
+				
+			// 	node_ptr node = findNode(root_, key);
+			// 	std::cout << "node->key = " << node->key << std::endl;
+			// 	if (node->left == 0 && node->right == 0) // node has no child
+			// 	{
+			// 		std::cout << "deleted " << node->key << std::endl;
+			// 		node_ptr successor = node->parent;
+			// 		delete node;
+			// 		return successor;
+			// 	}
+			// 	else if (node->left == 0) // node has only right child
+			// 	{
+			// 		node_ptr successor = node->right;
+			// 		successor->key = node->key;
+			// 		std::cout << "deleted " << node->key << std::endl;
+			// 		delete node;
+			// 		return successor;
+			// 	}
+			// 	else if (node->right == 0) // node has only left child
+			// 	{
+			// 		node_ptr successor = node->left;
+			// 		successor->key = node->key;
+			// 		std::cout << "deleted " << node->key << std::endl;
+			// 		delete node;
+			// 		return successor;
+			// 	}
+			// 	node_ptr successor = getBiggestNode(node->left);
+			// 	node->key = successor->key;
+			// 	delete successor;
+			// 	successor = 0;
+			// 	return node;
+			// }
+
+			// void	fixViolationAfterDeletion()
+			// {
+				// 
+			// }
 			
 			void deleteTree(node_ptr node)
 			{
@@ -591,7 +648,7 @@ namespace ft
 				deleteTree(node->right);
 				
 				#if DEBUG
-					std::cout << MEDIUMORCHID3 << "Deleting node: " << node->value << RESET << std::endl;
+					std::cout << MEDIUMORCHID3 << "Deleting node: " << node->key << RESET << std::endl;
 				#endif
 				delete node;
 			}

@@ -330,3 +330,31 @@ namespace ft
 	template <class Key, class T, class Compare, class Allocator>
 		void swap(map<Key,T,Compare,Allocator>& x, map<Key,T,Compare,Allocator>& y);
 }
+
+			// node_ptr	insertHelper(node_ptr node, const Key &key, const Value &value)
+			// {
+			// 	if (node == 0)
+			// 		return new Node<Key, Value>(key, value);
+			// 	if (key == node->key)
+			// 	{
+			// 		node->value = value;
+			// 		return node;
+			// 	}
+			// 	if (/*key < node->key*/ comp_(key, node->key))
+			// 	{
+			// 		if (node->left == 0)
+			// 		{
+			// 			node->left = new Node<Key, Value> (key, value);
+			// 			node->left->parent = node;
+			// 			return node->left;
+			// 		}
+			// 		return insertHelper(node->left, key, value);
+			// 	}
+			// 	if (node->right == 0)
+			// 	{
+			// 		node->right = new Node<Key, Value> (key, value);
+			// 		node->right->parent = node;
+			// 		return node->right;
+			// 	}
+			// 	return insertHelper(node->right, key, value);
+			// };

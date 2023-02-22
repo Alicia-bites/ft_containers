@@ -42,17 +42,6 @@ namespace ft
 				std::swap(second, rhs.second);
 			};
 
-			// Assigns rhs as the new content for the pair object.
-			// pair & operator=(const pair<typename remove_cv<value_type>::type> & rhs)
-			// {
-			// 	if (this != &rhs)
-			// 	{
-			// 		first = rhs.first;
-			// 		second = rhs.second;
-			// 	}
-			// 	return *this;
-			// };
-
 			pair & operator=(const pair & rhs)
 			{
 				if (this != &rhs)
