@@ -259,9 +259,12 @@ namespace ft
 			{
 				if (!findNode(root_, key))
 					return 0;
-				removeHelper(root_, key);
+				// removeHelper(root_, key);
+				removeHelper(key);
+
 				printRBTree(root_);
 				std::cout << "---------------------------------------------" << std::endl;
+				std::cout << DARKCYAN << "Is RedBlackTree? " << is_rb_tree() << RESET << std::endl;
 				size_--;
 				return 1;
 			}
@@ -285,11 +288,11 @@ namespace ft
 
 				while (!to_delete.empty())
 				{
-					std::cout << "removing " << to_delete.top() << std::endl;
+					// std::cout << "removing " << to_delete.top() << std::endl;
 					remove(to_delete.top());
 					to_delete.pop();
 				}
-				std::cout << "size_ = " << size_ << std::endl;
+				// std::cout << "size_ = " << size_ << std::endl;
 			}
 
 //		GETTERS --------------------------------------------------------------------------------------
@@ -403,78 +406,7 @@ namespace ft
 			allocator_type						allocator_;
 			size_type							size_; // total number of nodes
 
-		private :		
-
-			// recursive function, used to insert a new node
-			// from root_, find the next available place to create new Node
-			// !! WITHOUT CARING ABOUT BALANCE
-			node_ptr	insertHelper(node_ptr node, const Key &key, const Value &value)
-			{
-				if (node == 0)
-					return new Node<Key, Value>(key, value);
-				if (key == node->key)
-				{
-					node->value = value;
-					return node;
-				}
-				if (/*key < node->key*/ comp_(key, node->key))
-				{
-					if (node->left == 0)
-					{
-						node->left = new Node<Key, Value> (key, value);
-						node->left->parent = node;
-						return node->left;
-					}
-					return insertHelper(node->left, key, value);
-				}
-				if (node->right == 0)
-				{
-					node->right = new Node<Key, Value> (key, value);
-					node->right->parent = node;
-					return node->right;
-				}
-				return insertHelper(node->right, key, value);
-			};
-
-			// // optimized insertHelper if iterator position points to the element that
-			// // would be BEFORE the newly inserted element
-			// node_ptr insertHelper(node_ptr node, const Key& key, const Value& value, const_iterator position)
-			// {
-			// 	if (node == 0)
-			// 		return new Node<Key, Value>(key, value);
-
-			// 	if (key == node->key)
-			// 	{
-			// 		node->value = value;
-			// 		return node;
-			// 	}
-
-			// 	if (key < node->key)
-			// 	{
-			// 		if (node->left == 0)
-			// 		{
-			// 			node->left = new Node<Key, Value>(key, value);
-			// 			node->left->parent = node;
-			// 			if (node == position.getNode())
-			// 				node = node->left;
-			// 			return node->left;
-			// 		}
-			// 		return insertHelper(node->left, key, value, position);
-			// 	}
-			// 	else
-			// 	{
-			// 		if (node->right == 0)
-			// 		{
-			// 			node->right = new Node<Key, Value>(key, value);
-			// 			node->right->parent = node;
-			// 			if (node == position.getNode()->left)
-			// 				position.getNode()->left = node->right;
-			// 			return node->right;
-			// 		}
-			// 		return insertHelper(node->right, key, value, position);
-			// 	}
-			// }
-
+		private :
 
 			// a function that searches a specific node and returns it
 			node_ptr findNode(node_ptr node, const Key &key) const
@@ -504,7 +436,10 @@ namespace ft
 				}
 			};
 
+
 //		MODIFIERS --------------------------------------------------------------------------------------
+	
+	//		NODE REMOVE --------------------------------------------------------------------------------------
 
 			// remove node from tree.
 			// !! when calling function, always set first parameter to tree.getroot()
@@ -548,107 +483,217 @@ namespace ft
 			// 	return node;
 			// }
 
-			node_ptr removeHelper(node_ptr node, Key key)
-			{
-				if (node == NULL)
-					return node;
-				
-				if (key < node->key)
-					node->left = removeHelper(node->left, key); // just looking for the key
-				else if (key > node->key)
-					node->right = removeHelper(node->right, key); // just looking for the key
-				// the key has been found, let's delete the corresponding node :
-				else
-				{
-					if (node->left == NULL and node->right == NULL) // node has no child
-					{
-						if (node == root_)
-						{
-							delete node;
-							root_ = 0;
-							return NULL;
-						}
-						if (node == node->parent->left)
-							node->parent->left = 0;
-						if (node == node->parent->right)
-							node->parent->right = 0;
-						delete node;
-						return NULL;
-					} 
-					else if (node->left == NULL) // node with only one child
-					{
-						node_ptr tmp = node->right;
-						tmp->parent = node->parent;
-						if (node == root_)
-							root_ = tmp;
-						delete(node);
-						fixViolation(tmp);
-						return tmp;
-					}
-					else if (node->right == NULL) // node with only one child
-					{
-						node_ptr tmp = node->left;
-						tmp->parent = node->parent;
-						if (node == root_)
-							root_ = tmp;
-						delete(node);
-						fixViolation(tmp);
-						return tmp;
-					}
-			
-					// node_ptr successor = getSmallestNode(node->right);
-					node_ptr successor = getBiggestNode(node->left);
-					node->key = successor->key;
-					const_cast<Key&>(node->data.first) = node->key;
-
-					node->left = removeHelper(node->left, successor->key);
-				}
-				return node;
-			}
-
-			// remove node and return a pointer to its replacer
-			// node_ptr removeHelper(node_ptr root_, Key key)
+			// node_ptr removeHelper(node_ptr node, Key key)
 			// {
-			// 	// if (node == 0)
-			// 		// return node;
+			// 	if (node == NULL)
+			// 		return node;
 				
-			// 	node_ptr node = findNode(root_, key);
-			// 	std::cout << "node->key = " << node->key << std::endl;
-			// 	if (node->left == 0 && node->right == 0) // node has no child
+			// 	if (key < node->key)
+			// 		node->left = removeHelper(node->left, key); // just looking for the key
+			// 	else if (key > node->key)
+			// 		node->right = removeHelper(node->right, key); // just looking for the key
+			// 	// the key has been found, let's delete the corresponding node :
+			// 	else
 			// 	{
-			// 		std::cout << "deleted " << node->key << std::endl;
-			// 		node_ptr successor = node->parent;
-			// 		delete node;
-			// 		return successor;
+			// 		if (node->left == NULL and node->right == NULL) // node has no child
+			// 		{
+			// 			if (node == root_)
+			// 			{
+			// 				delete node;
+			// 				root_ = 0;
+			// 				return NULL;
+			// 			}
+			// 			if (node == node->parent->left)
+			// 				node->parent->left = 0;
+			// 			if (node == node->parent->right)
+			// 				node->parent->right = 0;
+			// 			delete node;
+			// 			return NULL;
+			// 		} 
+			// 		else if (node->left == NULL) // node with only one child
+			// 		{
+			// 			node_ptr tmp = node->right;
+			// 			tmp->parent = node->parent;
+			// 			if (node == root_)
+			// 				root_ = tmp;
+			// 			delete(node);
+			// 			fixViolation(tmp);
+			// 			return tmp;
+			// 		}
+			// 		else if (node->right == NULL) // node with only one child
+			// 		{
+			// 			node_ptr tmp = node->left;
+			// 			tmp->parent = node->parent;
+			// 			if (node == root_)
+			// 				root_ = tmp;
+			// 			delete(node);
+			// 			fixViolation(tmp);
+			// 			return tmp;
+			// 		}
+			
+			// 		// node_ptr successor = getSmallestNode(node->right);
+			// 		node_ptr successor = getBiggestNode(node->left);
+			// 		node->key = successor->key;
+			// 		const_cast<Key&>(node->data.first) = node->key;
+
+			// 		node->left = removeHelper(node->left, successor->key);
 			// 	}
-			// 	else if (node->left == 0) // node has only right child
-			// 	{
-			// 		node_ptr successor = node->right;
-			// 		successor->key = node->key;
-			// 		std::cout << "deleted " << node->key << std::endl;
-			// 		delete node;
-			// 		return successor;
-			// 	}
-			// 	else if (node->right == 0) // node has only left child
-			// 	{
-			// 		node_ptr successor = node->left;
-			// 		successor->key = node->key;
-			// 		std::cout << "deleted " << node->key << std::endl;
-			// 		delete node;
-			// 		return successor;
-			// 	}
-			// 	node_ptr successor = getBiggestNode(node->left);
-			// 	node->key = successor->key;
-			// 	delete successor;
-			// 	successor = 0;
 			// 	return node;
 			// }
 
-			// void	fixViolationAfterDeletion()
-			// {
-				// 
-			// }
-			
+			void	transplant(node_ptr u, node_ptr v)
+			{
+				if (u->parent == 0)
+					root_ = v;
+				else if (u == u->parent->left)
+					u->parent->left = v;
+				else
+					u->parent->right = v;
+				if (v == 0)
+				{	
+					if (u == u->parent->left)
+						u->parent->left = 0;
+					if (u == u->parent->right)
+						u->parent->right = 0;
+				}
+				else
+					v->parent = u->parent;
+			}
+
+			void	removeHelper(Key key)
+			{
+				node_ptr z = findNode(root_, key);
+
+				if (z == 0)
+				{
+					std::cout << "Key not found!" << std::endl;
+					return ;
+				}
+
+				node_ptr y = z;
+				int y_orig_color = y->color; 
+				node_ptr x;
+				
+				// case 1
+				if (z->left == 0)
+				{
+					x = z->right;
+					transplant(z, z->right);
+				}
+
+				// case 2
+				else if (z->right == 0)
+				{
+					x = z->left;
+					transplant(z, z->left);
+				}
+
+				// case 3
+				else
+				{
+					y = getSmallestNode(z->right);
+					y_orig_color = y->color;
+					x = y->right;
+					
+					if (y->parent == z)
+						x->parent = y;
+					else
+					{
+						transplant(y, y->right);
+						y->right = z->right;
+						y->right->parent = y;
+					}
+					
+					transplant(z, y);
+					y->left = z->left;
+					y->left->parent = y;
+					y->color = z->color;
+				}
+				
+				if (y_orig_color == BLACK)
+					delete_fixup(x);
+			}
+
+			void	delete_fixup(node_ptr x)
+			{
+				while (x != root_ and x->color == BLACK)
+				{
+					if (x == x->parent->left) // if x is a left child
+					{
+						node_ptr w = x->parent->right; // w is x's brother
+						// type 1
+						if (w->color == RED)
+						{
+							w->color = BLACK;
+							x->parent->color = RED;
+							rotateLeft(x->parent);
+							w = x->parent->right;
+						}
+						// type 2
+						if (w->left->color == BLACK and w->right->color == BLACK)
+						{
+							w->color = RED;
+							x = x->parent;
+						}
+						else
+						{
+							// type 3
+							if (w->right->color == BLACK)
+							{
+								w->left->color = BLACK;
+								w->color = RED;
+								rotateRight(w);
+								w = x->parent->right;
+							}
+							// type 4
+							w->color = x->parent->color;
+							x->parent->color = BLACK;
+							w->right->color = BLACK;
+							rotateLeft(x->parent);
+							x = root_;
+						}
+					}
+					else
+					{
+						node_ptr w = x->parent->left;
+						// type 1
+						if (w->color == RED)
+						{
+							w->color = BLACK;
+							x->parent->color = RED;
+							rotateRight(x->parent);
+							w = x->parent->left;
+						}
+						// type 2
+						if (w->right->color == BLACK and w->left->color == BLACK)
+						{
+							w->color = RED;
+							x = x->parent;
+						}
+						else
+						{
+							// type 3
+							if (w->left->color == BLACK)
+							{
+								w->right->color = BLACK;
+								w->color = RED;
+								rotateLeft(w);
+								w = x->parent->left;
+							}
+							// type 4
+							w->color = x->parent->color;
+							x->parent->color = BLACK;
+							w->left->color = BLACK;
+							rotateRight(x->parent);
+							x = root_;
+						}
+					}
+				}
+				x->color = BLACK;
+			}
+
+	//		DELETE TREE --------------------------------------------------------------------------------------
+
 			void deleteTree(node_ptr node)
 			{
 				if (node == NULL)
@@ -662,8 +707,10 @@ namespace ft
 				#endif
 				delete node;
 			}
+	
+	//		ROTATE NODE TOOLS --------------------------------------------------------------------------------------
 
-						/*         G                    G
+			/*         G                    G
 			          / \                  / \
 					 P   U      ->        N   U
 					/ \                  / \
@@ -720,6 +767,39 @@ namespace ft
 				left_child->right = node;
 				node->parent = left_child;
 			}
+
+	//		INSERT TOOLS --------------------------------------------------------------------------------------
+
+			// recursive function, used to insert a new node
+			// from root_, find the next available place to create new Node
+			// !! WITHOUT CARING ABOUT BALANCE
+			node_ptr	insertHelper(node_ptr node, const Key &key, const Value &value)
+			{
+				if (node == 0)
+					return new Node<Key, Value>(key, value);
+				if (key == node->key)
+				{
+					node->value = value;
+					return node;
+				}
+				if (/*key < node->key*/ comp_(key, node->key))
+				{
+					if (node->left == 0)
+					{
+						node->left = new Node<Key, Value> (key, value);
+						node->left->parent = node;
+						return node->left;
+					}
+					return insertHelper(node->left, key, value);
+				}
+				if (node->right == 0)
+				{
+					node->right = new Node<Key, Value> (key, value);
+					node->right->parent = node;
+					return node->right;
+				}
+				return insertHelper(node->right, key, value);
+			};
 
 			// rebalance the tree to respect to following rules ;
 			// #1 A node is eather RED or BLACK
@@ -797,5 +877,50 @@ namespace ft
 				std::cout << node->key << " ";
 				inorderHelper(node->right);
 			}
+
+	//		CHECK RBTree TOOLS --------------------------------------------------------------------------------------
+
+			bool is_rb_tree()
+			{
+				int black_height = -1;
+				return is_rb_subtree(root_, black_height);
+			}
+
+			bool is_rb_subtree(node_ptr node, int & black_height)
+			{
+				if (node == NULL)
+				{
+					// Empty subtree is a valid RBT.
+					black_height = 0;
+					return true;
+				}
+
+				// Check BST property.
+				if ((node->left != NULL && node->left->key >= node->key) ||
+					(node->right != NULL && node->right->key <= node->key))
+					return false;
+
+				// Recursively check left and right subtrees.
+				int left_black_height, right_black_height;
+				if (!is_rb_subtree(node->left, left_black_height) ||
+					!is_rb_subtree(node->right, right_black_height))
+					return false;
+
+				// Check RBT properties.
+				if (node->color != RED &&
+					node->color != BLACK)
+					return false;
+
+				if (node->color == BLACK)
+					black_height = left_black_height + 1;
+				else
+					black_height = left_black_height;
+
+				if (left_black_height != right_black_height)
+					return false;
+
+				return true;
+			}
+
 	};
 }
