@@ -30,6 +30,7 @@ namespace ft
                     typedef Node<typename remove_cv<Key>::type, Value>  *  node_ptr;
 
                     node_ptr        node_;
+                    node_ptr        nil_;
                     pointer         pointer_;
 
                 public:
@@ -37,16 +38,18 @@ namespace ft
                     // default constructor
                     mapIterator()
                     : node_(0)
+                    , nil_(0)
                     , pointer_(0)
                     {
-                    #if DEBUG
-                        std::cout << PALETURQUOISE1 << "Calling mapIterator default constructor" << RESET << std::endl;
-                    #endif
-                };
+                        #if DEBUG
+                            std::cout << PALETURQUOISE1 << "Calling mapIterator default constructor" << RESET << std::endl;
+                        #endif
+                    };
 
                 // constructor
-                mapIterator(node_ptr input_node)
+                mapIterator(node_ptr input_node, node_ptr nil)
                 : node_(input_node)
+                , nil_(nil)
                 , pointer_(&input_node->data)
                 {
                     #if DEBUG
@@ -63,6 +66,7 @@ namespace ft
 
                     node_ = original.getNode();
                     pointer_ = original.base();
+                    nil_ = original.getNil();
                 };
 
                 // destructor
@@ -87,6 +91,11 @@ namespace ft
                     return node_;
                 }
 
+                node_ptr    getNil() const
+                {
+                    return nil_;
+                }
+
 // OPERATOR OVERLOADS ---------------------------------------------------------------------------------------------
 				
                 // assignement operator
@@ -98,6 +107,7 @@ namespace ft
 
                     node_ = rhs.getNode();
                     pointer_ = rhs.base();
+                    nil_ = rhs.getNil();
                     return *this;
                 };
                 
@@ -151,28 +161,28 @@ namespace ft
 
                 void    increment()
                 {
-                    if (node_->right)
+                    if (node_->right != nil_)
                     {
                         node_ = node_->right;
-                        while (node_->left)
+                        while (node_->left != nil_)
                             node_ = node_->left;
                     }
                     else
                     {
                         node_ptr parent = node_->parent;
-                        if (!parent)
+                        if (parent == nil_)
                         {
-                            node_ = NULL;
-                            pointer_ = NULL;
+                            node_ = nil_;
+                            pointer_ = 0;
                             return ;
                         }
                         while (node_ == parent->right)
                         { 
                             node_ = parent;
                             parent = parent->parent;
-                            if (!parent)
+                            if (parent == nil_)
                             {
-                                node_ = 0;
+                                node_ = nil_;
                                 pointer_ = 0;
                                 return ;
                             }
@@ -185,28 +195,28 @@ namespace ft
 
                 void    decrement()
                 {
-                    if (node_->left)
+                    if (node_->left != nil_)
                     {
                         node_ = node_->left;
-                        while (node_->right)
+                        while (node_->right != nil_)
                             node_ = node_->right;
                     }
                     else
                     {
                         node_ptr parent = node_->parent;
-                        if (!parent)
+                        if (parent == nil_)
                         {
-                            node_ = NULL;
-                            pointer_ = NULL;
+                            node_ = nil_;
+                            pointer_ = 0;
                             return ;
                         }
                         while (node_ == parent->left)
                         {
                             node_ = parent;
                             parent = parent->parent;
-                            if (!parent)
+                            if (parent == nil_)
                             {
-                                node_ = 0;
+                                node_ = nil_;
                                 pointer_ = 0;
                                 return ;
                             }
