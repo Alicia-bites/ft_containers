@@ -31,7 +31,6 @@ namespace ft
 
                     node_ptr        node_;
                     pointer         pointer_;
-                    bool            freeMe_;
 
                 public:
 
@@ -39,7 +38,6 @@ namespace ft
                     mapIterator()
                     : node_(0)
                     , pointer_(0)
-                    , freeMe_(0)
                     {
                     #if DEBUG
                         std::cout << PALETURQUOISE1 << "Calling mapIterator default constructor" << RESET << std::endl;
@@ -49,25 +47,15 @@ namespace ft
                 // constructor
                 mapIterator(node_ptr input_node)
                 : node_(input_node)
-                , freeMe_(0)
-                // , pointer_(&input_node->data)
+                , pointer_(&input_node->data)
                 {
                     #if DEBUG
                         std::cout << PALETURQUOISE1 << "Calling mapIterator constructor from node" << RESET << std::endl;
                     #endif
-                    
-                    if (node_->key != input_node->data.first)
-                    {
-                        pointer_ = new pair<const Key, Value>(node_->key, node_->value);
-                        freeMe_ = 1;
-                    }
-                    else
-                        pointer_ = &input_node->data;
                 };
 
                 // copy constructor
                 mapIterator(const mapIterator<typename remove_cv<Key>::type, Value> & original)
-                : freeMe_(0)
                 {
                     # if DEBUG
                         std::cout << PALETURQUOISE1 << "Calling mapIterator copy constructor" << RESET << std::endl;
@@ -75,7 +63,6 @@ namespace ft
 
                     node_ = original.getNode();
                     pointer_ = original.base();
-                    // freeMe_ = original.getFreeMe();
                 };
 
                 // destructor
@@ -84,9 +71,6 @@ namespace ft
                     # if DEBUG
                         std::cout << PALETURQUOISE1 << "Calling mapIterator destructor" << RESET << std::endl;
                     #endif
-
-                    if (freeMe_)
-                        delete pointer_;
                 };
 
 
@@ -101,11 +85,6 @@ namespace ft
                 node_ptr    getNode() const
                 {
                     return node_;
-                }
-
-                bool getFreeMe() const
-                {
-                    return freeMe_;
                 }
 
 // OPERATOR OVERLOADS ---------------------------------------------------------------------------------------------
