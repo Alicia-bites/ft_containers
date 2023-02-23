@@ -595,9 +595,6 @@ int	main(int argc, char **argv)
 			bob.insert(make_pair(13, 777));
 			bob.insert(make_pair(15, 777));
 
-			bob.getTree().printRBTree(bob.getTree().getRoot());
-			std::cout << "-----------------------------------------------------------------" << std::endl;
-
 			// print_map(bob, "bob");
 
 			std::cout << "Testing erase #1" << std::endl;
@@ -605,8 +602,6 @@ int	main(int argc, char **argv)
 			bob.erase(9);
 			bob.erase(10);
 			bob.erase(15);
-			bob.getTree().printRBTree(bob.getTree().getRoot());
-			std::cout << "-----------------------------------------------------------------" << std::endl;
 
 			// print_map(bob, "bob");
 
@@ -621,8 +616,6 @@ int	main(int argc, char **argv)
 			bob.erase(it);
 			it = bob.find(3);
 			bob.erase(it);
-			bob.getTree().printRBTree(bob.getTree().getRoot());
-			std::cout << "-----------------------------------------------------------------" << std::endl;
 
 			// print_map(bob, "bob");
 
@@ -630,15 +623,17 @@ int	main(int argc, char **argv)
 
 			std::cout << "Testing erase #3" << std::endl;
 			map<int, int>::iterator first = bob.begin();
-			std::cout << "Removing from " << bob.begin()->first;
+			std::cout << BLUEVIOLET << "Removing from " << bob.begin()->first;
 			map<int, int>::iterator last = bob.find(13);
-			std::cout << " to " << last->first << std::endl;
+			std::cout << " to " << last->first << RESET << std::endl;
 
 			bob.erase(first, last);
 
 			std::cout << "Tree should only have 13 left : " << std::endl;
-			bob.getTree().printRBTree(bob.getTree().getRoot());
-			std::cout << "-----------------------------------------------------------------" << std::endl;
+
+			// print_map(bob, "bob");
+
+			bob.erase(13);
 
 			// print_map(bob, "bob");
 
