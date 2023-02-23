@@ -77,7 +77,8 @@ namespace ft
 
 			// copy constructor
 			RedBlackTree(const RedBlackTree<Key, Value, Compare, Allocator> & original)
-			: comp_(original.comp_)
+			: nil_(original.nil_)
+			, comp_(original.comp_)
 			, allocator_(original.allocator_)
 			{
 				#if DEBUG
@@ -95,9 +96,9 @@ namespace ft
 				#if DEBUG
 					std::cout << MAGENTA3 << "Calling RedBlackTree destructor" << RESET << std::endl;
 				#endif
+				deleteTree(root_);
 				if (nil_)
 					delete nil_;
-				deleteTree(root_);
 			}
 
 //	MEMBER FUNCTIONS ---------------------------------------------------------------------------------
@@ -149,7 +150,7 @@ namespace ft
 					std::cout << MAGENTA3 << "Calling RedBlackTree assignement operator" << RESET << std::endl;
 				#endif
 
-				if (node != NULL)
+				if (node != nil_)
 				{
 					printTree(node->left);
 					std::cout << *node << std::endl;
@@ -206,8 +207,9 @@ namespace ft
 
 				if (nil_ == 0)
 				{
-					nil_ = new Node<Key, Value>(input_pair.first, 0);
+					nil_ = new Node<Key, Value>(input_pair.first, input_pair.second);
 					nil_->color = BLACK;
+					nil_->parent = 0;
 					nil_->left = nil_;
 					nil_->right = nil_;
 				}
@@ -282,11 +284,14 @@ namespace ft
 
 			size_t	remove(const key_type & key)
 			{
-				if (!findNode(root_, key))
+				node_ptr deadNode = findNode(root_, key); 
+				if (!deadNode)
 					return 0;
-				// removeHelper(root_, key);
+
 				std::cout << DEEPSKYBLUE6 << "removing " << key << RESET << std::endl;
+
 				removeHelper(key);
+				delete deadNode;
 
 				printRBTree(root_);
 				std::cout << "---------------------------------------------" << std::endl;
@@ -463,8 +468,9 @@ namespace ft
 					copy = nil_;
 				else
 				{
-					copy = nodeAllocator_.allocate(1);
-					nodeAllocator_.construct(copy, *original);
+					// copy = nodeAllocator_.allocate(1);
+					// nodeAllocator_.construct(copy, *original);
+					copy = new Node<Key, Value>(original->key, original->value);
 					copyTree(copy->left, original->left);
 					copyTree(copy->right, original->right);
 				}
@@ -723,15 +729,16 @@ namespace ft
 
 			void deleteTree(node_ptr node)
 			{
+				#if DEBUG
+					std::cout << MEDIUMORCHID3 << "Deleting node: " << node->key << RESET << std::endl;
+				#endif
+			
 				if (node == nil_)
 					return;
 			
 				deleteTree(node->left);
 				deleteTree(node->right);
-				
-				#if DEBUG
-					std::cout << MEDIUMORCHID3 << "Deleting node: " << node->key << RESET << std::endl;
-				#endif
+
 				delete node;
 			}
 	

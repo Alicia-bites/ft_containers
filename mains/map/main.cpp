@@ -98,8 +98,9 @@ int	main(int argc, char **argv)
 
 			ft::map<int, std::string> mappy;
 			ft::pair<ft::map<int, std::string>::iterator, bool> res;
-
+			
 			res = mappy.insert(ft::make_pair(7, "first"));
+
 			if (res.second == true)
 				std::cout << "Inserted " << res.first->second << " into the map with key "
 					<< res.first->first << std::endl;
@@ -207,7 +208,7 @@ int	main(int argc, char **argv)
 				<< RESET << std::endl; 
 
 			map<int, int>::iterator it1 = june.begin();
-			for(; it1 != june.end(); ++it1)
+			for(; it1 != june.end(); ++it1)	
 				std::cout << it1->first << std::endl;
 
 			std::cout << std::endl << STEELBLUE2
