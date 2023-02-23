@@ -257,14 +257,13 @@ namespace ft
 
 			size_t	remove(const key_type & key)
 			{
-				size_t n = 0;
-				while (findNode(root_, key))
-				{
-					removeHelper(root_, key);
-					n++;
-				}
-				size_ -= n;
-				return n;
+				if (!findNode(root_, key))
+					return 0;
+				removeHelper(root_, key);
+				printRBTree(root_);
+				std::cout << "---------------------------------------------" << std::endl;
+				size_--;
+				return 1;
 			}
 
 			void	remove(iterator first, iterator last)
@@ -563,6 +562,12 @@ namespace ft
 				{
 					if (node->left == NULL and node->right == NULL) // node has no child
 					{
+						if (node == root_)
+						{
+							delete node;
+							root_ = 0;
+							return NULL;
+						}
 						if (node == node->parent->left)
 							node->parent->left = 0;
 						if (node == node->parent->right)
@@ -574,6 +579,8 @@ namespace ft
 					{
 						node_ptr tmp = node->right;
 						tmp->parent = node->parent;
+						if (node == root_)
+							root_ = tmp;
 						delete(node);
 						fixViolation(tmp);
 						return tmp;
@@ -582,6 +589,8 @@ namespace ft
 					{
 						node_ptr tmp = node->left;
 						tmp->parent = node->parent;
+						if (node == root_)
+							root_ = tmp;
 						delete(node);
 						fixViolation(tmp);
 						return tmp;
@@ -590,7 +599,8 @@ namespace ft
 					// node_ptr successor = getSmallestNode(node->right);
 					node_ptr successor = getBiggestNode(node->left);
 					node->key = successor->key;
-					
+					const_cast<Key&>(node->data.first) = node->key;
+
 					node->left = removeHelper(node->left, successor->key);
 				}
 				return node;
