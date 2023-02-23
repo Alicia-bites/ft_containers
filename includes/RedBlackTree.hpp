@@ -49,19 +49,31 @@ namespace ft
 
 			// default constructor
 			RedBlackTree(const Allocator & allocator = Allocator())
-			: root_(0)
+			: nil_(0)
 			, comp_(std::less<Key>())
 			, allocator_(allocator)
 			, size_(0)
-			{};
+			{
+				# if DEBUG
+					std::cout << SPRINGGREEN3 << "RedBlackTree default constructor called" << std::endl;
+				#endif
+
+				root_ = nil_;
+			};
 
 			// constuctor with specific compare function and allocator function
 			RedBlackTree(key_compare comp, allocator_type allocator)
-			: root_(0)
+			: nil_(0)
 			, comp_(comp)
 			, allocator_(allocator)
 			, size_(0)
-			{};
+			{
+				# if DEBUG
+					std::cout << SPRINGGREEN3 << "RedBlackTree constructor #1 called" << std::endl;
+				#endif
+
+				root_ = nil_;
+			};
 
 			// copy constructor
 			RedBlackTree(const RedBlackTree<Key, Value, Compare, Allocator> & original)
@@ -69,7 +81,7 @@ namespace ft
 			, allocator_(original.allocator_)
 			{
 				#if DEBUG
-					std::cout << MAGENTA3 << "Callind RedBlackTree copy constructor" << RESET << std::endl;
+					std::cout << MAGENTA3 << "Calling RedBlackTree copy constructor" << RESET << std::endl;
 				#endif
 
 				if (this != &original)
@@ -83,7 +95,8 @@ namespace ft
 				#if DEBUG
 					std::cout << MAGENTA3 << "Calling RedBlackTree destructor" << RESET << std::endl;
 				#endif
-
+				if (nil_)
+					delete nil_;
 				deleteTree(root_);
 			}
 
@@ -153,7 +166,7 @@ namespace ft
 
 			void printRBTree(Node<Key, Value>* node, int depth = 0, bool isLeft = false)
 			{
-				if (node == 0)
+				if (node == nil_)
 					return;
 			
 				// Print right child
@@ -178,22 +191,34 @@ namespace ft
 			// inserts new node.
 			// returns a pair, with its member pair::first set to an iterator pointing to either
 			// the newly inserted element or to the element with an equivalent key in the map
-			ft::pair<node_ptr, bool>	insert(const value_type & input_pair)
+			ft::pair<iterator, bool>	insert(const value_type & input_pair)
 			{
 				if (size_ == allocator_.max_size())
 					throw (std::length_error("map::insert"));
 
 				node_ptr node = findNode(root_, input_pair.first);
 				
-				if (node)
-					return ft::make_pair(node, false);
+				if (node != nil_)
+				{
+					iterator output(node, nil_);
+					return ft::make_pair(output, false);
+				}
+
+				if (nil_ == 0)
+				{
+					nil_ = new Node<Key, Value>(input_pair.first, 0);
+					nil_->color = BLACK;
+					nil_->left = nil_;
+					nil_->right = nil_;
+				}
 				node = insertHelper(root_, input_pair.first, input_pair.second);
 				node->color = RED;
 				if (!root_)
 					root_ = node;
 				size_++;
 				fixViolation(node);
-				return ft::make_pair(node, true);
+				iterator output(node, nil_);
+				return ft::make_pair(output, true);
 			};
 
 			// inserts a new node.
@@ -208,7 +233,7 @@ namespace ft
 
 				node_ptr node = findNode(root_, input_pair.first);
 				if (node)
-					return iterator(node);
+					return iterator(node, nil_);
 				if (position == begin() || (--position)->first < input_pair.first)
 				{
 					++position;
@@ -224,7 +249,7 @@ namespace ft
 					fixViolation(node);
 				}
 				size_++;
-				return iterator(node);
+				return iterator(node, nil_);
 			};
 
 			// returns a fresh key, guarantied unused
@@ -260,6 +285,7 @@ namespace ft
 				if (!findNode(root_, key))
 					return 0;
 				// removeHelper(root_, key);
+				std::cout << DEEPSKYBLUE6 << "removing " << key << RESET << std::endl;
 				removeHelper(key);
 
 				printRBTree(root_);
@@ -303,6 +329,11 @@ namespace ft
 				return root_;
 			};
 
+			node_ptr	getNil() const
+			{
+				return nil_;
+			};
+
 			size_t		getSize() const
 			{
 				return size_;
@@ -310,11 +341,11 @@ namespace ft
 
 			node_ptr	getSmallestNode(node_ptr node) const
 			{
-				if (node == 0)
+				if (node == nil_)
 					return node;
-				while (node->left != NULL)
+				while (node->left != nil_)
 				{
-					if (comp_(node->left->key, node->key))
+					// if (comp_(node->left->key, node->key))
 						node = node->left;
 				}
 				return node;
@@ -324,9 +355,9 @@ namespace ft
 			{
 				if (node == 0)
 					return node;
-				while (node->right != NULL)
+				while (node->right != nil_)
 				{
-					if (comp_(node->key, node->right->key))
+					// if (comp_(node->key, node->right->key))
 						node = node->right;
 				}
 				return node;
@@ -341,55 +372,57 @@ namespace ft
 	
 			iterator	begin()
 			{
-				return iterator(getSmallestNode(root_));
+				return iterator(getSmallestNode(root_), nil_);
 			};
 
 			const_iterator	begin() const
 			{
-				return const_iterator(getSmallestNode(root_));
+				return const_iterator(getSmallestNode(root_), nil_);
 			};
 
 			iterator	end()
 			{
 				// return iterator(getBiggestNode(root_));
-				return NULL;
+				return iterator(NULL, nil_);
 			};
 
 			const_iterator	end() const
 			{
-				return NULL;
+				return const_iterator(NULL, nil_);
 			};
 
 			reverse_iterator rbegin()
 			{
-				iterator it(getBiggestNode(root_));
+				iterator it(getBiggestNode(root_), nil_);
 				return reverse_iterator(it);
 			};
 
 			const_reverse_iterator rbegin() const
 			{
-				return const_reverse_iterator(getBiggestNode(root_));
+				return const_reverse_iterator(getBiggestNode(root_), nil_);
 			};
 
 			reverse_iterator	rend()
 			{
-				iterator it(NULL);
+				iterator it(NULL, nil_);
 				return reverse_iterator(it);
 			};
 
 			const_reverse_iterator rend() const
 			{
+				const_iterator it(NULL, nil_);
 				return NULL;
 			};
 
 //		TREE OPERATIONS --------------------------------------------------------------------------------------
 
-			node_ptr	 find(const key_type & key)
+			iterator	 find(const key_type & key)
 			{
 				node_ptr node = findNode(root_, key);
+				iterator output(node, nil_);
 				if (!node)
-					return NULL;
-				return node;
+					return output;
+				return output;
 			}
 
 			node_ptr	upper_bound(const key_type & key)
@@ -401,6 +434,7 @@ namespace ft
 
 		protected:
 			node_ptr							root_;
+			node_ptr							nil_;
 			std::allocator<Node<Key, Value> >	nodeAllocator_;
 			key_compare							comp_; // key comparator
 			allocator_type						allocator_;
@@ -411,7 +445,7 @@ namespace ft
 			// a function that searches a specific node and returns it
 			node_ptr findNode(node_ptr node, const Key &key) const
 			{
-				while (node != 0 && node->key != key)
+				while (node != nil_ && node->key != key)
 				{
 					if (/*key < node->key*/ comp_(key, node->key))
 						node = node->left;
@@ -425,8 +459,8 @@ namespace ft
 
 			void copyTree(node_ptr & copy, node_ptr original)
 			{
-				if (original == 0)
-					copy = 0;
+				if (original == nil_)
+					copy = nil_;
 				else
 				{
 					copy = nodeAllocator_.allocate(1);
@@ -445,7 +479,8 @@ namespace ft
 			// !! when calling function, always set first parameter to tree.getroot()
 			// second parameter should be the key of the item you want to remove.
 			// node_ptr removeHelper(node_ptr node, Key key)
-			// {
+			// {				nil_ = new Node<Key, Value>();
+
 			// 	if (node == NULL)
 			// 		return node;
 			// 	if (/*key < node->key*/ comp_(key, node->key))
@@ -549,15 +584,7 @@ namespace ft
 					u->parent->left = v;
 				else
 					u->parent->right = v;
-				if (v == 0)
-				{	
-					if (u == u->parent->left)
-						u->parent->left = 0;
-					if (u == u->parent->right)
-						u->parent->right = 0;
-				}
-				else
-					v->parent = u->parent;
+				v->parent = u->parent;
 			}
 
 			void	removeHelper(Key key)
@@ -575,14 +602,14 @@ namespace ft
 				node_ptr x;
 				
 				// case 1
-				if (z->left == 0)
+				if (z->left == nil_)
 				{
 					x = z->right;
 					transplant(z, z->right);
 				}
 
 				// case 2
-				else if (z->right == 0)
+				else if (z->right == nil_)
 				{
 					x = z->left;
 					transplant(z, z->left);
@@ -696,7 +723,7 @@ namespace ft
 
 			void deleteTree(node_ptr node)
 			{
-				if (node == NULL)
+				if (node == nil_)
 					return;
 			
 				deleteTree(node->left);
@@ -732,7 +759,7 @@ namespace ft
 				
 				right_child->parent = node->parent; // N's parent becomes G
 
-				if (node->parent == NULL) // if G is NULL
+				if (node->parent == 0) // if G is NULL
 					root_ = right_child; // then N needs to be root_
 				else if (node == node->parent->left) // if P is a left child
 					node->parent->left = right_child; // N becomes G's left's child
@@ -752,12 +779,12 @@ namespace ft
 
 				node->left = left_child->right;
 			
-				if (node->left != NULL)
+				if (node->left != nil_)
 					node->left->parent = node;
 			
 				left_child->parent = node->parent;
 			
-				if (node->parent == NULL)
+				if (node->parent == 0)
 					root_ = left_child;
 				else if (node == node->parent->left)
 					node->parent->left = left_child;
@@ -776,7 +803,12 @@ namespace ft
 			node_ptr	insertHelper(node_ptr node, const Key &key, const Value &value)
 			{
 				if (node == 0)
-					return new Node<Key, Value>(key, value);
+				{
+					node_ptr newNode = new Node<Key, Value>(key, value);
+					newNode->left = nil_;
+					newNode->right = nil_;
+					return newNode;
+				}
 				if (key == node->key)
 				{
 					node->value = value;
@@ -784,18 +816,22 @@ namespace ft
 				}
 				if (/*key < node->key*/ comp_(key, node->key))
 				{
-					if (node->left == 0)
+					if (node->left == nil_)
 					{
 						node->left = new Node<Key, Value> (key, value);
 						node->left->parent = node;
+						node->left->left = nil_;
+						node->left->right = nil_;
 						return node->left;
 					}
 					return insertHelper(node->left, key, value);
 				}
-				if (node->right == 0)
+				if (node->right == nil_)
 				{
 					node->right = new Node<Key, Value> (key, value);
 					node->right->parent = node;
+					node->right->left = nil_;
+					node->right->right = nil_;
 					return node->right;
 				}
 				return insertHelper(node->right, key, value);
