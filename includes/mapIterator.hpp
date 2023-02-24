@@ -55,6 +55,9 @@ namespace ft
                     #if DEBUG
                         std::cout << PALETURQUOISE1 << "Calling mapIterator constructor from node" << RESET << std::endl;
                     #endif
+
+                    if (!input_node)
+                        pointer_ = 0;
                 };
 
                 // copy constructor
@@ -161,6 +164,10 @@ namespace ft
 
                 void    increment()
                 {
+                    // if (node_ == nil_)
+                    // {
+                        
+                    // }
                     if (node_->right != nil_)
                     {
                         node_ = node_->right;
@@ -180,7 +187,7 @@ namespace ft
                         { 
                             node_ = parent;
                             parent = parent->parent;
-                            if (parent == nil_)
+                            if (parent == 0)
                             {
                                 node_ = nil_;
                                 pointer_ = 0;
@@ -214,7 +221,7 @@ namespace ft
                         {
                             node_ = parent;
                             parent = parent->parent;
-                            if (parent == nil_)
+                            if (parent == 0)
                             {
                                 node_ = nil_;
                                 pointer_ = 0;
@@ -233,11 +240,11 @@ namespace ft
 	template <typename Key, typename Value>
 		bool	operator==(const mapIterator<Key, Value> & lhs, const mapIterator<Key, Value> & rhs)
 		{
-            if (lhs.getNode() == 0 && rhs.getNode() == 0)
+            if (lhs.base() == 0 && rhs.base() == 0)
                 return true;
-            else if (lhs.getNode() == 0 && rhs.getNode() != 0)
+            else if (lhs.base() == 0 && rhs.base() != 0)
                 return false;
-            else if (lhs.getNode() != 0 && rhs.getNode() == 0)
+            else if (lhs.base() != 0 && rhs.base() == 0)
                 return false;
 			return lhs.getNode()->key == rhs.getNode()->key;
 		};
@@ -245,11 +252,11 @@ namespace ft
     template <typename Key, typename Value>
 		bool	operator==(const mapIterator<Key, Value> & lhs, const mapIterator<typename remove_cv<Key>::type, Value> & rhs)
 		{
-            if (lhs.getNode() == 0 && rhs.getNode() == 0)
+            if (lhs.base() == 0 && rhs.base() == 0)
                 return true;
-            else if (lhs.getNode() == 0 && rhs.getNode() != 0)
+            else if (lhs.base() == 0 && rhs.base() != 0)
                 return false;
-            else if (lhs.getNode() != 0 && rhs.getNode() == 0)
+            else if (lhs.base() != 0 && rhs.base() == 0)
                 return false;
 			return lhs.getNode()->key == rhs.getNode()->key;
 		};
@@ -257,11 +264,11 @@ namespace ft
 	template <typename Key, typename Value>
 		bool	operator!=(const mapIterator<Key, Value> & lhs, const mapIterator<Key, Value> & rhs)
 		{
-            if (lhs.getNode() == 0 && rhs.getNode() == 0)
+            if (lhs.base() == 0 && rhs.base() == 0)
                 return false;
-            else if (lhs.getNode() == 0 && rhs.getNode() != 0)
+            else if (lhs.base() == 0 && rhs.base() != 0)
                 return true;
-            else if (lhs.getNode() != 0 && rhs.getNode() == 0)
+            else if (lhs.base() != 0 && rhs.base() == 0)
                 return true;
 			return lhs.getNode()->key != rhs.getNode()->key;
 		};
@@ -269,11 +276,11 @@ namespace ft
     template <typename Key, typename Value>
 		bool	operator!=(const mapIterator<Key, Value> & lhs, const mapIterator<typename remove_cv<Key>::type, Value> & rhs)
 		{
-            if (lhs.getNode() == 0 && rhs.getNode() == 0)
+            if (lhs.base() == 0 && rhs.base() == 0)
                 return false;
-            else if (lhs.getNode() == 0 && rhs.getNode() != 0)
+            else if (lhs.base() == 0 && rhs.base() != 0)
                 return true;
-            else if (lhs.getNode() != 0 && rhs.getNode() == 0)
+            else if (lhs.base() != 0 && rhs.base() == 0)
                 return true;
 			return lhs.getNode()->key != rhs.getNode()->key;
 		};
