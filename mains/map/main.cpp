@@ -115,31 +115,31 @@ int	main(int argc, char **argv)
 			
 			std::cout << std::endl << std::endl;
 			std::cout << DODGERBLUE2 << "PRINTING MAPPY : " << RESET << std::endl;
-			mappy.getTree().printTree(mappy.getTree().getRoot());
+			mappy.getTree()->printTree(mappy.getTree()->getRoot());
 
 			std::cout << "Testing copy constructor" << std::endl;
 			ft::map<int, std::string> coppy(mappy);
 			std::cout << DODGERBLUE2 << "PRINTING COPPY  : " << RESET << std::endl;
-			mappy.getTree().printTree(coppy.getTree().getRoot());
+			mappy.getTree()->printTree(coppy.getTree()->getRoot());
 
 			std::cout << "Removing one node with key 10 " << std::endl;
 			size_t output = mappy.erase(10);
 			std::cout << "output = " << output << std::endl;
-			std::cout << "root_ is : " << *(mappy.getTree().getRoot()) << std::endl;
+			std::cout << "root_ is : " << *(mappy.getTree()->getRoot()) << std::endl;
 
 
 			std::cout << "Removing one node with key 15 " << std::endl;
 			output = mappy.erase(15);
 			std::cout << "output = " << output << std::endl;
-			std::cout << "root_ is : " << *(mappy.getTree().getRoot()) << std::endl;
+			std::cout << "root_ is : " << *(mappy.getTree()->getRoot()) << std::endl;
 
 			std::cout << "Removing one node with key 7 " << std::endl;
 			output = mappy.erase(7);
 			std::cout << "output = " << output << std::endl;
-			std::cout << "root_ is : " << *(mappy.getTree().getRoot()) << std::endl;
+			std::cout << "root_ is : " << *(mappy.getTree()->getRoot()) << std::endl;
 			std::cout << std::endl << std::endl;
 			std::cout << DODGERBLUE2 << "PRINTING MAPPY : " << RESET << std::endl;
-			mappy.getTree().printTree(mappy.getTree().getRoot());
+			mappy.getTree()->printTree(mappy.getTree()->getRoot());
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
@@ -169,10 +169,10 @@ int	main(int argc, char **argv)
 			june.insert(make_pair(13, 888));
 			june.insert(make_pair(15, 888));
 
-			// june.getTree().printRBTree(june.getTree().getRoot());
+			// june.getTree()->printRBTree(june.getTree()->getRoot());
 			std::cout << "------------------------------------------------------------------" << std::endl;
 
-			// std::cout << "nil_ is = " << *(june.getTree().getNil()) << std::endl;
+			// std::cout << "nil_ is = " << *(june.getTree()->getNil()) << std::endl;
 
 			std::cout << "June's begin is = " << june.begin()->first << std::endl;
 
@@ -277,7 +277,7 @@ int	main(int argc, char **argv)
 			june.insert(make_pair(15, 888));
 			// june.insert(make_pair(5, 888));
 			
-			// june.getTree().printTree(june.getTree().getRoot());
+			// june.getTree()->printTree(june.getTree()->getRoot());
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
 			<< std::endl << RESET;
@@ -330,8 +330,8 @@ int	main(int argc, char **argv)
 
 			print_map(joe, "joe");
 
-			// joe.getTree().printTree(joe.getTree().getRoot());
-			// joe.getTree().printRBTree(joe.getTree().getRoot());
+			// joe.getTree()->printTree(joe.getTree()->getRoot());
+			// joe.getTree()->printRBTree(joe.getTree()->getRoot());
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
@@ -551,17 +551,17 @@ int	main(int argc, char **argv)
 
 			print_map(bob, "bob");
 
-			// std::cout << bob.getTree().getBiggestNode(bob.getTree().getRoot())->key << std::endl;
-			// std::cout << bob.getTree().getSmallestNode(bob.getTree().getRoot())->key << std::endl;
+			// std::cout << bob.getTree()->getBiggestNode(bob.getTree()->getRoot())->key << std::endl;
+			// std::cout << bob.getTree()->getSmallestNode(bob.getTree()->getRoot())->key << std::endl;
 			
 			map<int, int>::iterator it = bob.find(8);
 			std::cout << it->first << " = " << it->second << std::endl;
 
-			// bob.getTree().printRBTree(bob.getTree().getRoot());
+			// bob.getTree()->printRBTree(bob.getTree()->getRoot());
 
 			bob.erase(it);
 
-			// bob.getTree().printRBTree(bob.getTree().getRoot());
+			// bob.getTree()->printRBTree(bob.getTree()->getRoot());
 
 
 			std::cout << std::endl << STEELBLUE2

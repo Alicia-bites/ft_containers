@@ -59,12 +59,9 @@ namespace ft
 			};
 
 		private :
-			// typedef RBTree<key_type, value_type, std::_Select1st<value_type>, key_compare, allocator_type>    RBTree;
-			typedef RedBlackTree<key_type, mapped_type, key_compare, Allocator>	* RBTree;	
-			RBTree    tree_;
-
-			// typedef BinarySearchTree<key_type, mapped_type>			BST;
-			// BST	tree_;
+			// typedef RBTree_ptr<key_type, value_type, std::_Select1st<value_type>, key_compare, allocator_type>    RBTree_ptr;
+			typedef RedBlackTree<key_type, mapped_type, key_compare, Allocator>	* RBTree_ptr;	
+			RBTree_ptr    tree_;
 
 			Node<Key, Value> *node_ptr;
 
@@ -73,8 +70,10 @@ namespace ft
 		public :
 			// Constructs an empty container, with no elements.
 			explicit map(const Compare& comp = Compare(), const Allocator & allocator = Allocator())
-			: tree_(comp, allocator)
+			// : tree_(comp, allocator)
 			{
+
+				tree_ = new RedBlackTree<Key, Value, Compare, Allocator>(comp, allocator);
 				#if DEBUG
 					std::cout << LIGHTSEAGREEN << "Calling map default constructor" << RESET << std::endl;
 				#endif
@@ -138,58 +137,58 @@ namespace ft
 	
 			iterator	begin()
 			{
-				return tree_.begin();
+				return tree_->begin();
 			};
 
 			const_iterator	begin() const
 			{
-				return iterator(tree_.getSmallestNode(tree_.getRoot()), & tree_);
+				return iterator(tree_->getSmallestNode(tree_->getRoot()), tree_);
 			};
 
 			iterator	end()
 			{
-				return tree_.end();
+				return tree_->end();
 			};
 
 			const_iterator	end() const
 			{
-				return tree_.end();
+				return tree_->end();
 			};
 
 			reverse_iterator	rbegin()
 			{
-				return tree_.rbegin();
+				return tree_->rbegin();
 			};
 
 			const_reverse_iterator rbegin() const
 			{
-				return tree_.rbegin();
+				return tree_->rbegin();
 			};
 
 			reverse_iterator	rend()
 			{
-				return tree_.rend();
+				return tree_->rend();
 			};
 
 			const_reverse_iterator rend() const
 			{
-				return tree_.rend();
+				return tree_->rend();
 			};
 
 //		CAPACITY --------------------------------------------------------------------------------------
 			bool	empty() const
 			{
-				return tree_.empty();
+				return tree_->empty();
 			};
 
 			size_type	size() const
 			{
-				return tree_.size();
+				return tree_->size();
 			};
 
 			size_type	max_size() const
 			{
-				return tree_.max_size();
+				return tree_->max_size();
 			};
 
 //		ACCESSORS --------------------------------------------------------------------------------------
@@ -199,7 +198,7 @@ namespace ft
 				return (*((this->insert(ft::make_pair(x, mapped_type()))).first)).second;
 			};
 
-			RBTree &	getTree()
+			RBTree_ptr &	getTree()
 			{
 				return tree_;
 			};
@@ -214,7 +213,7 @@ namespace ft
 			// (if the function returns a value).
 			ft::pair<iterator, bool>	insert(const value_type & input_pair)
 			{
-				return tree_.insert(input_pair);
+				return tree_->insert(input_pair);
 			};
 			
 			//  Extends the container by inserting new elements, effectively increasing 
@@ -223,7 +222,7 @@ namespace ft
 			// newly inserted element or to the element that already had an equivalent key in the map.
 			iterator	insert(iterator position, const value_type& input_pair)
 			{
-				return tree_.insert(position, input_pair);
+				return tree_->insert(position, input_pair);
 			}
 
 			// Iterators specifying a range of elements. Copies of the elements
@@ -234,7 +233,7 @@ namespace ft
 			template <class InputIterator>
 				void 	insert(InputIterator first, InputIterator last)
 				{
-					return tree_.insert(first, last);
+					return tree_->insert(first, last);
 				};
 
 			// Removes from the map container a single element.
@@ -242,7 +241,7 @@ namespace ft
 			// removed, which are destroyed.
 			void	erase(iterator position)
 			{
-				tree_.remove(position->first);
+				tree_->remove(position->first);
 			};
 
 			// Removes from the map container a single element.
@@ -250,14 +249,14 @@ namespace ft
 			// number of elements removed, which are destroyed.
 			size_type	erase(const key_type& input_key)
 			{
-				return tree_.remove(input_key);
+				return tree_->remove(input_key);
 			};
 
 			// Removes the elements in the range [first, last), 
 			// which must be a valid range in *this.
 			void	erase(iterator first, iterator last)
 			{
-				return tree_.remove(first, last);
+				return tree_->remove(first, last);
 			};
 			
 			// void	swap(map<Key,T,Compare,Allocator>&);
@@ -283,12 +282,12 @@ namespace ft
 			// iterator to map::end.
 			iterator	find(const key_type & key)
 			{
-				return tree_.find(key);
+				return tree_->find(key);
 			};
 
 			const_iterator find(const key_type & key) const
 			{
-				return tree_.find(key);
+				return tree_->find(key);
 			};
 
 			size_type	count(const key_type & x) const;
