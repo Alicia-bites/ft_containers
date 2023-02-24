@@ -16,13 +16,13 @@ namespace ft
 
     // this is an iterator that will browse through my binary search tree
     // mapIterator point to a pair<const Key, Value> of type value_type
-	template <typename RBT, typename Value>
+	template <typename RBT, typename Pair_type>
 		class mapIterator
 		{
 			public:
                 typedef typename RBT::key_type              key_type;
                 typedef typename RBT::mapped_type           mapped_type;
-				typedef typename RBT::value_type            value_type;
+				typedef Pair_type                           value_type;
 				typedef value_type&                         reference;
 				typedef value_type*                         pointer;
 				typedef std::bidirectional_iterator_tag     iterator_category;
@@ -30,7 +30,7 @@ namespace ft
 
                 private:
                     typedef typename RBT::node_ptr          node_ptr;
-                    typedef RedBlackTree<key_type, Value>	* RBTree_ptr;
+                    typedef RBT*                            RBTree_ptr;
 
                     RBTree_ptr  tree_;
                     node_ptr    node_;
@@ -69,7 +69,7 @@ namespace ft
 
                 // copy constructor
                 // mapIterator(const mapIterator<typename remove_cv<Key>::type, Value> & original)
-                mapIterator(const mapIterator<RBT, Value> & original)
+                mapIterator(const mapIterator<RBT, Pair_type> & original)
 
                 {
                     # if DEBUG
@@ -118,7 +118,7 @@ namespace ft
 				
                 // assignement operator
                 // mapIterator<Key, Value>&    operator=(const mapIterator<typename remove_cv<Key>::type, Value> & rhs)
-                mapIterator<RBT, Value>&    operator=(const mapIterator<RBT, Value> & rhs)
+                mapIterator<RBT, Pair_type>&    operator=(const mapIterator<RBT, Pair_type> & rhs)
                 {
                     # if DEBUG
                         std::cout << SEAGREEN3 << "Calling assignement operator" << RESET << std::endl;
@@ -152,7 +152,7 @@ namespace ft
 	
                 // increment pointer and return a reference to its new
                 // state. (++i)
-                mapIterator<RBT, Value> &	operator++(void)
+                mapIterator<RBT, Pair_type> &	operator++(void)
                 {
                     increment();
                     return *this;
@@ -160,24 +160,24 @@ namespace ft
 
                 // increment pointer and return a reference to its new
                 // state. (--i)
-                mapIterator<RBT, Value> &	operator--(void)
+                mapIterator<RBT, Pair_type> &	operator--(void)
                 {
                     decrement();
                     return *this;
                 };
 
                 // increment pointer but return its initial state (i++)
-                mapIterator<RBT, Value>	operator++(int)
+                mapIterator<RBT, Pair_type>	operator++(int)
                 {
-                    mapIterator<RBT, Value> tmp(*this);
+                    mapIterator<RBT, Pair_type> tmp(*this);
                     increment();
                     return (tmp);
                 };
 
                 // decrement pointer but return its initial state (i--)
-                mapIterator<RBT, Value>	operator--(int)
+                mapIterator<RBT, Pair_type>	operator--(int)
                 {
-                    mapIterator<RBT, Value> tmp(*this);
+                    mapIterator<RBT, Pair_type> tmp(*this);
                     decrement();
                     return (tmp);
                 };
@@ -186,12 +186,14 @@ namespace ft
 
                 void    increment()
                 {
-                    // if (node_ == nil_)
-                    // {
-                    //     node_ = tree_.getBiggestNode(tree_.getRoot());
-                    //     pointer_ = &node_->data;
-                    //     return ;                         
-                    // }
+                    // if you try to increment beyond smallest Key, always return a pointer
+                    // to the node who's got the biggest key.
+                    if (node_ == nil_)
+                    {
+                        node_ = tree_->getBiggestNode(tree_->getRoot());
+                        pointer_ = &node_->data;
+                        return ;                         
+                    }
                     if (node_->right != nil_)
                     {
                         node_ = node_->right;
@@ -226,13 +228,15 @@ namespace ft
 
                 void    decrement()
                 {
-
-                    // if (node_ == 0)
-                    // {
-                    //     node_ = tree_.getSmallestNode(tree_.getRoot());
-                    //     pointer_ = &node_->data;
-                    //     return ;                         
-                    // }
+                    
+                    // if you try to decrement beyond smallest Key, always return a pointer
+                    // to the node who's got the smallest key.
+                    if (node_ == 0)
+                    {
+                        node_ = tree_->getSmallestNode(tree_->getRoot());
+                        pointer_ = &node_->data;
+                        return ;                         
+                    }
                     if (node_->left != nil_)
                     {
                         node_ = node_->left;
@@ -268,7 +272,7 @@ namespace ft
 	// RELATIONNAL OPERATOR OVERLOADS ---------------------------------------------------------------------------------------------
 
 	// template <typename RBT, typename Value>
-	// 	bool	operator==(const mapIterator<RBT, Value> & lhs, const mapIterator<RBT, Value> & rhs)
+	// 	bool	operator==(const mapIterator<RBT, Pair_type> & lhs, const mapIterator<RBT, Pair_type> & rhs)
 	// 	{
     //         if (lhs.base() == 0 && rhs.base() == 0)
     //             return true;
@@ -292,7 +296,7 @@ namespace ft
 		};
 
 	// template <typename RBT, typename Value>
-	// 	bool	operator!=(const mapIterator<RBT, Value> & lhs, const mapIterator<RBT, Value> & rhs)
+	// 	bool	operator!=(const mapIterator<RBT, Pair_type> & lhs, const mapIterator<RBT, Pair_type> & rhs)
 	// 	{
     //         if (lhs.base() == 0 && rhs.base() == 0)
     //             return false;
