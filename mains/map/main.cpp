@@ -1,8 +1,8 @@
-#include "../../includes/map.hpp"
-#include "../../includes/pair.hpp"
-#include "../../includes/RedBlackTree.hpp"
-#include "../../includes/BST.hpp"
 #include "../../colors/colors.hpp"
+
+#include "../../includes/map.hpp"
+// #include "../../includes/pair.hpp"
+// #include "../../includes/RedBlackTree.hpp"
 // #include "../../mapReverseIterator.hpp"
 
 
@@ -54,37 +54,10 @@ int	main(int argc, char **argv)
 		if (test_number == 1)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing binary search tree" 
+			std::cout << STEELBLUE3 << "--" 
 				<< RESET << std::endl << std::endl;
 
-			std::cout << DARKTURQUOISE << "Creating tree..." << RESET << std::endl;
-			ft::BinarySearchTree<int, std::string> tree;
 
-			std::cout << DEEPPINK1 << "Inserting stuff in tree..." << RESET << std::endl;
-			tree.insert(ft::make_pair(8, "first"));
-			tree.insert(ft::make_pair(1, "second"));
-			tree.insert(ft::make_pair(6, "third"));
-			tree.insert(ft::make_pair(4, "fourth"));
-			tree.insert(ft::make_pair(4, "fifth"));
-
-			std::cout << "tree.root = " << tree.getRoot()->key << std::endl;
-			tree.printTree(tree.getRoot());
-
-			std::cout << MEDIUMTURQUOISE << "Testing accessor" << RESET << std::endl;
-			std::cout << "tree[4] = " << tree[4] << std::endl;
-
-			std::cout << LIGHTSEAGREEN << "Testing copy constructor" << RESET << std::endl;
-			ft::BinarySearchTree<int, std::string> tree_copy(tree);
-			std::cout << "Printing copy_tree : " << RESET << std::endl;
-			tree_copy.printTree(tree_copy.getRoot());
-			std::cout << CYAN3 << "Testing remove function" << RESET << std::endl;
-			tree_copy.remove(tree.getRoot(), 4);
-
-			std::cout << TURQUOISE2 << "Checking if deep copy has been done properly : " << RESET << std::endl;
-			std::cout << "Printing copy_tree : " << RESET << std::endl;
-			tree_copy.printTree(tree_copy.getRoot());
-			std::cout << "Printing tree : " << RESET << std::endl;
-			tree.printTree(tree.getRoot());
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
 			<< std::endl << RESET;
@@ -196,6 +169,11 @@ int	main(int argc, char **argv)
 			june.insert(make_pair(13, 888));
 			june.insert(make_pair(15, 888));
 
+			// june.getTree().printRBTree(june.getTree().getRoot());
+			std::cout << "------------------------------------------------------------------" << std::endl;
+
+			// std::cout << "nil_ is = " << *(june.getTree().getNil()) << std::endl;
+
 			std::cout << "June's begin is = " << june.begin()->first << std::endl;
 
 			std::cout << AQUAMARINE3 << "Testing incrementation of iterator --> " << "First with i++ : "
@@ -204,12 +182,30 @@ int	main(int argc, char **argv)
 			for(; it != june.end(); it++)
 				std::cout << it->first << std::endl;
 
+			std::cout << std::endl;
+
 			std::cout << AQUAMARINE3 << "Then with ++i : "
 				<< RESET << std::endl; 
 
+			it = june.begin();
+			for(; it != june.end(); ++it)	
+				std::cout << it->first << std::endl;
+			
+			it = june.begin();
+			int n = 16;
+			while (n--)
+				it++;
+			std::cout << "it = " << it->first << std::endl;
+
 			map<int, int>::iterator it1 = june.begin();
-			for(; it1 != june.end(); ++it1)	
-				std::cout << it1->first << std::endl;
+			n = 16;
+			while (n--)
+				it1++;
+			std::cout << "it1 = " << it1->first << std::endl;
+
+			if (it != it1)
+				std::cout << "YIHAAAA" << std::endl;
+			
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"

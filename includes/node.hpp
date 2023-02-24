@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "pair.hpp"
+#include "remove_cv.hpp"
 
 namespace ft
 {

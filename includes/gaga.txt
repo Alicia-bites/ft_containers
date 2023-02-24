@@ -1,0 +1,10 @@
+no matching constructor for initialization of 
+
+'ft::RedBlackTree<char, int>::const_iterator' 
+(aka 'mapIterator<RedBlackTree<char, int>, const int>')
+
+                                return const_iterator(getSmallestNode(root_), this);
+                                       ^              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+in instantiation of member function 'ft::RedBlackTree<char, int>::begin' requested here
+                                return tree_.begin();

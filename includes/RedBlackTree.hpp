@@ -1,15 +1,17 @@
-#pragma once
+// #pragma once
+
+#ifndef REDBLACKTREE_HPP
+# define REDBLACKTREE_HPP
 
 #include <cstdio>
 #include <iostream>
 #include <queue>
 #include <cmath>
 
-#include "node.hpp"
 #include "../colors/colors.hpp"
-// #include "iterator.hpp"
+
+#include "node.hpp"
 #include "mapReverseIterator.hpp"
-#include "mapIterator.hpp"
 #include "stack.hpp"
 
 // #1 A node is eather RED or BLACK
@@ -22,28 +24,34 @@
 
 namespace ft
 {
+
+	template <typename Key, typename Value>
+	class mapIterator;
+
 	template <typename Key, typename Value, typename Compare = std::less<Key>,
 		typename Allocator = std::allocator<ft::pair<const Key, Value> > >
 	class RedBlackTree
 	{
 		public:
-			typedef Key													key_type; // type of key used to pair with value (1st template parameter)
-			typedef Value												mapped_type; // type of the value paired with key (2nd template parameter)
-			typedef ft::pair<const Key, Value>							value_type; 	 // represent the key-value pair
-			typedef Compare		 										key_compare;	 // The third template parameter (Compare)	defaults to: less<key_type>
-			typedef Allocator											allocator_type;	 // The fourth template parameter (Alloc)	defaults to: allocator<value_type>
-			typedef typename allocator_type::reference					reference;		 // for the default allocator: value_type&
-			typedef typename allocator_type::const_reference			const_reference; // for the default allocator: const value_type&
-			typedef typename allocator_type::pointer					pointer;		 // for the default allocator: value_type*
-			typedef typename allocator_type::const_pointer				const_pointer;	 // for the default allocator: const value_type*
-			typedef typename allocator_type::difference_type			difference_type; // a signed integral type, identical to: iterator_traits<iterator>::difference_type	usually the same as ptrdiff_t
-			typedef typename allocator_type::size_type					size_type;		 // an unsigned integral type that can represent any non-negative value of difference_type	usually the same as size_t
-			typedef ft::mapIterator<Key, Value>							iterator; 		 // a bidirectional iterator to value_type
-			typedef ft::mapIterator<const Key, Value>					const_iterator;  // a bidirectional iterator to const value_type
-			typedef ft::reverse_iterator<iterator>						reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
+			typedef Key														key_type; // type of key used to pair with value (1st template parameter)
+			typedef Value													mapped_type; // type of the value paired with key (2nd template parameter)
+			typedef ft::pair<const Key, Value>								value_type; 	 // represent the key-value pair
+			typedef Compare		 											key_compare;	 // The third template parameter (Compare)	defaults to: less<key_type>
+			typedef Allocator												allocator_type;	 // The fourth template parameter (Alloc)	defaults to: allocator<value_type>
+			typedef typename allocator_type::reference						reference;		 // for the default allocator: value_type&
+			typedef typename allocator_type::const_reference				const_reference; // for the default allocator: const value_type&
+			typedef typename allocator_type::pointer						pointer;		 // for the default allocator: value_type*
+			typedef typename allocator_type::const_pointer					const_pointer;	 // for the default allocator: const value_type*
+			typedef typename allocator_type::difference_type				difference_type; // a signed integral type, identical to: iterator_traits<iterator>::difference_type	usually the same as ptrdiff_t
+			typedef typename allocator_type::size_type						size_type;		 // an unsigned integral type that can represent any non-negative value of difference_type	usually the same as size_t
 
-			typedef Node<Key, Value>									*node_ptr;
+			typedef ft::mapIterator<RedBlackTree<Key, Value>, Value>		iterator; 		 // a bidirectional iterator to value_type
+			typedef ft::mapIterator<RedBlackTree<Key, Value>, const Value>	const_iterator;  // a bidirectional iterator to const value_type
+
+			typedef ft::reverse_iterator<iterator>							reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>					const_reverse_iterator;
+
+			typedef Node<Key, Value>										*node_ptr;
 
 //	CONSTRUCTORS ----------------------------------------------------------------------------
 
@@ -201,7 +209,7 @@ namespace ft
 				
 				if (node != nil_)
 				{
-					iterator output(node, nil_);
+					iterator output(node, this);
 					return ft::make_pair(output, false);
 				}
 
@@ -219,7 +227,7 @@ namespace ft
 					root_ = node;
 				size_++;
 				fixViolation(node);
-				iterator output(node, nil_);
+				iterator output(node, this);
 				return ft::make_pair(output, true);
 			};
 
@@ -235,7 +243,7 @@ namespace ft
 
 				node_ptr node = findNode(root_, input_pair.first);
 				if (node)
-					return iterator(node, nil_);
+					return iterator(node, this);
 				if (position == begin() || (--position)->first < input_pair.first)
 				{
 					++position;
@@ -251,7 +259,7 @@ namespace ft
 					fixViolation(node);
 				}
 				size_++;
-				return iterator(node, nil_);
+				return iterator(node, this);
 			};
 
 			// returns a fresh key, guarantied unused
@@ -377,46 +385,45 @@ namespace ft
 	
 			iterator	begin()
 			{
-				return iterator(getSmallestNode(root_), nil_);
+				return iterator(getSmallestNode(root_), this);
 			};
 
 			const_iterator	begin() const
 			{
-				return const_iterator(getSmallestNode(root_), nil_);
+				return const_iterator(getSmallestNode(root_), this);
 			};
 
 			iterator	end()
 			{
-				// return iterator(getBiggestNode(root_));
-				return iterator(NULL, nil_);
+				return iterator(0, this);
 			};
 
 			const_iterator	end() const
 			{
-				return const_iterator(NULL, nil_);
+				return const_iterator(0, this);
 			};
 
 			reverse_iterator rbegin()
 			{
-				iterator it(getBiggestNode(root_), nil_);
+				iterator it(getBiggestNode(root_), this);
 				return reverse_iterator(it);
 			};
 
 			const_reverse_iterator rbegin() const
 			{
-				return const_reverse_iterator(getBiggestNode(root_), nil_);
+				return const_reverse_iterator(getBiggestNode(root_), this);
 			};
 
 			reverse_iterator	rend()
 			{
-				iterator it(NULL, nil_);
+				iterator it(0, this);
 				return reverse_iterator(it);
 			};
 
 			const_reverse_iterator rend() const
 			{
-				const_iterator it(NULL, nil_);
-				return NULL;
+				const_iterator it(0, this);
+				return const_reverse_iterator(it);
 			};
 
 //		TREE OPERATIONS --------------------------------------------------------------------------------------
@@ -424,7 +431,7 @@ namespace ft
 			iterator	 find(const key_type & key)
 			{
 				node_ptr node = findNode(root_, key);
-				iterator output(node, nil_);
+				iterator output(node, this);
 				if (!node)
 					return output;
 				return output;
@@ -967,3 +974,5 @@ namespace ft
 
 	};
 }
+
+#endif

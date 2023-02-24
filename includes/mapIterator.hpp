@@ -1,43 +1,49 @@
 #pragma once
 
-#include <iostream>
 #include <cstddef>
+#include <iostream>
+
 #include "node.hpp"
-// #include "mapReverseIterator.hpp"
 #include "pair.hpp"
 #include "utils.hpp"
+// #include "RedBlackTree.hpp"
 
 // FOR DEBUG
 // #include <utility>
 
-// this is an iterator that will browse through my binary search tree
-// mapIterator point to a pair<const Key, Value> of type value_type
 namespace ft
 {
-	template <typename Key, typename Value>
+
+    // this is an iterator that will browse through my binary search tree
+    // mapIterator point to a pair<const Key, Value> of type value_type
+	template <typename RBT, typename Value>
 		class mapIterator
 		{
 			public:
-                typedef Key                             key_type;
-                typedef Value                           mapped_type;
-				typedef ft::pair<const Key, Value >     value_type;
-				typedef value_type&                     reference;
-				typedef value_type*                     pointer;
-				typedef std::bidirectional_iterator_tag iterator_category;
-				typedef std::ptrdiff_t                  difference_type;
+                typedef typename RBT::key_type              key_type;
+                typedef typename RBT::mapped_type           mapped_type;
+				typedef typename RBT::value_type            value_type;
+				typedef value_type&                         reference;
+				typedef value_type*                         pointer;
+				typedef std::bidirectional_iterator_tag     iterator_category;
+				typedef std::ptrdiff_t                      difference_type;
 
                 private:
-                    typedef Node<typename remove_cv<Key>::type, Value>  *  node_ptr;
+                    typedef typename RBT::node_ptr          node_ptr;
+                    typedef RedBlackTree<key_type, Value>	* RBTree_ptr;
 
-                    node_ptr        node_;
-                    node_ptr        nil_;
-                    pointer         pointer_;
+                    RBTree_ptr  tree_;
+                    node_ptr    node_;
+                    node_ptr    nil_;
+
+                    pointer     pointer_; // pointer to data, which is a node attribute of type pair<const Key, value>
 
                 public:
 
                     // default constructor
                     mapIterator()
-                    : node_(0)
+                    : tree_(0)
+                    , node_(0)
                     , nil_(0)
                     , pointer_(0)
                     {
@@ -47,9 +53,10 @@ namespace ft
                     };
 
                 // constructor
-                mapIterator(node_ptr input_node, node_ptr nil)
-                : node_(input_node)
-                , nil_(nil)
+                mapIterator(node_ptr input_node, RBTree_ptr tree)
+                : tree_(tree)
+                , node_(input_node)
+                , nil_(tree_->getNil())
                 , pointer_(&input_node->data)
                 {
                     #if DEBUG
@@ -61,12 +68,15 @@ namespace ft
                 };
 
                 // copy constructor
-                mapIterator(const mapIterator<typename remove_cv<Key>::type, Value> & original)
+                // mapIterator(const mapIterator<typename remove_cv<Key>::type, Value> & original)
+                mapIterator(const mapIterator<RBT, Value> & original)
+
                 {
                     # if DEBUG
                         std::cout << PALETURQUOISE1 << "Calling mapIterator copy constructor" << RESET << std::endl;
                     #endif
 
+                    tree_ = original.getTree();
                     node_ = original.getNode();
                     pointer_ = original.base();
                     nil_ = original.getNil();
@@ -99,15 +109,22 @@ namespace ft
                     return nil_;
                 }
 
+                RBTree_ptr  getTree() const
+                {
+                    return tree_;
+                }
+
 // OPERATOR OVERLOADS ---------------------------------------------------------------------------------------------
 				
                 // assignement operator
-                mapIterator<Key, Value>&    operator=(const mapIterator<typename remove_cv<Key>::type, Value> & rhs)
+                // mapIterator<Key, Value>&    operator=(const mapIterator<typename remove_cv<Key>::type, Value> & rhs)
+                mapIterator<RBT, Value>&    operator=(const mapIterator<RBT, Value> & rhs)
                 {
                     # if DEBUG
                         std::cout << SEAGREEN3 << "Calling assignement operator" << RESET << std::endl;
                     # endif
 
+                    tree_ = rhs.getTree();
                     node_ = rhs.getNode();
                     pointer_ = rhs.base();
                     nil_ = rhs.getNil();
@@ -126,11 +143,16 @@ namespace ft
                     return pointer_;
                 };
 
+                operator typename RBT::const_iterator() const
+                {
+                    return typename RBT::const_iterator(node_, tree_);
+                }
+
 	// ARITHMETIC OPERATOR OVERLOADS ---------------------------------------------------------------------------------------------
 	
                 // increment pointer and return a reference to its new
                 // state. (++i)
-                mapIterator<Key, Value> &	operator++(void)
+                mapIterator<RBT, Value> &	operator++(void)
                 {
                     increment();
                     return *this;
@@ -138,24 +160,24 @@ namespace ft
 
                 // increment pointer and return a reference to its new
                 // state. (--i)
-                mapIterator<Key, Value> &	operator--(void)
+                mapIterator<RBT, Value> &	operator--(void)
                 {
                     decrement();
                     return *this;
                 };
 
                 // increment pointer but return its initial state (i++)
-                mapIterator<Key, Value>	operator++(int)
+                mapIterator<RBT, Value>	operator++(int)
                 {
-                    mapIterator<Key, Value> tmp(*this);
+                    mapIterator<RBT, Value> tmp(*this);
                     increment();
                     return (tmp);
                 };
 
                 // decrement pointer but return its initial state (i--)
-                mapIterator<Key, Value>	operator--(int)
+                mapIterator<RBT, Value>	operator--(int)
                 {
-                    mapIterator<Key, Value> tmp(*this);
+                    mapIterator<RBT, Value> tmp(*this);
                     decrement();
                     return (tmp);
                 };
@@ -166,7 +188,9 @@ namespace ft
                 {
                     // if (node_ == nil_)
                     // {
-                        
+                    //     node_ = tree_.getBiggestNode(tree_.getRoot());
+                    //     pointer_ = &node_->data;
+                    //     return ;                         
                     // }
                     if (node_->right != nil_)
                     {
@@ -202,6 +226,13 @@ namespace ft
 
                 void    decrement()
                 {
+
+                    // if (node_ == 0)
+                    // {
+                    //     node_ = tree_.getSmallestNode(tree_.getRoot());
+                    //     pointer_ = &node_->data;
+                    //     return ;                         
+                    // }
                     if (node_->left != nil_)
                     {
                         node_ = node_->left;
@@ -234,11 +265,22 @@ namespace ft
                     pointer_ = &node_->data;
                 }
     	};
-
 	// RELATIONNAL OPERATOR OVERLOADS ---------------------------------------------------------------------------------------------
 
-	template <typename Key, typename Value>
-		bool	operator==(const mapIterator<Key, Value> & lhs, const mapIterator<Key, Value> & rhs)
+	// template <typename RBT, typename Value>
+	// 	bool	operator==(const mapIterator<RBT, Value> & lhs, const mapIterator<RBT, Value> & rhs)
+	// 	{
+    //         if (lhs.base() == 0 && rhs.base() == 0)
+    //             return true;
+    //         else if (lhs.base() == 0 && rhs.base() != 0)
+    //             return false;
+    //         else if (lhs.base() != 0 && rhs.base() == 0)
+    //             return false;
+	// 		return lhs.getNode()->key == rhs.getNode()->key;
+	// 	};
+
+    template <typename RBT, typename A, typename B>
+		bool	operator==(const mapIterator<RBT, A> & lhs, const mapIterator<RBT, B> & rhs)
 		{
             if (lhs.base() == 0 && rhs.base() == 0)
                 return true;
@@ -249,32 +291,20 @@ namespace ft
 			return lhs.getNode()->key == rhs.getNode()->key;
 		};
 
-    template <typename Key, typename Value>
-		bool	operator==(const mapIterator<Key, Value> & lhs, const mapIterator<typename remove_cv<Key>::type, Value> & rhs)
-		{
-            if (lhs.base() == 0 && rhs.base() == 0)
-                return true;
-            else if (lhs.base() == 0 && rhs.base() != 0)
-                return false;
-            else if (lhs.base() != 0 && rhs.base() == 0)
-                return false;
-			return lhs.getNode()->key == rhs.getNode()->key;
-		};
-
-	template <typename Key, typename Value>
-		bool	operator!=(const mapIterator<Key, Value> & lhs, const mapIterator<Key, Value> & rhs)
-		{
-            if (lhs.base() == 0 && rhs.base() == 0)
-                return false;
-            else if (lhs.base() == 0 && rhs.base() != 0)
-                return true;
-            else if (lhs.base() != 0 && rhs.base() == 0)
-                return true;
-			return lhs.getNode()->key != rhs.getNode()->key;
-		};
+	// template <typename RBT, typename Value>
+	// 	bool	operator!=(const mapIterator<RBT, Value> & lhs, const mapIterator<RBT, Value> & rhs)
+	// 	{
+    //         if (lhs.base() == 0 && rhs.base() == 0)
+    //             return false;
+    //         else if (lhs.base() == 0 && rhs.base() != 0)
+    //             return true;
+    //         else if (lhs.base() != 0 && rhs.base() == 0)
+    //             return true;
+	// 		return lhs.getNode()->key != rhs.getNode()->key;
+	// 	};
     
-    template <typename Key, typename Value>
-		bool	operator!=(const mapIterator<Key, Value> & lhs, const mapIterator<typename remove_cv<Key>::type, Value> & rhs)
+    template <typename RBT, typename A, typename B>
+		bool	operator!=(const mapIterator<RBT, A> & lhs, const mapIterator<RBT, B> & rhs)
 		{
             if (lhs.base() == 0 && rhs.base() == 0)
                 return false;
@@ -285,3 +315,4 @@ namespace ft
 			return lhs.getNode()->key != rhs.getNode()->key;
 		};
 }
+

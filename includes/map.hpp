@@ -7,42 +7,40 @@
 #include <memory>
 
 #include "../colors/colors.hpp"
-// #include "iterator.hpp"
-#include "mapReverseIterator.hpp"
 
 #include "type_traits.hpp"
 #include "algorithms.hpp"
 #include "pair.hpp"
+#include "RedBlackTree.hpp"
 #include "mapIterator.hpp"
 
 
-#include "RedBlackTree.hpp"
 // #include "BST.hpp"
 
 namespace ft
 {
 	template <typename Key, typename Value, typename Compare = std::less<Key>,
-		typename Allocator = std::allocator<ft::pair<const Key, Value> > >
+		typename Allocator = std::allocator<pair<const Key, Value> > >
 	class map
 	{
 		public:
 			// HOMEMADE TYPE DEFINITION
 
-			typedef Key                                     		key_type; // type of key used to pair with value (1st template parameter)
-			typedef Value                                   		mapped_type; // type of the value paired with key (2nd template parameter)
-			typedef ft::pair<const Key, Value>                  	value_type; // represent the key-value pair
-			typedef Compare                                 		key_compare; // comparaison fonction used to compare keys (3rd template parameter, defaults to: less<key_type>)
-			typedef Allocator                               		allocator_type; // (4th template parameter, defaults to: allocator<value_type>)
-			typedef typename Allocator::reference           		reference; // for the default allocator: value_type &
-			typedef typename Allocator::const_reference     		const_reference; // for the default allocator: const value_type&
-			typedef std::size_t                             		size_type;
-			typedef std::ptrdiff_t                          		difference_type;
-			typedef typename Allocator::pointer             		pointer; // for the default allocator: value_type*
-			typedef typename Allocator::const_pointer       		const_pointer; 	// for the default allocator: const value_type*
-			typedef ft::mapIterator<Key, Value>						iterator; // a bidirectional iterator to value_type
-			typedef ft::mapIterator<const Key, Value>				const_iterator; // a bidirectional iterator to const value_type
-			typedef ft::reverse_iterator<iterator>					reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
+			typedef Key                                     			key_type; // type of key used to pair with value (1st template parameter)
+			typedef Value                                   			mapped_type; // type of the value paired with key (2nd template parameter)
+			typedef pair<const Key, Value>                  		value_type; // represent the key-value pair
+			typedef Compare                                 			key_compare; // comparaison fonction used to compare keys (3rd template parameter, defaults to: less<key_type>)
+			typedef Allocator                               			allocator_type; // (4th template parameter, defaults to: allocator<value_type>)
+			typedef typename Allocator::reference           			reference; // for the default allocator: value_type &
+			typedef typename Allocator::const_reference     			const_reference; // for the default allocator: const value_type&
+			typedef std::size_t                             			size_type;
+			typedef std::ptrdiff_t                          			difference_type;
+			typedef typename Allocator::pointer             			pointer; // for the default allocator: value_type*
+			typedef typename Allocator::const_pointer       			const_pointer; 	// for the default allocator: const value_type*
+			typedef typename RedBlackTree<key_type, mapped_type>::iterator				iterator; // a bidirectional iterator to value_type
+			typedef typename RedBlackTree<key_type, mapped_type>::const_iterator	const_iterator; // a bidirectional iterator to const value_type
+			typedef typename RedBlackTree<key_type, mapped_type>::reverse_iterator						reverse_iterator;
+			typedef typename RedBlackTree<key_type, mapped_type>::const_reverse_iterator					const_reverse_iterator;
 
 			class value_compare : public std::binary_function<value_type,value_type,bool>
 			{
@@ -62,13 +60,13 @@ namespace ft
 
 		private :
 			// typedef RBTree<key_type, value_type, std::_Select1st<value_type>, key_compare, allocator_type>    RBTree;
-			typedef RedBlackTree<key_type, mapped_type, key_compare, Allocator>	RBTree;	
+			typedef RedBlackTree<key_type, mapped_type, key_compare, Allocator>	* RBTree;	
 			RBTree    tree_;
 
 			// typedef BinarySearchTree<key_type, mapped_type>			BST;
 			// BST	tree_;
 
-			ft::Node<Key, Value> *node_ptr;
+			Node<Key, Value> *node_ptr;
 
 //	CONSTRUCTORS ----------------------------------------------------------------------------
 
@@ -145,7 +143,7 @@ namespace ft
 
 			const_iterator	begin() const
 			{
-				return tree_.begin();
+				return iterator(tree_.getSmallestNode(tree_.getRoot()), & tree_);
 			};
 
 			iterator	end()
@@ -283,17 +281,17 @@ namespace ft
 			// Searches the container for an element with a key equivalent to k
 			// and returns an iterator to it if found, otherwise it returns an
 			// iterator to map::end.
-			iterator	find(const key_type& key)
+			iterator	find(const key_type & key)
 			{
 				return tree_.find(key);
 			};
 
-			const_iterator find(const key_type& key) const
+			const_iterator find(const key_type & key) const
 			{
 				return tree_.find(key);
 			};
 
-			size_type	count(const key_type& x) const;
+			size_type	count(const key_type & x) const;
 			// iterator	lower_bound(const key_type& x)
 			// {
 // 
