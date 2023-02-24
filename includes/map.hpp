@@ -116,6 +116,9 @@ namespace ft
 					std::cout << LIGHTSEAGREEN << "Calling map destructor" << RESET << std::endl;
 				#endif
 
+				if (tree_)
+					delete tree_;
+
 			};
 
 //	MEMBER FUNCTIONS ---------------------------------------------------------------------------------
