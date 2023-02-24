@@ -262,7 +262,11 @@ namespace ft
 				return tree_->remove(first, last);
 			};
 			
-			// void	swap(map<Key,T,Compare,Allocator>&);
+			void	swap(map<Key,T,Compare,Allocator>&)
+			{
+				return ;
+			}
+
 			// void	clear();
 
 //		OBSERVERS --------------------------------------------------------------------------------------
@@ -294,15 +298,18 @@ namespace ft
 			};
 
 			size_type	count(const key_type & x) const;
+
 			// iterator	lower_bound(const key_type& x)
 			// {
 // 
 			// };
+
 			// const_iterator lower_bound(const key_type& x) const;
 			// iterator	upper_bound(const key_type& key)
 			// {
 				// 
 			// };
+
 			// const_iterator upper_bound(const key_type& x) const;
 			// pair<iterator,iterator>	equal_range(const key_type& x);
 			// pair<const_iterator,const_iterator>	equal_range(const key_type& x) const;
@@ -331,30 +338,3 @@ namespace ft
 		void swap(map<Key,T,Compare,Allocator>& x, map<Key,T,Compare,Allocator>& y);
 }
 
-			// node_ptr	insertHelper(node_ptr node, const Key &key, const Value &value)
-			// {
-			// 	if (node == 0)
-			// 		return new Node<Key, Value>(key, value);
-			// 	if (key == node->key)
-			// 	{
-			// 		node->value = value;
-			// 		return node;
-			// 	}
-			// 	if (/*key < node->key*/ comp_(key, node->key))
-			// 	{
-			// 		if (node->left == 0)
-			// 		{
-			// 			node->left = new Node<Key, Value> (key, value);
-			// 			node->left->parent = node;
-			// 			return node->left;
-			// 		}
-			// 		return insertHelper(node->left, key, value);
-			// 	}
-			// 	if (node->right == 0)
-			// 	{
-			// 		node->right = new Node<Key, Value> (key, value);
-			// 		node->right->parent = node;
-			// 		return node->right;
-			// 	}
-			// 	return insertHelper(node->right, key, value);
-			// };

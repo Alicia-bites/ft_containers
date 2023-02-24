@@ -349,9 +349,8 @@ int	main(int argc, char **argv)
 			// lily.insert(make_pair('b', 777));
 			// lily.insert(make_pair('c', 777));
 
-
   			map<char,int> anothermap;
-  			anothermap.insert(lily.begin(),lily.find('c'));
+  			anothermap.insert(lily.begin(), lily.find('c'));
 			print_map(anothermap, "anothermap");
 
 			map<char, int>::iterator first = anothermap.begin();
@@ -642,10 +641,28 @@ int	main(int argc, char **argv)
 		if (test_number == 15)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing " 
+			std::cout << STEELBLUE3 << "Testing swap function" 
 				<< RESET << std::endl << std::endl;
 
-
+			std::map<char,int> foo,bar;
+			
+			foo['x']=100;
+			foo['y']=200;
+			
+			bar['a']=11;
+			bar['b']=22;
+			bar['c']=33;
+			
+			foo.swap(bar);
+			
+			std::cout << "foo contains:\n";
+			for (std::map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
+				std::cout << it->first << " => " << it->second << '\n';
+			
+			std::cout << "bar contains:\n";
+			for (std::map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
+				std::cout << it->first << " => " << it->second << '\n';
+				
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
 			<< std::endl << RESET;
