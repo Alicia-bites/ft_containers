@@ -32,26 +32,23 @@ namespace ft
 		typename Allocator = std::allocator<ft::pair<const Key, Value> > >
 	class RedBlackTree
 	{
-		public:
-			typedef Key														key_type; // type of key used to pair with value (1st template parameter)
-			typedef Value													mapped_type; // type of the value paired with key (2nd template parameter)
-			typedef ft::pair<const Key, Value>								value_type; 	 // represent the key-value pair
-			typedef Compare		 											key_compare;	 // The third template parameter (Compare)	defaults to: less<key_type>
-			typedef Allocator												allocator_type;	 // The fourth template parameter (Alloc)	defaults to: allocator<value_type>
-			typedef typename allocator_type::reference						reference;		 // for the default allocator: value_type&
-			typedef typename allocator_type::const_reference				const_reference; // for the default allocator: const value_type&
-			typedef typename allocator_type::pointer						pointer;		 // for the default allocator: value_type*
-			typedef typename allocator_type::const_pointer					const_pointer;	 // for the default allocator: const value_type*
-			typedef typename allocator_type::difference_type				difference_type; // a signed integral type, identical to: iterator_traits<iterator>::difference_type	usually the same as ptrdiff_t
-			typedef typename allocator_type::size_type						size_type;		 // an unsigned integral type that can represent any non-negative value of difference_type	usually the same as size_t
-
-			typedef ft::mapIterator<RedBlackTree<Key, Value>, Value>		iterator; 		 // a bidirectional iterator to value_type
-			typedef ft::mapIterator<RedBlackTree<Key, Value>, const Value>	const_iterator;  // a bidirectional iterator to const value_type
-
-			typedef ft::reverse_iterator<iterator>							reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator>					const_reverse_iterator;
-
-			typedef Node<Key, Value>										*node_ptr;
+		public:		
+			typedef Key																key_type; // type of key used to pair with value (1st template parameter)
+			typedef Value															mapped_type; // type of the value paired with key (2nd template parameter)
+			typedef ft::pair<const Key, Value>										value_type; 	 // represent the key-value pair
+			typedef Compare		 													key_compare;	 // The third template parameter (Compare)	defaults to: less<key_type>
+			typedef Allocator														allocator_type;	 // The fourth template parameter (Alloc)	defaults to: allocator<value_type>
+			typedef typename allocator_type::reference								reference;		 // for the default allocator: value_type&
+			typedef typename allocator_type::const_reference						const_reference; // for the default allocator: const value_type&
+			typedef typename allocator_type::pointer								pointer;		 // for the default allocator: value_type*
+			typedef typename allocator_type::const_pointer							const_pointer;	 // for the default allocator: const value_type*
+			typedef typename allocator_type::difference_type						difference_type; // a signed integral type, identical to: iterator_traits<iterator>::difference_type	usually the same as ptrdiff_t
+			typedef typename allocator_type::size_type								size_type;		 // an unsigned integral type that can represent any non-negative value of difference_type	usually the same as size_t
+			typedef ft::mapIterator<RedBlackTree<Key, Value>, value_type>			iterator; 		 // a bidirectional iterator to value_type
+			typedef ft::mapIterator<RedBlackTree<Key, Value>, const value_type>		const_iterator;  // a bidirectional iterator to const value_type
+			typedef ft::reverse_iterator<iterator>									reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>							const_reverse_iterator;
+			typedef Node<Key, Value>												*node_ptr;
 
 //	CONSTRUCTORS ----------------------------------------------------------------------------
 
