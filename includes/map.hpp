@@ -142,7 +142,7 @@ namespace ft
 
 			const_iterator	begin() const
 			{
-				return iterator(tree_->getSmallestNode(tree_->getRoot()), tree_);
+				return tree_->begin();
 			};
 
 			iterator	end()
