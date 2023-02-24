@@ -655,14 +655,14 @@ namespace ft
 			{
 				while (x != root_ and x->color == BLACK)
 				{
-					if (x == x->parent->left) // if x is a left child
+					if (x == x->parent->left)
 					{
-						node_ptr w = x->parent->right; // w is x's brother
+						node_ptr w = x->parent->right;
 						// type 1
 						if (w->color == RED)
 						{
 							w->color = BLACK;
-							x->parent->color = RED;
+							x->parent->color = RED;			
 							rotateLeft(x->parent);
 							w = x->parent->right;
 						}
@@ -765,7 +765,7 @@ namespace ft
 
 				node->right = right_child->left; // LC becomes P's right child
 
-				if (node->right) // if LC exists
+				if (node->right != nil_) // if LC exists
 					node->right->parent = node; // P becomes LC's parent
 				
 				right_child->parent = node->parent; // N's parent becomes G
