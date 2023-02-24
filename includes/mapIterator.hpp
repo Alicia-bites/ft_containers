@@ -203,7 +203,7 @@ namespace ft
                     else
                     {
                         node_ptr parent = node_->parent;
-                        if (parent == nil_)
+                        if (parent == 0)
                         {
                             node_ = nil_;
                             pointer_ = 0;
@@ -246,7 +246,7 @@ namespace ft
                     else
                     {
                         node_ptr parent = node_->parent;
-                        if (parent == nil_)
+                        if (parent == 0)
                         {
                             node_ = nil_;
                             pointer_ = 0;
