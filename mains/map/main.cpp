@@ -675,9 +675,32 @@ int	main(int argc, char **argv)
 		if (test_number == 16)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing " 
+			std::cout << STEELBLUE3 << "Testing clear member function" 
 				<< RESET << std::endl << std::endl;
 
+			map<char,int> mymap;
+			
+			mymap['x']=100;
+			mymap['y']=200;
+			mymap['z']=300;
+			
+			// mymap.getTree()->printRBTree(mymap.getTree()->getRoot());
+			// std::cout << "----------------------------------------------" << std::endl;
+
+			std::cout << "mymap contains:\n";
+			for (map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+				std::cout << it->first << " => " << it->second << '\n';
+			
+			mymap.clear();
+			mymap['a']=1101;
+			mymap['b']=2202;
+
+			// mymap.getTree()->printRBTree(mymap.getTree()->getRoot());
+			// std::cout << "----------------------------------------------" << std::endl;
+
+			std::cout << "mymap contains:\n";
+			for (map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+				std::cout << it->first << " => " << it->second << '\n';
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"

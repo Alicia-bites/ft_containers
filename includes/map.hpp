@@ -270,7 +270,16 @@ namespace ft
 				return ;
 			}
 
-			void	clear();
+			// Erases all elements from the container. After this call, 
+			// size() returns zero.
+			// Invalidates any references, pointers, or iterators 
+			// referring to contained elements. Any past-the-end 
+			// iterator remains valid. 
+			void	clear()
+			{
+				tree_->clear();
+				return ;
+			}
 
 //		OBSERVERS --------------------------------------------------------------------------------------
 			

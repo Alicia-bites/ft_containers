@@ -101,7 +101,8 @@ namespace ft
 				#if DEBUG
 					std::cout << MAGENTA3 << "Calling RedBlackTree destructor" << RESET << std::endl;
 				#endif
-				deleteTree(root_);
+				if (root_)
+					deleteTree(root_);
 				if (nil_)
 					delete nil_;
 			}
@@ -130,13 +131,17 @@ namespace ft
 
 			Value &operator[](const Key &key)
 			{
-				node_ptr node = findNode(root_, key);
+				// node_ptr node = findNode(root_, key);
 				
-				if (node == 0)
-					node = insertHelper(root_, key, Value());
-				if (root_ == 0)
-					root_ = node;
-				return node->value;
+				// if (node == 0)
+				// 	node = insertHelper(root_, key, Value());
+				// if (root_ == 0)
+				// 	root_ = node;
+				// return node->value;
+				
+				ft::pair<const Key, Value> output;
+				output = insert(ft::make_pair(key, Value()));
+				return output.first->second;
 			};
 
 //		VISUALIZERS --------------------------------------------------------------------------------------
@@ -357,6 +362,17 @@ namespace ft
 
 				// printRBTree(root_);
 
+			}
+
+			void	clear()
+			{
+				if (!root_)
+					return ;
+				deleteTree(root_);
+				delete nil_;
+				nil_ = NULL;
+				root_ = NULL;
+				size_ = 0;
 			}
 
 //		GETTERS --------------------------------------------------------------------------------------
