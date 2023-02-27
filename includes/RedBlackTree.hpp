@@ -298,14 +298,19 @@ namespace ft
 				if (!deadNode)
 					return 0;
 
-				std::cout << DEEPSKYBLUE6 << "removing " << key << RESET << std::endl;
+				# if DEBUG
+					std::cout << DEEPSKYBLUE6 << "removing " << key << RESET << std::endl;
+				# endif
 
 				removeHelper(key);
 				delete deadNode;
 
-				printRBTree(root_);
-				std::cout << "---------------------------------------------" << std::endl;
-				std::cout << DARKCYAN << "Is RedBlackTree? " << is_rb_tree() << RESET << std::endl;
+				# if DEBUG
+					printRBTree(root_);
+					std::cout << "---------------------------------------------" << std::endl;
+					std::cout << DARKCYAN << "Is RedBlackTree? " << is_rb_tree() << RESET << std::endl;
+				#endif
+
 				size_--;
 				return 1;
 			}
@@ -478,10 +483,26 @@ namespace ft
 				return output;
 			}
 
-			node_ptr	upper_bound(const key_type & key)
+			// returns iterator to node whose is key is greater
+			// than k.
+			iterator	upper_bound(const key_type & k)
 			{
-				node_ptr node = findNode(root_, key);
-				node_ptr output = node->parent;
+				node_ptr node = findNode(root_, k);
+				iterator output = iterator(node, this);
+				output++;
+				// std::cout << "upper_bound node = " << output->first << std::endl;
+				return output;
+			}
+
+			// returns iterator that points to the first node that is not
+			// less than k. (i.o.w --> k or greater than k)
+			iterator	lower_bound(const key_type & k)
+			{
+				iterator output = begin();
+				iterator endOfTime = end();
+				while (output != endOfTime && output->first < k)
+					++output;
+				// std::cout << "lower_bound node = " << output->first << std::endl;
 				return output;
 			}
 

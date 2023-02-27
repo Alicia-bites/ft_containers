@@ -710,9 +710,32 @@ int	main(int argc, char **argv)
 		if (test_number == 17)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing " 
+			std::cout << STEELBLUE3 << "Testing lower_bound" 
 				<< RESET << std::endl << std::endl;
 
+			map<char,int> mymap;
+			map<char,int>::iterator itlow,itup;
+			
+			// mymap.getTree()->printRBTree(mymap.getTree()->getRoot());
+			// std::cout << "----------------------------------------------" << std::endl;
+
+			mymap['a']=20;
+			mymap['b']=40;
+			mymap['c']=60;
+			mymap['d']=80;
+			mymap['f']=100;
+			
+			itlow=mymap.lower_bound('b');  // itlow points to b
+			itup=mymap.upper_bound('d');   // itup points to e (not d!)
+
+			std::cout << itlow->first << std::endl;
+			std::cout << itup->first << std::endl;
+			
+			mymap.erase(itlow,itup);        // erases [itlow,itup)
+			
+			// print content:
+			for (map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+				std::cout << it->first << " => " << it->second << '\n';
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
