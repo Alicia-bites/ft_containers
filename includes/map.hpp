@@ -322,7 +322,11 @@ namespace ft
 				return tree_->lower_bound(k);
 			};
 
-			// const_iterator lower_bound(const key_type& x) const;
+			// const_iterator lower_bound(const key_type& x) const
+			// {
+				// 
+				// return tree_->lower_bound;
+			// };
 
 			// A similar member function, lower_bound, has the same
 			// behavior as upper_bound, except in the case that
