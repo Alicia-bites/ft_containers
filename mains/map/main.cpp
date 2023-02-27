@@ -644,23 +644,27 @@ int	main(int argc, char **argv)
 			std::cout << STEELBLUE3 << "Testing swap function" 
 				<< RESET << std::endl << std::endl;
 
-			std::map<char,int> foo,bar;
+			map<char, int> foo , bar;
 			
 			foo['x']=100;
 			foo['y']=200;
+			// foo.getTree()->printRBTree(foo.getTree()->getRoot());
+			// std::cout << "----------------------------------------------" << std::endl;
 			
 			bar['a']=11;
 			bar['b']=22;
 			bar['c']=33;
+			// bar.getTree()->printRBTree(bar.getTree()->getRoot());
+			// std::cout << "----------------------------------------------" << std::endl;
 			
 			foo.swap(bar);
 			
 			std::cout << "foo contains:\n";
-			for (std::map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
+			for (map<char,int>::iterator it = foo.begin(); it != foo.end(); ++it)
 				std::cout << it->first << " => " << it->second << '\n';
 			
 			std::cout << "bar contains:\n";
-			for (std::map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
+			for (map<char,int>::iterator it = bar.begin(); it != bar.end(); ++it)
 				std::cout << it->first << " => " << it->second << '\n';
 				
 			std::cout << std::endl << STEELBLUE2

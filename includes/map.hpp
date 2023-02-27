@@ -262,12 +262,15 @@ namespace ft
 				return tree_->remove(first, last);
 			};
 			
-			void	swap(map<Key,T,Compare,Allocator>&)
+			// Exchanges the content of the container by the content of x, 
+			// which is another map of the same type. Sizes may differ.
+			void	swap(map<Key,Value,Compare,Allocator> & swapMe)
 			{
+				tree_->swap(*(swapMe.getTree()));
 				return ;
 			}
 
-			// void	clear();
+			void	clear();
 
 //		OBSERVERS --------------------------------------------------------------------------------------
 			

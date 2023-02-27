@@ -331,6 +331,34 @@ namespace ft
 				// std::cout << "size_ = " << size_ << std::endl;
 			}
 
+			void	swap(RedBlackTree<Key, Value, Compare, Allocator> & swapMe)
+			{
+				node_ptr					tmpRoot			= swapMe.root_;
+				node_ptr					tmpNil			= swapMe.nil_;
+				key_compare					tmpComp			= swapMe.comp_;
+				allocator_type				tmpAllocator	= swapMe.allocator_;
+				size_type					tmpSize			= swapMe.size_;
+
+
+				// std::cout << "swapMe.root_->key = " << swapMe.root_->key << std::endl;
+				// std::cout << "root_->key = " << root_->key << std::endl;
+				
+				swapMe.root_ = root_;
+				swapMe.nil_ = nil_;
+				swapMe.comp_ = comp_;
+				swapMe.allocator_ = allocator_;
+				swapMe.size_ = size_;
+
+				root_ = tmpRoot;
+				nil_ = tmpNil;
+				comp_ = tmpComp;
+				allocator_ = tmpAllocator;
+				size_ = tmpSize;
+
+				// printRBTree(root_);
+
+			}
+
 //		GETTERS --------------------------------------------------------------------------------------
 
 			// return a pointer to root node
