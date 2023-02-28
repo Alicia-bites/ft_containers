@@ -244,7 +244,8 @@ namespace ft
 					throw (std::length_error("map::insert"));
 
 				node_ptr node = findNode(root_, input_pair.first);
-				if (node)
+				
+				if (node != nil_)
 					return iterator(node, this);
 				if (position == begin() || (--position)->first < input_pair.first)
 				{
@@ -278,18 +279,21 @@ namespace ft
 			template <class InputIterator>
 				void	insert(InputIterator first, InputIterator last)
 				{
-					if (size_ == allocator_.max_size())
-						throw (std::length_error("map::insert"));
+					// if (size_ == allocator_.max_size())
+					// 	throw (std::length_error("map::insert"));
 	
-					for (; first != last; first++)
-					{
-						node_ptr node = insertHelper(root_, first->first, first->second);
-						node->color = RED;
-						if (!root_)
-							root_ = node;
-						size_++;
-						fixViolation(node);
-					}
+					// for (; first != last; first++)
+					// {
+					// 	node_ptr node = insertHelper(root_, first->first, first->second);
+					// 	node->color = RED;
+					// 	if (!root_)
+					// 		root_ = node;
+					// 	size_++;
+					// 	fixViolation(node);
+					// }
+
+					for(; first != last; first++)
+						insert(*first);
 				};
 
 			size_t	remove(const key_type & key)
