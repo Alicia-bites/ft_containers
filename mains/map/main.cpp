@@ -325,7 +325,7 @@ int	main(int argc, char **argv)
 			std::cout << "RES = " << res->first << " -- " << res->second << std::endl;
 
 			std::cout << "Inserting element with key that is already taken" << std::endl;
-			res = joe.insert (it, make_pair(2, 33333333));  // no max efficiency inserting
+			res = joe.insert (it, make_pair(2, 33333333));
 			std::cout << "RES = " << res->first << " -- " << res->second << std::endl;
 
 			print_map(joe, "joe");
