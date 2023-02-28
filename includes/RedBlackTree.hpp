@@ -522,7 +522,8 @@ namespace ft
 				iterator endOfTime = end();
 				while (output != endOfTime && comp_(output->first, k))
 					++output;
-				output++;
+				if (output.getNode() == nil_)
+					output = iterator(getBiggestNode(root_), this);
 				return output;
 			}
 
