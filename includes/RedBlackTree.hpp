@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef REDBLACKTREE_HPP
-# define REDBLACKTREE_HPP
-
 #include <cstdio>
 #include <iostream>
 #include <queue>
@@ -244,7 +241,7 @@ namespace ft
 					throw (std::length_error("map::insert"));
 
 				node_ptr node = findNode(root_, input_pair.first);
-				
+
 				if (node != nil_)
 					return iterator(node, this);
 				if (position == begin() || (--position)->first < input_pair.first)
@@ -342,7 +339,6 @@ namespace ft
 					remove(to_delete.top());
 					to_delete.pop();
 				}
-				// std::cout << "size_ = " << size_ << std::endl;
 			}
 
 			void	swap(RedBlackTree<Key, Value, Compare, Allocator> & swapMe)
@@ -1064,5 +1060,3 @@ namespace ft
 
 	};
 }
-
-#endif
