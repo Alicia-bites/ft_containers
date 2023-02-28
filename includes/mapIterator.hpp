@@ -63,7 +63,7 @@ namespace ft
                         std::cout << PALETURQUOISE1 << "Calling mapIterator constructor from node" << RESET << std::endl;
                     #endif
 
-                    if (!input_node)
+                    if (!input_node || input_node == nil_)
                         pointer_ = 0;
                 };
 
