@@ -1058,9 +1058,8 @@ int	main(int argc, char **argv)
 		if (test_number == 24)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing " 
+			std::cout << STEELBLUE3 << "Testing mazoise" 
 				<< RESET << std::endl << std::endl;
-
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
