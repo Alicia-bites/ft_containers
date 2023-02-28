@@ -839,7 +839,7 @@ int	main(int argc, char **argv)
 		if (test_number == 20)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing count member function" 
+			std::cout << STEELBLUE3 << "Testing equal_range" 
 				<< RESET << std::endl << std::endl;
 
 			map<int, int> fufu;
@@ -861,14 +861,26 @@ int	main(int argc, char **argv)
 			<< std::endl << RESET;
 		}
 
-
 		
 		if (test_number == 21)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing " 
+			std::cout << STEELBLUE3 << "Testing equal_range const" 
 				<< RESET << std::endl << std::endl;
 
+			map<int, int> fufu;
+
+			fufu.insert(make_pair(5, 555));
+			fufu.insert(make_pair(9, 999));
+			fufu.insert(make_pair(2, 888));
+
+			pair<map<int, int>::const_iterator, map<int, int>::const_iterator> res;
+			res = fufu.equal_range(9);
+
+			if(res.first != fufu.end())
+				std::cout << res.first->first << std::endl;
+			if (res.second != fufu.end())
+				std::cout << res.second->first<< std::endl;
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"

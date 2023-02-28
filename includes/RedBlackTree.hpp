@@ -1,4 +1,4 @@
-// #pragma once
+#pragma once
 
 #ifndef REDBLACKTREE_HPP
 # define REDBLACKTREE_HPP
@@ -518,6 +518,14 @@ namespace ft
 			{
 				iterator low = lower_bound(k);
 				iterator up = upper_bound(k);
+
+				return ft::make_pair(low, up);
+			}
+
+			pair<const_iterator, const_iterator> equal_range(const key_type & k) const
+			{
+				const_iterator low = lower_bound(k);
+				const_iterator up = upper_bound(k);
 
 				return ft::make_pair(low, up);
 			}

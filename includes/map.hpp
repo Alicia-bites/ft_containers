@@ -360,7 +360,10 @@ namespace ft
 				return tree_->equal_range(k);
 			}
 
-			// pair<const_iterator,const_iterator>	equal_range(const key_type& x) const;
+			pair<const_iterator,const_iterator>	equal_range(const key_type& k) const
+			{
+				return tree_->equal_range(k);
+			};
 
 
 	};
