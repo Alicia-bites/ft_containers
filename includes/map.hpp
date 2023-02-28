@@ -373,30 +373,9 @@ namespace ft
 	template <typename Key, typename Value, typename Compare, typename Allocator>
 		bool operator==(const map<Key,Value,Compare,Allocator> & x, const map<Key,Value,Compare,Allocator> & y)
 		{
-
-			// If the sizes of the maps are not equal, they are not equal
-			if (x.size() != y.size())
-				return false;
-
-			// Compare the keys and values of the two maps
-			typename map<Key, Value, Compare, Allocator>::const_iterator x_it = x.begin();
-			typename map<Key, Value, Compare, Allocator>::const_iterator y_it = y.begin();
-			while (x_it != x.end() && y_it != y.end())
-			{
-				// If the keys are not equal, the trees are not equal
-				if (x_it->first != y_it->first)
-					return false;
-
-				// If the values are not equal, the trees are not equal
-				if (x_it->second != y_it->second)
-					return false;
-
-				++x_it;
-				++y_it;
-			}
-
-			// If all keys and values match, the maps are equal
-			return true;
+			if (x.size() == y.size())
+				return (equal(x.begin(), x.end(), y.begin()));
+			return (false);
 		};
 	
 	// Compares the contents of lhs and rhs 	. The comparison is performed by a function 
