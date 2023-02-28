@@ -483,27 +483,25 @@ namespace ft
 				return output;
 			}
 
+			size_type count(const key_type & k) const
+			{
+				node_ptr node = findNode(root_, k);
+				if (node == nil_ || node == 0)
+					return 0;
+				return 1;
+			}
+
 			// returns iterator to node whose is key is greater
 			// than k.
 			iterator	upper_bound(const key_type & k)
 			{
-				node_ptr node = findNode(root_, k);
-				iterator output = iterator(node, this);
+				iterator output = begin();
+				iterator endOfTime = end();
+				while (output != endOfTime && comp_(output->first, k))
+					++output;
 				output++;
-				// std::cout << "upper_bound node = " << output->first << std::endl;
 				return output;
 			}
-
-			// // returns iterator to node whose is key is greater
-			// // than k.
-			// const_iterator	upper_bound(const key_type & k)
-			// {
-			// 	node_ptr node = findNode(root_, k);
-			// 	const_iterator output = iterator(node, this);
-			// 	output++;
-			// 	// std::cout << "upper_bound node = " << output->first << std::endl;
-			// 	return output;
-			// }
 
 			// returns iterator that points to the first node that is not
 			// less than k. (i.o.w --> k or greater than k)
@@ -511,10 +509,17 @@ namespace ft
 			{
 				iterator output = begin();
 				iterator endOfTime = end();
-				while (output != endOfTime && output->first < k)
+				while (output != endOfTime && comp_(output->first, k))
 					++output;
-				// std::cout << "lower_bound node = " << output->first << std::endl;
 				return output;
+			}
+
+			pair<iterator, iterator> equal_range(const Key & k)
+			{
+				iterator low = lower_bound(k);
+				iterator up = upper_bound(k);
+
+				return ft::make_pair(low, up);
 			}
 
 		protected:

@@ -723,7 +723,7 @@ int	main(int argc, char **argv)
 			mymap['b']=40;
 			mymap['c']=60;
 			mymap['d']=80;
-			mymap['f']=100;
+			mymap['e']=100;
 			
 			itlow=mymap.lower_bound('b');  // itlow points to b
 			itup=mymap.upper_bound('d');   // itup points to e (not d!)
@@ -787,17 +787,80 @@ int	main(int argc, char **argv)
 		}
 
 		
-		if (test_number == 20)
+		if (test_number == 19)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing " 
+			std::cout << STEELBLUE3 << "Testing count member function" 
 				<< RESET << std::endl << std::endl;
 
+			// Create a map with some key-value pairs
+			map<int, std::string> myMap;
+			myMap[1] = "one";
+			myMap[2] = "two";
+			myMap[3] = "three";
+			myMap[3] = "four";
+		
+			// Call the count function with a key that's in the map
+			size_t count1 = myMap.count(2);
+		
+			// Check if the count is correct
+			if (count1 == 1)
+				std::cout << "Test 1 passed" << std::endl;
+			else
+				std::cout << "Test 1 failed" << std::endl;
+		
+			// Call the count function with a key that's not in the map
+			size_t count2 = myMap.count(5);
+		
+			// Check if the count is correct
+			if (count2 == 0)
+				std::cout << "Test 2 passed" << std::endl;
+			else
+				std::cout << "Test 2 failed" << std::endl;
+		
+			// Add a new key-value pair to the map
+			myMap[2] = "new two";
+		
+			// Call the count function again with the same key
+			size_t count3 = myMap.count(2);
+		
+			// Check if the count is still 1
+			if (count3 == 1)
+				std::cout << "Test 3 passed" << std::endl;
+			else
+				std::cout << "Test 3 failed" << std::endl;
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
 			<< std::endl << RESET;
 		}
+
+		
+		if (test_number == 20)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing count member function" 
+				<< RESET << std::endl << std::endl;
+
+			map<int, int> fufu;
+
+			fufu.insert(make_pair(5, 555));
+			fufu.insert(make_pair(9, 999));
+			fufu.insert(make_pair(2, 888));
+
+			pair<map<int, int>::iterator, map<int, int>::iterator> res;
+			res = fufu.equal_range(9);
+
+			if(res.first != fufu.end())
+				std::cout << res.first->first << std::endl;
+			if (res.second != fufu.end())
+				std::cout << res.second->first<< std::endl;
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
 
 		
 		if (test_number == 21)
@@ -812,6 +875,70 @@ int	main(int argc, char **argv)
 			<< std::endl << RESET;
 		}
 
+		
+		if (test_number == 22)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing " 
+				<< RESET << std::endl << std::endl;
+
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		
+		if (test_number == 23)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing " 
+				<< RESET << std::endl << std::endl;
+
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		
+		if (test_number == 24)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing " 
+				<< RESET << std::endl << std::endl;
+
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		
+		if (test_number == 25)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing " 
+				<< RESET << std::endl << std::endl;
+
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		
+		if (test_number == 26)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing " 
+				<< RESET << std::endl << std::endl;
+
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
 	}
 	catch(const std::exception& e)
 	{

@@ -309,7 +309,13 @@ namespace ft
 				return tree_->find(key);
 			};
 
-			size_type	count(const key_type & k) const;
+			// Returns the number of elements with key that compares equivalent 
+			// to the specified argument. 
+			// This is either 1 or 0 since this container does not allow duplicates.
+			size_type	count(const key_type & k) const
+			{
+				return tree_->count(k);
+			};
 
 			// Returns an iterator pointing to the first element in
 			// the container whose key is not considered to go before 
@@ -341,7 +347,19 @@ namespace ft
 			{
 				return tree_->upper_bound(k);
 			};
-			// pair<iterator,iterator>	equal_range(const key_type& x);
+
+
+			// Returns a range containing all elements with the given 
+			// key in the container. The range is defined by two iterators, 
+			// one pointing to the first element that is not less than key 
+			// and another pointing to the first element greater than key. 
+			// Alternatively, the first iterator may be obtained with 
+			// lower_bound(), and the second with upper_bound(). 
+			pair<iterator,iterator>	equal_range(const key_type & k)
+			{
+				return tree_->equal_range(k);
+			}
+
 			// pair<const_iterator,const_iterator>	equal_range(const key_type& x) const;
 
 
