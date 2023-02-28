@@ -494,6 +494,17 @@ namespace ft
 				return output;
 			}
 
+			// // returns iterator to node whose is key is greater
+			// // than k.
+			// const_iterator	upper_bound(const key_type & k)
+			// {
+			// 	node_ptr node = findNode(root_, k);
+			// 	const_iterator output = iterator(node, this);
+			// 	output++;
+			// 	// std::cout << "upper_bound node = " << output->first << std::endl;
+			// 	return output;
+			// }
+
 			// returns iterator that points to the first node that is not
 			// less than k. (i.o.w --> k or greater than k)
 			iterator	lower_bound(const key_type & k)

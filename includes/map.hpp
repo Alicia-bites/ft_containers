@@ -309,24 +309,22 @@ namespace ft
 				return tree_->find(key);
 			};
 
-			size_type	count(const key_type & x) const;
+			size_type	count(const key_type & k) const;
 
 			// Returns an iterator pointing to the first element in
 			// the container whose key is not considered to go before 
 			// k (i.e., either it is equivalent or goes after).
-
-			// the function returns an iterator to the first element 
+			// The function returns an iterator to the first element 
 			// whose key is not less than k.
 			iterator	lower_bound(const key_type & k)
 			{
 				return tree_->lower_bound(k);
 			};
 
-			// const_iterator lower_bound(const key_type& x) const
-			// {
-				// 
-				// return tree_->lower_bound;
-			// };
+			const_iterator lower_bound(const key_type& k) const
+			{
+				return tree_->lower_bound(k);
+			};
 
 			// A similar member function, lower_bound, has the same
 			// behavior as upper_bound, except in the case that
@@ -339,7 +337,10 @@ namespace ft
 				return tree_->upper_bound(k);
 			};
 
-			// const_iterator upper_bound(const key_type& x) const;
+			const_iterator upper_bound(const key_type& k) const
+			{
+				return tree_->upper_bound(k);
+			};
 			// pair<iterator,iterator>	equal_range(const key_type& x);
 			// pair<const_iterator,const_iterator>	equal_range(const key_type& x) const;
 

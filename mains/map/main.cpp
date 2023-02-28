@@ -710,7 +710,7 @@ int	main(int argc, char **argv)
 		if (test_number == 17)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing lower_bound" 
+			std::cout << STEELBLUE3 << "Testing lower_bound and upper_bound" 
 				<< RESET << std::endl << std::endl;
 
 			map<char,int> mymap;
@@ -745,20 +745,40 @@ int	main(int argc, char **argv)
 		if (test_number == 18)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing " 
+					std::cout << STEELBLUE3 << "Testing lower_bound and upper_bound (const)" 
 				<< RESET << std::endl << std::endl;
 
-
-			std::cout << std::endl << STEELBLUE2
-			<< "#########################################################"
-			<< std::endl << RESET;
-		}
+			// Create a map with some key-value pairs
+			map<int, std::string> myMap;
+			myMap[1] = "one";
+			myMap[3] = "three";
+			myMap[5] = "five";
 		
-		if (test_number == 19)
-		{
-			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing " 
-				<< RESET << std::endl << std::endl;
+			// Call the lower_bound function with a key that's in the map
+			map<int, std::string>::const_iterator it = myMap.lower_bound(3);
+		
+			// Check if the iterator points to the correct element
+			if (it != myMap.end() && it->first == 3 && it->second == "three")
+			{
+				std::cout << "Test 1 passed" << std::endl;
+			}
+			else
+			{
+				std::cout << "Test 1 failed" << std::endl;
+			}
+		
+			// Call the lower_bound function with a key that's not in the map
+			it = myMap.lower_bound(4);
+		
+			// Check if the iterator points to the correct element
+			if (it != myMap.end() && it->first == 5 && it->second == "five")
+			{
+				std::cout << "Test 2 passed" << std::endl;
+			}
+			else
+			{
+				std::cout << "Test 2 failed" << std::endl;
+			}
 
 
 			std::cout << std::endl << STEELBLUE2
