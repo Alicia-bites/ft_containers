@@ -371,6 +371,7 @@ namespace ft
 
 			void	clear()
 			{
+				std::cout << "root = " << root_ << std::endl;
 				if (!root_)
 					return ;
 				deleteTree(root_);

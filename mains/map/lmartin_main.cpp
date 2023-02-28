@@ -6,7 +6,7 @@
 /*   By: amarchan <amarchan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/02 13:07:06 by hbaudet           #+#    #+#             */
-/*   Updated: 2023/02/28 15:59:16 by amarchan         ###   ########.fr       */
+/*   Updated: 2023/02/28 16:04:35 by amarchan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,6 @@ int main()
 
 	print(mymap);
 	it = mymap.upper_bound("oae");
-	std::cout << DEEPPINK3 << "YOOOOOOOOOUHOOOOOOOOOOOOOOOOOOOOUUU" << RESET << std::endl;
 	cout << std::setw(40) << "mymap.upper_bound(\"oae\"): " << it->first << ":" << it->second << std::endl;;
 	cout << std::endl;
 
@@ -162,9 +161,12 @@ int main()
 	mymap.erase("undefined");
 	print(mymap);
 	mymap.erase("ft");
+	std::cout << DEEPPINK3 << "YOOOOOOOOOUHOOOOOOOOOOOOOOOOOOOOUUU" << RESET << std::endl;
+
 	print(mymap);
 	cout << _WHITE << "# double clear" << _END << std::endl;
 	mymap.clear();
+
 	print(mymap);
 	mymap.clear();
 	print(mymap);
