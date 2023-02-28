@@ -759,27 +759,18 @@ int	main(int argc, char **argv)
 		
 			// Check if the iterator points to the correct element
 			if (it != myMap.end() && it->first == 3 && it->second == "three")
-			{
 				std::cout << "Test 1 passed" << std::endl;
-			}
 			else
-			{
 				std::cout << "Test 1 failed" << std::endl;
-			}
 		
 			// Call the lower_bound function with a key that's not in the map
 			it = myMap.lower_bound(4);
 		
 			// Check if the iterator points to the correct element
 			if (it != myMap.end() && it->first == 5 && it->second == "five")
-			{
 				std::cout << "Test 2 passed" << std::endl;
-			}
 			else
-			{
 				std::cout << "Test 2 failed" << std::endl;
-			}
-
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
@@ -1033,9 +1024,27 @@ int	main(int argc, char **argv)
 		if (test_number == 23)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing " 
+			std::cout << STEELBLUE3 << "Testing swap" 
 				<< RESET << std::endl << std::endl;
 
+			map<char,int> foo, bar;
+			
+			foo['x']=100;
+			foo['y']=200;
+			
+			bar['a']=11;
+			bar['b']=22;
+			bar['c']=33;
+			
+			swap(foo,bar);
+			
+			std::cout << "foo contains:\n";
+			for (map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
+				std::cout << it->first << " => " << it->second << '\n';
+			
+			std::cout << "bar contains:\n";
+			for (map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
+				std::cout << it->first << " => " << it->second << '\n';
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
