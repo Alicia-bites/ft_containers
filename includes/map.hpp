@@ -434,6 +434,9 @@ namespace ft
 
 //		SPECIALIZED ALGORITHM --------------------------------------------------------------------------------------
 
+	// The contents of container x are exchanged with those of y. Both container objects must be of 
+	// the same type (same template parameters), although sizes may differ.
+	// It behaves as if x.swap(y) was called.
 	template <typename Key, typename Value, typename Compare, typename Allocator>
 		void swap(map<Key,Value,Compare,Allocator>& x, map<Key,Value,Compare,Allocator>& y)
 		{

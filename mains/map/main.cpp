@@ -1046,6 +1046,9 @@ int	main(int argc, char **argv)
 			for (map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
 				std::cout << it->first << " => " << it->second << '\n';
 
+			std::cout << "foo size is " << foo.size() << std::endl;
+			std::cout << "bar size is " << bar.size() << std::endl;
+
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
 			<< std::endl << RESET;
