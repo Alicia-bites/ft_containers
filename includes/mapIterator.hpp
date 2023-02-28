@@ -228,7 +228,12 @@ namespace ft
 
                 void    decrement()
                 {
-                    
+                    if (tree_->isEnd(node_))
+                    {
+                        node_ = node_->parent;
+                        pointer_ = &node_->data;
+                        return ;
+                    }
                     // if you try to decrement beyond smallest Key, always return a pointer
                     // to the node who's got the smallest key.
                     if (node_ == 0)

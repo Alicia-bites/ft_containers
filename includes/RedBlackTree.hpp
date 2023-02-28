@@ -439,14 +439,37 @@ namespace ft
 				return const_iterator(getSmallestNode(root_), this);
 			};
 
+			// check if node is the past-the-end element
+			bool isEnd(node_ptr node)
+			{
+				if (node->key == nil_->key)
+				{
+					if (node->parent == getBiggestNode(root_))
+						return true;
+				}
+				return false;
+			}
+
 			iterator	end()
 			{
-				return iterator(0, this);
+				node_ptr beyondEnd = nil_;
+				if (nil_)
+				{
+					node_ptr biggest = getBiggestNode(root_);
+					beyondEnd->parent = biggest;
+				}
+				return iterator(beyondEnd, this);
 			};
 
 			const_iterator	end() const
 			{
-				return const_iterator(0, this);
+				node_ptr beyondEnd = nil_;
+				if (nil_)
+				{
+					node_ptr biggest = getBiggestNode(root_);
+					beyondEnd->parent = biggest;
+				}
+				return const_iterator(beyondEnd, this);
 			};
 
 			reverse_iterator rbegin()
@@ -1057,6 +1080,5 @@ namespace ft
 
 				return true;
 			}
-
 	};
 }
