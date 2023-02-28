@@ -891,9 +891,138 @@ int	main(int argc, char **argv)
 		if (test_number == 22)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing " 
+			std::cout << STEELBLUE3 << "Testing compare operators" 
 				<< RESET << std::endl << std::endl;
 
+			map<int, int> tom;
+			map<int, int> jerry;
+
+			std::cout << "Testing == " << std::endl;
+			std::cout << "tom and jerry are the SAME - they contains NOTHING." << std::endl;
+			std::cout << "Expected " << STEELBLUE2 << "1" << RESET << ", got : ";
+			std::cout << (tom == jerry) << std::endl;
+
+			std::cout << "Testing < " << std::endl;
+			std::cout << "tom and jerry are the SAME - they contains NOTHING." << std::endl;
+			std::cout << "Expected " << STEELBLUE2 << "0" << RESET << ", got : ";
+			std::cout << (tom < jerry) << std::endl;
+
+			std::cout << "Testing <= " << std::endl;
+			std::cout << "tom and jerry are the SAME - they contains NOTHING." << std::endl;
+			std::cout << "Expected " << STEELBLUE2 << "1" << RESET << ", got : ";
+			std::cout << (tom <= jerry) << std::endl;
+
+			std::cout << "Testing > " << std::endl;
+			std::cout << "tom and jerry are the SAME - they contains NOTHING." << std::endl;
+			std::cout << "Expected " << STEELBLUE2 << "0" << RESET << ", got : ";
+			std::cout << (tom != jerry) << std::endl;
+
+			std::cout << "Testing >= " << std::endl;
+			std::cout << "tom and jerry are SAME - they contains NOTHING." << std::endl;
+			std::cout << "Expected " << STEELBLUE2 << "1" << RESET << ", got : ";
+			std::cout << (tom != jerry) << std::endl;
+
+			std::cout << "------------------------------------------------------------" << std::endl;
+
+
+			map<int, int> bob;
+			bob.insert(make_pair(4, 444));
+			bob.insert(make_pair(7, 777));
+			bob.insert(make_pair(12, 121212));
+
+			map<int, int> ron;
+			ron.insert(make_pair(4, 444));
+			ron.insert(make_pair(7, 777));
+
+			map<int, int> fred;
+			fred.insert(make_pair(5, 555));
+			fred.insert(make_pair(9, 999));
+			fred.insert(make_pair(2, 888));
+
+			map<int, int> george;
+			george.insert(make_pair(5, 555));
+			george.insert(make_pair(9, 999));
+			george.insert(make_pair(2, 888));
+
+			std::cout << "Testing == " << std::endl;
+			std::cout << "Bob and Ron and DIFFERENT" << std::endl;
+			std::cout << "Expected " << STEELBLUE2 << "0" << RESET << ", got : ";
+			std::cout << (bob == ron) << std::endl;
+
+			std::cout << "Testing == " << std::endl;
+			std::cout << "bob and fred are DIFFERENT" << std::endl;
+			std::cout << "Expected " << STEELBLUE2 << "0" << RESET << ", got : ";
+			std::cout << (bob == fred) << std::endl;
+
+			std::cout << "Testing == " << std::endl;
+			std::cout << "george and fred are EQUAL" << std::endl;
+			std::cout << "Expected " << STEELBLUE2 << "1" << RESET << ", got : "; 
+			std::cout << (george == fred) << std::endl;
+
+			std::cout << "------------------------------------------------------------" << std::endl;
+			std::cout << "Testing < " << std::endl;
+			std::cout << "bob and ron and SAME" << std::endl;
+			std::cout << "Expected " << STEELBLUE2 << "0" << RESET << ", got : ";
+			std::cout << (bob < ron) << std::endl;
+
+			std::cout << "Testing < " << std::endl;
+			std::cout << "bob and fred are DIFFERENT" << std::endl;
+			std::cout << "Expected " << STEELBLUE2 << "0" << RESET << ", got : ";
+			std::cout << (bob < fred) << std::endl;
+
+			std::cout << "Testing < " << std::endl;
+			std::cout << "george and fred are EQUAL" << std::endl;
+			std::cout << "Expected " << STEELBLUE2 << "0" << RESET << ", got : "; 
+			std::cout << (george < fred) << std::endl;
+			std::cout << "------------------------------------------------------------" << std::endl;
+
+			std::cout << "Testing <= " << std::endl;
+			std::cout << "bob and ron and SAME" << std::endl;
+			std::cout << "Expected " << STEELBLUE2 << "1" << RESET << ", got : ";
+			std::cout << (bob <= ron) << std::endl;
+
+			std::cout << "Testing <= " << std::endl;
+			std::cout << "bob and fred are DIFFERENT" << std::endl;
+			std::cout << "Expected " << STEELBLUE2 << "1" << RESET << ", got : ";
+			std::cout << (bob <= fred) << std::endl;
+
+			std::cout << "Testing <= " << std::endl;
+			std::cout << "george and fred are EQUAL" << std::endl;
+			std::cout << "Expected " << STEELBLUE2 << "1" << RESET << ", got : "; 
+			std::cout << (george <= fred) << std::endl;
+			std::cout << "------------------------------------------------------------" << std::endl;
+
+			std::cout << "Testing > " << std::endl;
+			std::cout << "bob and ron and SAME" << std::endl;
+			std::cout << "Expected " << STEELBLUE2 << "0" << RESET << ", got : ";
+			std::cout << (bob != ron) << std::endl;
+
+			std::cout << "Testing > " << std::endl;
+			std::cout << "bob and fred are DIFFERENT" << std::endl;
+			std::cout << "Expected " << STEELBLUE2 << "1" << RESET << ", got : ";
+			std::cout << (bob > fred) << std::endl;
+
+			std::cout << "Testing > " << std::endl;
+			std::cout << "george and fred are EQUAL" << std::endl;
+			std::cout << "Expected " << STEELBLUE2 << "1" << RESET << ", got : "; 
+			std::cout << (george > fred) << std::endl;
+			std::cout << "------------------------------------------------------------" << std::endl;
+
+			std::cout << "Testing >= " << std::endl;
+			std::cout << "bob and ron and SAME" << std::endl;
+			std::cout << "Expected " << STEELBLUE2 << "0" << RESET << ", got : ";
+			std::cout << (bob != ron) << std::endl;
+
+			std::cout << "Testing >= " << std::endl;
+			std::cout << "bob and ron and SAME" << std::endl;
+			std::cout << "Expected " << STEELBLUE2 << "0" << RESET << ", got : ";
+			std::cout << (bob != ron) << std::endl;
+
+			std::cout << "Testing >= " << std::endl;
+			std::cout << "bob and ron and SAME" << std::endl;
+			std::cout << "Expected " << STEELBLUE2 << "0" << RESET << ", got : ";
+			std::cout << (bob != ron) << std::endl;
+			std::cout << "------------------------------------------------------------" << std::endl;
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"

@@ -370,22 +370,73 @@ namespace ft
 
 //		COMPARATORS --------------------------------------------------------------------------------------
 
-	template <class Key, class T, class Compare, class Allocator>
-		bool operator==(const map<Key,T,Compare,Allocator>& x, const map<Key,T,Compare,Allocator>& y);
-	template <class Key, class T, class Compare, class Allocator>
-		bool operator< (const map<Key,T,Compare,Allocator>& x, const map<Key,T,Compare,Allocator>& y);
-	template <class Key, class T, class Compare, class Allocator>
-		bool operator!=(const map<Key,T,Compare,Allocator>& x, const map<Key,T,Compare,Allocator>& y);
-	template <class Key, class T, class Compare, class Allocator>
-		bool operator> (const map<Key,T,Compare,Allocator>& x, const map<Key,T,Compare,Allocator>& y);
-	template <class Key, class T, class Compare, class Allocator>
-		bool operator>=(const map<Key,T,Compare,Allocator>& x, const map<Key,T,Compare,Allocator>& y);
-	template <class Key, class T, class Compare, class Allocator>
-		bool operator<=(const map<Key,T,Compare,Allocator>& x, const map<Key,T,Compare,Allocator>& y);
+	template <typename Key, typename Value, typename Compare, typename Allocator>
+		bool operator==(const map<Key,Value,Compare,Allocator> & x, const map<Key,Value,Compare,Allocator> & y)
+		{
+
+			// If the sizes of the maps are not equal, they are not equal
+			if (x.size() != y.size())
+				return false;
+
+			// Compare the keys and values of the two maps
+			typename map<Key, Value, Compare, Allocator>::const_iterator x_it = x.begin();
+			typename map<Key, Value, Compare, Allocator>::const_iterator y_it = y.begin();
+			while (x_it != x.end() && y_it != y.end())
+			{
+				// If the keys are not equal, the trees are not equal
+				if (x_it->first != y_it->first)
+					return false;
+
+				// If the values are not equal, the trees are not equal
+				if (x_it->second != y_it->second)
+					return false;
+
+				++x_it;
+				++y_it;
+			}
+
+			// If all keys and values match, the maps are equal
+			return true;
+		};
+	
+	// Compares the contents of lhs and rhs 	. The comparison is performed by a function 
+	// equivalent to std::lexicographical_compare. This comparison ignores the map's ordering Compare.
+	template <typename Key, typename Value, typename Compare, typename Allocator>
+		bool operator< (const map<Key,Value,Compare,Allocator>& x, const map<Key,Value,Compare,Allocator>& y)
+		{
+			// Compare the contents of the two maps lexicographically
+			return lexicographical_compare(x.begin(), x.end(), y.begin(), y.end());
+		};
+	
+	template <typename Key, typename Value, typename Compare, typename Allocator>
+		bool operator!=(const map<Key,Value,Compare,Allocator>& x, const map<Key,Value,Compare,Allocator>& y)
+		{
+			return !(x == y);
+		};
+	
+	template <typename Key, typename Value, typename Compare, typename Allocator>
+		bool operator> (const map<Key,Value,Compare,Allocator>& x, const map<Key,Value,Compare,Allocator>& y)
+		{
+			return y < x;
+		};
+	
+	template <typename Key, typename Value, typename Compare, typename Allocator>
+		bool operator>=(const map<Key,Value,Compare,Allocator>& x, const map<Key,Value,Compare,Allocator>& y)
+		{
+			return(!(x < y));
+		};
+	
+	template <typename Key, typename Value, typename Compare, typename Allocator>
+		bool operator<=(const map<Key,Value,Compare,Allocator>& x, const map<Key,Value,Compare,Allocator>& y)
+		{
+			return (!(y < x));
+		};
 
 //		SPECIALIZED ALGORITHM --------------------------------------------------------------------------------------
 
-	template <class Key, class T, class Compare, class Allocator>
-		void swap(map<Key,T,Compare,Allocator>& x, map<Key,T,Compare,Allocator>& y);
+	template <typename Key, typename Value, typename Compare, typename Allocator>
+		void swap(map<Key,Value,Compare,Allocator>& x, map<Key,Value,Compare,Allocator>& y)
+		{
+			x.swap(y);
+		};
 }
-
