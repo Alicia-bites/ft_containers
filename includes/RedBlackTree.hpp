@@ -79,16 +79,18 @@ namespace ft
 
 			// copy constructor
 			RedBlackTree(const RedBlackTree<Key, Value, Compare, Allocator> & original)
-			: nil_(original.nil_)
-			, comp_(original.comp_)
-			, allocator_(original.allocator_)
+			// : nil_(original.nil_)
+			// , comp_(original.comp_)
+			// , allocator_(original.allocator_)
 			{
 				#if DEBUG
 					std::cout << MAGENTA3 << "Calling RedBlackTree copy constructor" << RESET << std::endl;
 				#endif
-
+	
 				if (this != &original)
-					copyTree(root_, original.root_);
+					*this = original;
+				// if (this != &original)
+					// copyTree(root_, original.root_);
 			};
 
 //	DESTRUCTORS --------------------------------------------------------------------------------------
@@ -98,15 +100,40 @@ namespace ft
 				#if DEBUG
 					std::cout << MAGENTA3 << "Calling RedBlackTree destructor" << RESET << std::endl;
 				#endif
+				
 				if (root_)
+				{
 					deleteTree(root_);
+					root_ = NULL;
+				}
 				if (nil_)
+				{
 					delete nil_;
+					nil_ = NULL;
+				}
 			}
 
 //	MEMBER FUNCTIONS ---------------------------------------------------------------------------------
 
 //		ASSIGNEMENT ----------------------------------------------------------------------------------------------------------------------------
+
+		// deep copy of tree
+		RedBlackTree<Key, Value, Compare, Allocator> & operator=(const RedBlackTree<Key, Value, Compare, Allocator> & rhs)
+		{
+			#if DEBUG
+				std::cout << MAGENTA3 << "Calling RedBlackTree copy constructor" << RESET << std::endl;
+			#endif
+
+			if (this != &rhs)
+			{
+				nil_ = new Node<Key, Value>(rhs.nil_->key, rhs.nil_->value);
+				comp_ = rhs.comp_;
+				allocator_ = rhs.allocator_;
+				copyTree(root_, rhs.root_);
+			}
+
+			return *this;
+		}
 
 //		CAPACITY --------------------------------------------------------------------------------------
 			bool	empty() const
@@ -295,8 +322,8 @@ namespace ft
 
 			size_t	remove(const key_type & key)
 			{
-				node_ptr deadNode = findNode(root_, key); 
-				if (!deadNode)
+				node_ptr node_to_be_deleted = findNode(root_, key); 
+				if (node_to_be_deleted == 0 || node_to_be_deleted == nil_)
 					return 0;
 
 				# if DEBUG
@@ -304,7 +331,7 @@ namespace ft
 				# endif
 
 				removeHelper(key);
-				delete deadNode;
+				delete node_to_be_deleted;
 
 				# if DEBUG
 					printRBTree(root_);
@@ -371,7 +398,6 @@ namespace ft
 
 			void	clear()
 			{
-				std::cout << "root = " << root_ << std::endl;
 				if (!root_)
 					return ;
 				deleteTree(root_);

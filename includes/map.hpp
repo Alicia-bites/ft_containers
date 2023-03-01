@@ -132,7 +132,7 @@ namespace ft
 				#endif
 
                 if (this != &rhs)
-                    this->tree_ = rhs.tree_;
+                    *(this->tree_) = *(rhs.tree_);
                 return (*this);
 			};
 	
