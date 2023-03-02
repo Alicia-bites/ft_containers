@@ -106,6 +106,16 @@ namespace ft
 	};
 
 	template<typename Key, typename Value>
+	bool operator==(const Node<Key, Value> & lhs, const Node<Key, Value> & rhs)
+	{
+		if (lhs.key == rhs.key && lhs.value == rhs.value && lhs.color == rhs.color 
+			&& lhs.left == rhs.left && lhs.right == rhs.right && lhs.parent == rhs.parent
+			&& lhs.data == rhs.data)
+			return true;
+		return false;
+	}
+
+	template<typename Key, typename Value>
 	std::ostream & operator<<(std::ostream & o, const Node<Key, Value> & rhs)
 	{
 		
@@ -134,7 +144,11 @@ namespace ft
 			<< std::endl;
 		if (rhs.left)
 		{
-			o << CYAN1 << "left->key = "
+			if (rhs.left)
+			o << CYAN1
+				<< rhs.left
+				<< std::endl
+				<< "left->key = "
 				<< rhs.left->key
 				<< std::endl
 				<< "left->value = "
@@ -159,7 +173,10 @@ namespace ft
 		}
 		if (rhs.right)
 		{
-			o << CHARTREUSE5 << "right->key = "
+			o << CHARTREUSE5 
+			<< rhs.right
+			<< std::endl
+			<< "right->key = "
 			<< rhs.right->key
 			<< std::endl
 			<< "right->value = "

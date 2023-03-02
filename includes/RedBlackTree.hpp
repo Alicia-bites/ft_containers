@@ -124,14 +124,29 @@ namespace ft
 				std::cout << MAGENTA3 << "Calling RedBlackTree copy constructor" << RESET << std::endl;
 			#endif
 
-			if (this != &rhs)
+			if (this == &rhs)
+				return *this;
+
+			if (size_ > 0) // first we clear content of this
+				clear();
+
+			if (rhs.root_ != 0) // if rhs's tree isn't empty, copy rhs in this
 			{
+				// creating new nil_
 				nil_ = new Node<Key, Value>(rhs.nil_->key, rhs.nil_->value);
+				nil_->color = BLACK;
+				nil_->parent = 0;
+				nil_->left = nil_;
+				nil_->right = nil_;
+
+				std::cout << YELLOW1 << nil_ << RESET << std::endl;
+
 				comp_ = rhs.comp_;
 				allocator_ = rhs.allocator_;
-				copyTree(root_, rhs.root_);
+				size_ = rhs.size_;
+				copyTree(rhs.root_, rhs.nil_);
 			}
-
+			// printTree(root_);
 			return *this;
 		}
 
@@ -201,7 +216,10 @@ namespace ft
 
 			void printRBTree(Node<Key, Value>* node, int depth = 0, bool isLeft = false)
 			{
-				if (node == nil_)
+				// std::cout << "nil_ " << nil_ << std::endl;
+				// std::cout << "node " << node << std::endl;
+
+				if (node == nil_ || node == 0)
 					return;
 			
 				// Print right child
@@ -327,7 +345,7 @@ namespace ft
 					return 0;
 
 				# if DEBUG
-					std::cout << DEEPSKYBLUE6 << "removing " << key << RESET << std::endl;
+				std::cout << DEEPSKYBLUE6 << "removing " << key << RESET << std::endl;
 				# endif
 
 				removeHelper(key);
@@ -541,16 +559,27 @@ namespace ft
 				return 1;
 			}
 
-			// returns iterator to node whose is key is greater
+			// returns iterator to node whose key is greater
 			// than k.
 			iterator	upper_bound(const key_type & k)
 			{
 				iterator output = begin();
+				if (comp_(k, output->first))
+					return output;
 				iterator endOfTime = end();
 				while (output != endOfTime && comp_(output->first, k))
-					++output;
-				if (output.getNode() == nil_)
-					output = iterator(getBiggestNode(root_), this);
+					output++;
+				// std::cout << RED1 << output->first << RESET << std::endl;
+				if (output == end())
+					return end();
+				if (output.getNode() == getBiggestNode(root_))
+				{
+					if (comp_(k, output->first))
+						return output;
+					else
+						return end();
+				}
+				output++;
 				return output;
 			}
 
@@ -606,18 +635,23 @@ namespace ft
 
 			//		COPY TOOL --------------------------------------------------------------------------------------
 
-			void copyTree(node_ptr & copy, node_ptr original)
+			node_ptr copyTree(node_ptr node, node_ptr nil)
 			{
-				if (original == nil_)
-					copy = nil_;
-				else
+				if (node == nil)
 				{
-					// copy = nodeAllocator_.allocate(1);
-					// nodeAllocator_.construct(copy, *original);
-					copy = new Node<Key, Value>(original->key, original->value);
-					copyTree(copy->left, original->left);
-					copyTree(copy->right, original->right);
+					return nil_;
 				}
+				
+				node_ptr new_node = new Node<Key, Value>(node->key, node->value);
+				// new_node->key = node->key;
+				// new_node->value = node->value;
+				new_node->parent = node->parent;
+				new_node->color = node->color;
+				// new_node->data = node->data;
+				new_node->left = copyTree(node->left, new_node);
+				new_node->right = copyTree(node->right, new_node);
+
+				return new_node;
 			};
 
 

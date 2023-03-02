@@ -1061,6 +1061,45 @@ int	main(int argc, char **argv)
 			std::cout << STEELBLUE3 << "Testing mazoise" 
 				<< RESET << std::endl << std::endl;
 
+			// map<char,int> mymap;
+			
+			// mymap['a']=10;
+			// mymap['b']=20;
+			// mymap['c']=30;
+			
+			// pair<map<char,int>::iterator,map<char,int>::iterator> ret;
+			// ret = mymap.equal_range('d');
+			
+			// std::cout << "lower bound points to: ";
+			// if (ret.first != mymap.end())
+			// 	std::cout << ret.first->first << " => " << ret.first->second << '\n';
+			
+			// std::cout << "upper bound points to: ";
+			// if (ret.second != mymap.end())
+			// 	std::cout << ret.second->first << " => " << ret.second->second << '\n';
+
+			map<std::string, int>map2;
+			map2.insert(make_pair("uch", 442));
+			map2.insert(make_pair("lol", 8));
+			map2.insert(make_pair("xD", 123));
+
+			print_map(map2, "map2");
+			map2.getTree()->printRBTree(map2.getTree()->getRoot());
+
+			map<std::string, int>mymap;
+
+			std::cout << "copying map2 in mymap..." << std::endl;
+			mymap = map2;
+
+			print_map(map2, "map2");
+			map2.getTree()->printRBTree(map2.getTree()->getRoot());
+
+			// mymap.getTree()->printTree(mymap.getTree()->getRoot());
+			// std::cout << mymap.getTree()->getRoot() << std::endl;
+			mymap.getTree()->printRBTree(mymap.getTree()->getRoot());
+			print_map(mymap, "mymap");
+
+
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
 			<< std::endl << RESET;

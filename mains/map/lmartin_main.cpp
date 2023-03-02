@@ -6,7 +6,7 @@
 /*   By: amarchan <amarchan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/02 13:07:06 by hbaudet           #+#    #+#             */
-/*   Updated: 2023/02/28 16:04:35 by amarchan         ###   ########.fr       */
+/*   Updated: 2023/03/02 15:12:49 by amarchan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,11 @@ template <class Key, class T>
 void	print(map<Key, T>& lst)
 {
 	cout << "printing a map : \n";
+	// cout << SLATEBLUE1 << "lst.size() = " << lst.size() << RESET << std::endl;
+	// if (lst.getTree()->getRoot())
+		// cout << SLATEBLUE1 << "lst.getTree()->getRoot() = " << lst.getTree()->getRoot()->key << RESET << std::endl;
+
+	// std::cout << SLATEBLUE1 << lst.begin()->first << std::endl;
 	for (typename map<Key, T>::iterator it = lst.begin(); it != lst.end(); it++)
 		cout << it->first << " => " << it->second << '\n';
 }
@@ -129,18 +134,22 @@ int main()
 	it = mymap.upper_bound("aaa");
 	
 	print(mymap);
+	// mymap.getTree()->printRBTree(mymap.getTree()->getRoot());
+	// map<string, int>::key_compare comp = mymap.key_comp();
+	// std::cout << CADETBLUE2 << "Is aaa smaller than aaa? --> " << comp("aaa", "aaa") << RESET << std::endl;
 	cout << std::setw(40) << "mymap.upper_bound(\"aaa\"): " << it->first << ":" << it->second << std::endl;;
 	cout << std::endl;
 	
 
 	print(mymap);
 	it = mymap.upper_bound("oae");
+	// std::cout << CADETBLUE2 << "Is oae smaller than one? --> " << comp("oae", "one") << RESET << std::endl;
 	cout << std::setw(40) << "mymap.upper_bound(\"oae\"): " << it->first << ":" << it->second << std::endl;;
 	cout << std::endl;
 
 	print(mymap);
 	it = mymap.upper_bound("one");
-	
+	// std::cout << RED3 << it->first << RESET << std::endl;
 	if (it == mymap.end())
 		cout << std::setw(40) << "mymap.upper_bound(\"one\"): mymap.end()" << std::endl;
 	print(mymap);
@@ -161,8 +170,6 @@ int main()
 	mymap.erase("undefined");
 	print(mymap);
 	mymap.erase("ft");
-	std::cout << DEEPPINK3 << "YOOOOOOOOOUHOOOOOOOOOOOOOOOOOOOOUUU" << RESET << std::endl;
-
 	print(mymap);
 	cout << _WHITE << "# double clear" << _END << std::endl;
 	mymap.clear();
@@ -202,10 +209,25 @@ int main()
 	cout << "empty line4\n";
 	print(map2);
 	cout << "empty line5\n";
+	
+	// DEBUG HERE
+	std::cout << std::endl;
+	std::cout << RED1;
+	print(mymap);
+	mymap.getTree()->printRBTree(mymap.getTree()->getRoot());
+	std::cout << "-------------------------" << std::endl;
+	print(map2);
+	map2.getTree()->printRBTree(map2.getTree()->getRoot());
+	std::cout << "-------------------------" << std::endl;
+
+	std::cout << RESET;
 
 	mymap = map2;
 	print(mymap);
+	// mymap.getTree()->printRBTree(mymap.getTree()->getRoot());
 	print(map2);
+	// map2.getTree()->printRBTree(map2.getTree()->getRoot());
+
 
 	cout << std::setw(40) << "map == map2: " << (mymap == map2) << std::endl;
 	print(mymap);

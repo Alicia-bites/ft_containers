@@ -98,12 +98,15 @@ namespace ft
 			
 			// Copy constructor
 			// Constructs a container with a copy of each of the elements in x
-			map(const map<Key,Value,Compare,Allocator>& src)
-			: tree_(src.tree_)
+			map(const map<Key,Value,Compare,Allocator>& original)
+			// : tree_(original.tree_)
 			{
 				#if DEBUG
 					std::cout << LIGHTSEAGREEN << "Calling map copy constructor" << RESET << std::endl;
 				#endif
+
+				if (this != &original)
+					*this = original;
 			};
 
 
@@ -131,8 +134,10 @@ namespace ft
 					std::cout << LIGHTSEAGREEN << "Calling map assignement operator" << RESET << std::endl;
 				#endif
 
+				// std::cout << SPRINGGREEN1 << "tree_->getRoot()->key = " << tree_->getRoot()->key << RESET << std::endl;
+
                 if (this != &rhs)
-                    *(this->tree_) = *(rhs.tree_);
+                    *(this->tree_) = *(rhs.getTree());
                 return (*this);
 			};
 	
@@ -201,7 +206,7 @@ namespace ft
 				return (*((this->insert(ft::make_pair(x, mapped_type()))).first)).second;
 			};
 
-			RBTree_ptr &	getTree()
+			RBTree_ptr	getTree() const
 			{
 				return tree_;
 			};
