@@ -201,7 +201,10 @@ namespace ft
 		}
 		if (rhs.parent)
 		{
-			o << DEEPPINK1 << "parent->key = "
+			o << DEEPPINK1 
+			<< rhs.parent
+			<< std::endl
+			<< "parent->key = "
 			<< rhs.parent->key
 			<< std::endl
 			<< "parent->value = "
