@@ -117,38 +117,35 @@ namespace ft
 
 //		ASSIGNEMENT ----------------------------------------------------------------------------------------------------------------------------
 
-		// deep copy of tree
-		RedBlackTree<Key, Value, Compare, Allocator> & operator=(const RedBlackTree<Key, Value, Compare, Allocator> & rhs)
-		{
-			#if DEBUG
-				std::cout << MAGENTA3 << "Calling RedBlackTree copy constructor" << RESET << std::endl;
-			#endif
-
-			if (this == &rhs)
-				return *this;
-
-			if (size_ > 0) // first we clear content of this
-				clear();
-
-			if (rhs.root_ != 0) // if rhs's tree isn't empty, copy rhs in this
+			// deep copy of tree
+			RedBlackTree<Key, Value, Compare, Allocator> & operator=(const RedBlackTree<Key, Value, Compare, Allocator> & rhs)
 			{
-				// creating new nil_
-				nil_ = new Node<Key, Value>(rhs.nil_->key, rhs.nil_->value);
-				nil_->color = BLACK;
-				nil_->parent = 0;
-				nil_->left = nil_;
-				nil_->right = nil_;
+				#if DEBUG
+					std::cout << MAGENTA3 << "Calling RedBlackTree copy constructor" << RESET << std::endl;
+				#endif
 
-				std::cout << YELLOW1 << nil_ << RESET << std::endl;
+				if (this == &rhs)
+					return *this;
 
-				comp_ = rhs.comp_;
-				allocator_ = rhs.allocator_;
-				size_ = rhs.size_;
-				copyTree(rhs.root_, rhs.nil_);
+				if (size_ > 0) // first we clear content of this
+					clear();
+
+				if (rhs.root_ != 0) // if rhs's tree isn't empty, copy rhs in this
+				{
+					// creating new nil_
+					nil_ = new Node<Key, Value>(rhs.nil_->key, rhs.nil_->value);
+					nil_->color = BLACK;
+					nil_->parent = 0;
+					nil_->left = nil_;
+					nil_->right = nil_;
+
+					comp_ = rhs.comp_;
+					allocator_ = rhs.allocator_;
+					size_ = rhs.size_;
+					copyTree(root_, rhs.root_, rhs.nil_, 0);
+				}
+				return *this;
 			}
-			// printTree(root_);
-			return *this;
-		}
 
 //		CAPACITY --------------------------------------------------------------------------------------
 			bool	empty() const
@@ -170,14 +167,6 @@ namespace ft
 
 			Value &operator[](const Key &key)
 			{
-				// node_ptr node = findNode(root_, key);
-				
-				// if (node == 0)
-				// 	node = insertHelper(root_, key, Value());
-				// if (root_ == 0)
-				// 	root_ = node;
-				// return node->value;
-				
 				ft::pair<const Key, Value> output;
 				output = insert(ft::make_pair(key, Value()));
 				return output.first->second;
@@ -216,9 +205,6 @@ namespace ft
 
 			void printRBTree(Node<Key, Value>* node, int depth = 0, bool isLeft = false)
 			{
-				// std::cout << "nil_ " << nil_ << std::endl;
-				// std::cout << "node " << node << std::endl;
-
 				if (node == nil_ || node == 0)
 					return;
 			
@@ -321,19 +307,6 @@ namespace ft
 			template <class InputIterator>
 				void	insert(InputIterator first, InputIterator last)
 				{
-					// if (size_ == allocator_.max_size())
-					// 	throw (std::length_error("map::insert"));
-	
-					// for (; first != last; first++)
-					// {
-					// 	node_ptr node = insertHelper(root_, first->first, first->second);
-					// 	node->color = RED;
-					// 	if (!root_)
-					// 		root_ = node;
-					// 	size_++;
-					// 	fixViolation(node);
-					// }
-
 					for(; first != last; first++)
 						insert(*first);
 				};
@@ -380,7 +353,6 @@ namespace ft
 
 				while (!to_delete.empty())
 				{
-					// std::cout << "removing " << to_delete.top() << std::endl;
 					remove(to_delete.top());
 					to_delete.pop();
 				}
@@ -393,10 +365,6 @@ namespace ft
 				key_compare					tmpComp			= swapMe.comp_;
 				allocator_type				tmpAllocator	= swapMe.allocator_;
 				size_type					tmpSize			= swapMe.size_;
-
-
-				// std::cout << "swapMe.root_->key = " << swapMe.root_->key << std::endl;
-				// std::cout << "root_->key = " << root_->key << std::endl;
 				
 				swapMe.root_ = root_;
 				swapMe.nil_ = nil_;
@@ -409,9 +377,6 @@ namespace ft
 				comp_ = tmpComp;
 				allocator_ = tmpAllocator;
 				size_ = tmpSize;
-
-				// printRBTree(root_);
-
 			}
 
 			void	clear()
@@ -448,10 +413,7 @@ namespace ft
 				if (node == nil_)
 					return node;
 				while (node->left != nil_)
-				{
-					// if (comp_(node->left->key, node->key))
-						node = node->left;
-				}
+					node = node->left;
 				return node;
 			}
 
@@ -460,10 +422,7 @@ namespace ft
 				if (node == 0)
 					return node;
 				while (node->right != nil_)
-				{
-					// if (comp_(node->key, node->right->key))
-						node = node->right;
-				}
+					node = node->right;
 				return node;
 			}
 
@@ -569,7 +528,6 @@ namespace ft
 				iterator endOfTime = end();
 				while (output != endOfTime && comp_(output->first, k))
 					output++;
-				// std::cout << RED1 << output->first << RESET << std::endl;
 				if (output == end())
 					return end();
 				if (output.getNode() == getBiggestNode(root_))
@@ -635,23 +593,22 @@ namespace ft
 
 			//		COPY TOOL --------------------------------------------------------------------------------------
 
-			node_ptr copyTree(node_ptr node, node_ptr nil)
+			void copyTree(node_ptr & new_node, node_ptr node, node_ptr nil, node_ptr parent)
 			{
 				if (node == nil)
 				{
-					return nil_;
+					new_node = nil_;
+					new_node->parent = parent;
+					return ;
 				}
-				
-				node_ptr new_node = new Node<Key, Value>(node->key, node->value);
-				// new_node->key = node->key;
-				// new_node->value = node->value;
-				new_node->parent = node->parent;
-				new_node->color = node->color;
-				// new_node->data = node->data;
-				new_node->left = copyTree(node->left, new_node);
-				new_node->right = copyTree(node->right, new_node);
-
-				return new_node;
+				else
+				{
+					new_node = new Node<Key, Value>(node->key, node->value);
+					new_node->parent = parent;
+					new_node->color = node->color;
+					copyTree(new_node->left, node->left, nil, new_node);
+					copyTree(new_node->right, node->right, nil, new_node);
+				}
 			};
 
 
