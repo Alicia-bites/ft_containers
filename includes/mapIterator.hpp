@@ -63,9 +63,6 @@ namespace ft
                         std::cout << PALETURQUOISE1 << "Calling mapIterator constructor from node" << RESET << std::endl;
                     #endif
 
-                    std::cout << "In constructor = " << tree_ << std::endl;
-                    // std::cout << *node_ << std::endl;
-                    // tree_->printTree(tree_->getRoot());
                     if (!input_node || input_node == nil_)
                         pointer_ = 0;
                 };
@@ -83,11 +80,6 @@ namespace ft
                     node_ = original.getNode();
                     pointer_ = original.base();
                     nil_ = original.getNil();
-
-                    // std::cout << "In copy constructor = " << tree_ << std::endl;
-                    // std::cout << *node_ << std::endl;
-                    // std::cout << *(node_->left) << std::endl;
-
                 };
 
                 // destructor
@@ -178,13 +170,6 @@ namespace ft
                 mapIterator<RBT, Pair_type>	operator++(int)
                 {
                     mapIterator<RBT, Pair_type> tmp(*this);
-                    // std::cout << "Printing in operator++" << std::endl;
-                    // std::cout << "tree_ " << tree_ << std::endl;
-
-                    // std::cout << *node_ << std::endl;
-                    // std::cout << *(node_->left) << std::endl;
-                    // std::cout << *(node_->right) << std::endl;
-
                     increment();
                     return (tmp);
                 };
@@ -215,14 +200,6 @@ namespace ft
                     if (node_->right != nil_)
                     {
                         node_ = node_->right;
-
-                        // std::cout << THISTLE1 << "root_ = " << tree_->getRoot() << RESET << std::endl;
-// 
-                        // std::cout << THISTLE1 << "nil_ = " << nil_ << RESET << std::endl;
-                        // std::cout << THISTLE1 << "node_ -> key = " << node_->key << RESET << std::endl;
-                        // std::cout << THISTLE1 << "node_ -> left = " << node_->left << RESET << std::endl;
-                        // std::cout << THISTLE1 << "node_ -> left -> key = " << node_->left->key << RESET << std::endl;
-
                         while (node_->left != nil_)
                             node_ = node_->left;
                     }
