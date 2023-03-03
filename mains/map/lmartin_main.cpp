@@ -6,7 +6,7 @@
 /*   By: amarchan <amarchan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/02 13:07:06 by hbaudet           #+#    #+#             */
-/*   Updated: 2023/03/02 15:12:49 by amarchan         ###   ########.fr       */
+/*   Updated: 2023/03/03 12:33:59 by amarchan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,25 @@ void	print(map<Key, T>& lst)
 	for (typename map<Key, T>::iterator it = lst.begin(); it != lst.end(); it++)
 		cout << it->first << " => " << it->second << '\n';
 }
+
+template <typename Key, typename Value>
+	void	print_map(const ::map<Key, Value> & map, std::string map_name)
+	{
+		std::cout << DODGERBLUE2 << "-----------------------------------------------------------------------------" << std::endl;
+		std::cout << "Printing " << map_name << std::endl;
+		std::cout << DEEPSKYBLUE1 << "map size is " << map.size() << std::endl;
+
+		typename ::map<Key, Value>::const_iterator it;
+		std::cout << "Key " << " = " << "Value" << std::endl;
+		it = map.begin();
+		while (it != map.end())
+		{
+			std::cout << ORANGERED1 << it->first << "    =    " << DARKTURQUOISE << it->second << std::endl;
+			it++;
+		}
+		std::cout << std::endl;
+		std::cout << NAVY << "-----------------------------------------------------------------------------" << RESET << std::endl;
+	}
 
 int main()
 {
@@ -177,7 +196,7 @@ int main()
 	print(mymap);
 	mymap.clear();
 	print(mymap);
-	mymap["lol"];
+	// mymap["lol"];
 	print(mymap);
 	mymap.insert(pair<string, int>("xD", 123));
 	print(mymap);
@@ -188,13 +207,16 @@ int main()
 	mymap.insert(mymap.end(), pair<string, int>("uch", 23));
 	print(mymap);
 	mymap.insert(pair<string, int>("uch", 23));
-	print(mymap);
-	mymap["lol"] = 8;
+	print_map(mymap, "mymap");
 
+	mymap["lol"]=8;
+	
+	print_map(mymap, "mymap");
 
-	print(mymap);
+	// print(mymap);
 	map<string, int> map2;
-
+	print_map(mymap, "mymap");
+	
 	print(mymap);
 	print(map2);
 	cout << "mymap<" << _PURPLE << "string" << _END << ", " << _PURPLE << "int" << _END <<"> mymap2;" << std::endl;
@@ -203,24 +225,33 @@ int main()
 	print(map2);
 	cout << "empty line2\n";
 
-	swap(mymap, map2);
-	cout << "empty line3\n";
-	print(mymap);
-	cout << "empty line4\n";
-	print(map2);
-	cout << "empty line5\n";
-	
-	// DEBUG HERE
-	std::cout << std::endl;
-	std::cout << RED1;
-	print(mymap);
-	mymap.getTree()->printRBTree(mymap.getTree()->getRoot());
-	std::cout << "-------------------------" << std::endl;
-	print(map2);
-	map2.getTree()->printRBTree(map2.getTree()->getRoot());
-	std::cout << "-------------------------" << std::endl;
+	print_map(mymap, "mymap");
 
-	std::cout << RESET;
+	// mymap.getTree()->printTree(mymap.getTree()->getRoot());
+
+	std::cout << PINK3 << "SWAPPING" << RESET << std::endl;
+	swap(mymap, map2);
+	print_map(mymap, "mymap");
+	print_map(map2, "map2");
+
+
+	// cout << "empty line3\n";
+	// print(mymap);
+	// cout << "empty line4\n";
+	// print(map2);
+	// cout << "empty line5\n";
+	
+	// print(mymap);
+	// std::cout << PINK1 << "Printing mymap : " << RESET << std::endl;
+	// mymap.getTree()->printRBTree(mymap.getTree()->getRoot());
+	// mymap.getTree()->printTree(mymap.getTree()->getRoot());
+
+	// std::cout << "-------------------------" << std::endl;
+	// print(map2);
+	// std::cout << PINK1 << "Printing map2 : " << RESET << std::endl;
+	// map2.getTree()->printRBTree(map2.getTree()->getRoot());
+	// map2.getTree()->printTree(map2.getTree()->getRoot());
+	// std::cout << "-------------------------" << std::endl;
 
 	mymap = map2;
 	print(mymap);

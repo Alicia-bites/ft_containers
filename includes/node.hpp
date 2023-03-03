@@ -140,7 +140,12 @@ namespace ft
 				<< "BLACK"
 				<< RESET;
 			}
-			o << RESET
+			o << std::endl
+			<< "data = "
+			<< rhs.data.first
+			<< " | "
+			<< rhs.data.second
+			<< RESET
 			<< std::endl;
 		if (rhs.left)
 		{

@@ -482,7 +482,7 @@ int	main(int argc, char **argv)
 			mymap['x']=1001;
 			mymap['y']=2002;
 			mymap['z']=3003;
-			
+
 			std::cout << "mymap contains:\n";
 			
 			pair<char,int> highest = *mymap.rbegin();          // last element
@@ -495,6 +495,7 @@ int	main(int argc, char **argv)
 			pair<char, int> fifi = *mymap.begin();
 			pair<char, int> fafa = *mymap.rbegin();
 			std::cout << mymap.value_comp()(fifi, fafa) << std::endl;
+
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
@@ -513,6 +514,9 @@ int	main(int argc, char **argv)
 			mymap['b']="another element";
 			mymap['c']=mymap['b'];
 			
+			print_map(mymap, "mymap");
+			// mymap.getTree()->printRBTree(mymap.getTree()->getRoot());
+
 			std::cout << "mymap['a'] is " << mymap['a'] << '\n';
 			std::cout << "mymap['b'] is " << mymap['b'] << '\n';
 			std::cout << "mymap['c'] is " << mymap['c'] << '\n';
@@ -1084,7 +1088,7 @@ int	main(int argc, char **argv)
 			map2.insert(make_pair("xD", 123));
 
 			print_map(map2, "map2");
-			map2.getTree()->printRBTree(map2.getTree()->getRoot());
+			// map2.getTree()->printRBTree(map2.getTree()->getRoot());
 
 			map<std::string, int>mymap;
 
@@ -1092,11 +1096,11 @@ int	main(int argc, char **argv)
 			mymap = map2;
 
 			print_map(map2, "map2");
-			map2.getTree()->printRBTree(map2.getTree()->getRoot());
+			// map2.getTree()->printRBTree(map2.getTree()->getRoot());
 
 			// mymap.getTree()->printTree(mymap.getTree()->getRoot());
 			// std::cout << mymap.getTree()->getRoot() << std::endl;
-			mymap.getTree()->printRBTree(mymap.getTree()->getRoot());
+			// mymap.getTree()->printRBTree(mymap.getTree()->getRoot());
 			print_map(mymap, "mymap");
 
 
@@ -1105,12 +1109,24 @@ int	main(int argc, char **argv)
 			<< std::endl << RESET;
 		}
 
-		
 		if (test_number == 25)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing " 
+			std::cout << STEELBLUE3 << "Testing operator[]" 
 				<< RESET << std::endl << std::endl;
+
+			map<std::string, int> bob;
+
+			bob["xD"] = 123;
+			bob.getTree()->printTree(bob.getTree()->getRoot());
+			std::cout << bob["xD"] << std::endl;
+
+			std::cout << "root_ = " << bob.getTree()->getRoot()->data.second << std::endl;
+			bob["uch"] = 23;
+			bob["lol"] = 8;
+
+			// print_map(bob, "bob");
+			bob.getTree()->printTree(bob.getTree()->getRoot());
 
 
 			std::cout << std::endl << STEELBLUE2

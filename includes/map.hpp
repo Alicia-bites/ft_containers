@@ -201,11 +201,17 @@ namespace ft
 
 //		ACCESSORS --------------------------------------------------------------------------------------
 
-			Value &	operator[](const key_type& x)	
+			Value &	operator[](const key_type& x)
 			{
-				return (*((this->insert(ft::make_pair(x, mapped_type()))).first)).second;
-			};
+				ft::pair<key_type, Value> input_pair = ft::make_pair(x, Value());
 
+				pair<iterator, bool> res = insert(input_pair);
+
+				return res.first->second;
+	
+				// return (*((this->insert(ft::make_pair(x, mapped_type()))).first)).second;
+			};
+		
 			RBTree_ptr	getTree() const
 			{
 				return tree_;

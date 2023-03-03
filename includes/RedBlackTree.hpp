@@ -142,6 +142,10 @@ namespace ft
 					comp_ = rhs.comp_;
 					allocator_ = rhs.allocator_;
 					size_ = rhs.size_;
+					// std::cout << "rhs.nil_->key = " << rhs.nil_->key << RESET << std::endl;
+					// std::cout << "rhs.nil_->left->key = " << rhs.nil_->key << RESET << std::endl;
+					// std::cout << "rhs.nil_->right->key = " << rhs.nil_->key << RESET << std::endl;
+
 					copyTree(root_, rhs.root_, rhs.nil_, 0);
 				}
 				return *this;
@@ -184,10 +188,11 @@ namespace ft
 			// print all the keys and values of the tree.
 			void	printTree(node_ptr node)
 			{
-				#if DEBUG
-					std::cout << MAGENTA3 << "Calling RedBlackTree assignement operator" << RESET << std::endl;
-				#endif
-
+				if (node == 0)
+				{
+					std::cout << "Nothing to print!" << std::endl;
+					return ;
+				}
 				if (node != nil_)
 				{
 					printTree(node->left);
@@ -252,6 +257,7 @@ namespace ft
 					nil_->right = nil_;
 				}
 				node = insertHelper(root_, input_pair.first, input_pair.second);
+				// std::cout << "node = " << *node << std::endl;
 				node->color = RED;
 				if (!root_)
 					root_ = node;
@@ -290,6 +296,7 @@ namespace ft
 					fixViolation(node);
 				}
 				size_++;
+				std::cout << "node->data.second = " << node->data.second << std::endl;
 				return iterator(node, this);
 			};
 
@@ -366,6 +373,8 @@ namespace ft
 				allocator_type				tmpAllocator	= swapMe.allocator_;
 				size_type					tmpSize			= swapMe.size_;
 				
+				// printTree(swapMe.root_);
+
 				swapMe.root_ = root_;
 				swapMe.nil_ = nil_;
 				swapMe.comp_ = comp_;
@@ -377,6 +386,8 @@ namespace ft
 				comp_ = tmpComp;
 				allocator_ = tmpAllocator;
 				size_ = tmpSize;
+
+				// printRBTree(swapMe.root_);
 			}
 
 			void	clear()
@@ -604,6 +615,9 @@ namespace ft
 				else
 				{
 					new_node = new Node<Key, Value>(node->key, node->value);
+					std::cout << PLUM1 << "node-key = " << node->key << RESET << std::endl;
+					std::cout << PLUM1 << "node-value = " << node->value << RESET << std::endl;
+
 					new_node->parent = parent;
 					new_node->color = node->color;
 					copyTree(new_node->left, node->left, nil, new_node);
