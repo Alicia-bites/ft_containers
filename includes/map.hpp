@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <stdlib.h>
-#include <iterator>
+// #include <iterator>
 #include <cstddef>
 #include <memory>
 
@@ -61,19 +61,18 @@ namespace ft
 		private :
 			// typedef RBTree_ptr<key_type, value_type, std::_Select1st<value_type>, key_compare, allocator_type>    RBTree_ptr;
 			typedef RedBlackTree<key_type, mapped_type, key_compare, Allocator>	* RBTree_ptr;	
-			RBTree_ptr    tree_;
+			RBTree_ptr    		tree_;
 
-			Node<Key, Value> *node_ptr;
+			Node<Key, Value>	*node_ptr;
+			size_type			size_;
 
 //	CONSTRUCTORS ----------------------------------------------------------------------------
 
 		public :
 			// Constructs an empty container, with no elements.
 			explicit map(const Compare& comp = Compare(), const Allocator & allocator = Allocator())
-			// : tree_(comp, allocator)
+			: tree_(new RedBlackTree<Key, Value, Compare, Allocator>(comp, allocator))
 			{
-
-				tree_ = new RedBlackTree<Key, Value, Compare, Allocator>(comp, allocator);
 				#if DEBUG
 					std::cout << LIGHTSEAGREEN << "Calling map default constructor" << RESET << std::endl;
 				#endif
@@ -87,7 +86,7 @@ namespace ft
 			// pointed by last.
 			template <class InputIterator>
 				map(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Allocator & allocator = Allocator())
-				: tree_(comp, allocator)
+				: tree_(new RedBlackTree<Key, Value, Compare, Allocator>(comp, allocator))
 				{
 					#if DEBUG
 						std::cout << LIGHTSEAGREEN << "Calling map range constructor" << RESET << std::endl;
@@ -99,12 +98,12 @@ namespace ft
 			// Copy constructor
 			// Constructs a container with a copy of each of the elements in x
 			map(const map<Key,Value,Compare,Allocator>& original)
-			// : tree_(original.tree_)
 			{
-				#if DEBUG
+				// #if DEBUG
 					std::cout << LIGHTSEAGREEN << "Calling map copy constructor" << RESET << std::endl;
-				#endif
-
+				// #endif
+				
+				tree_ = new RedBlackTree<Key, Value, Compare, Allocator>();
 				if (this != &original)
 					*this = original;
 			};
@@ -121,7 +120,6 @@ namespace ft
 
 				if (tree_)
 					delete tree_;
-
 			};
 
 //	MEMBER FUNCTIONS ---------------------------------------------------------------------------------
@@ -133,8 +131,6 @@ namespace ft
 				#if DEBUG
 					std::cout << LIGHTSEAGREEN << "Calling map assignement operator" << RESET << std::endl;
 				#endif
-
-				// std::cout << SPRINGGREEN1 << "tree_->getRoot()->key = " << tree_->getRoot()->key << RESET << std::endl;
 
                 if (this != &rhs)
                     *(this->tree_) = *(rhs.getTree());
