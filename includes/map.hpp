@@ -132,9 +132,9 @@ namespace ft
 					std::cout << LIGHTSEAGREEN << "Calling map assignement operator" << RESET << std::endl;
 				#endif
 
-                if (this != &rhs)
-                    *(this->tree_) = *(rhs.getTree());
-                return (*this);
+				if (this != &rhs)
+					*(this->tree_) = *(rhs.getTree());
+				return (*this);
 			};
 	
 //		ITERATORS --------------------------------------------------------------------------------------
@@ -378,8 +378,6 @@ namespace ft
 			{
 				return tree_->equal_range(k);
 			};
-
-
 	};
 
 //		COMPARATORS --------------------------------------------------------------------------------------
