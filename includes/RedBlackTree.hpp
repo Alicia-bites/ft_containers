@@ -43,8 +43,8 @@ namespace ft
 			typedef typename allocator_type::size_type								size_type;		 // an unsigned integral type that can represent any non-negative value of difference_type	usually the same as size_t
 			typedef ft::mapIterator<RedBlackTree<Key, Value>, value_type>			iterator; 		 // a bidirectional iterator to value_type
 			typedef ft::mapIterator<RedBlackTree<Key, Value>, const value_type>		const_iterator;  // a bidirectional iterator to const value_type
-			typedef ft::reverse_iterator<iterator>									reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator>							const_reverse_iterator;
+			typedef ft::map_reverse_iterator<iterator>									reverse_iterator;
+			typedef ft::map_reverse_iterator<const_iterator>							const_reverse_iterator;
 			typedef Node<Key, Value>												*node_ptr;
 
 //	CONSTRUCTORS ----------------------------------------------------------------------------

@@ -65,12 +65,12 @@ namespace ft
 			typedef const T&							reference;
 		};
 
-// REVERSE_ITERATOR ----------------------------------------------------------------------------------------------
+// map_reverse_iterator ----------------------------------------------------------------------------------------------
 
 
-// std::reverse_iterator is an iterator adaptor that reverses the direction of a given iterator,
+// std::map_reverse_iterator is an iterator adaptor that reverses the direction of a given iterator,
 	template <typename Iterator>
-	class reverse_iterator
+	class map_reverse_iterator
 	{
 		protected:
 			Iterator current_position;
@@ -84,18 +84,18 @@ namespace ft
 
 	// CONSTRUCTORS --------------------------------------------------------------------------------------------------------------
 			// default constructor
-			reverse_iterator()
+			map_reverse_iterator()
 			: current_position() 
 			{};
 
 			// Initializes current_position with it.
-			explicit reverse_iterator(Iterator input_it)
+			explicit map_reverse_iterator(Iterator input_it)
 			: current_position(input_it)
 			{};
 
 			// copy constructor - initializes current with u.current.
 			template <typename OtherIterator>
-				reverse_iterator(const OtherIterator & other)
+				map_reverse_iterator(const OtherIterator & other)
 				: current_position(other.base())
 				{};
 
@@ -128,49 +128,49 @@ namespace ft
 				return &(operator*());
 			};
 
-			reverse_iterator& operator++()
+			map_reverse_iterator& operator++()
 			{
 				--current_position;
 				return *this;
 			};
 
-			reverse_iterator operator++(int)
+			map_reverse_iterator operator++(int)
 			{
-				reverse_iterator tmp(*this);
+				map_reverse_iterator tmp(*this);
 				--current_position;
 				return tmp;
 			};
 
-			reverse_iterator& operator--()
+			map_reverse_iterator& operator--()
 			{
 				++current_position;
 				return *this;
 			};
 
-			reverse_iterator operator--(int)
+			map_reverse_iterator operator--(int)
 			{
-				reverse_iterator tmp(*this);
+				map_reverse_iterator tmp(*this);
 				++current_position;
 				return tmp;
 			};
 
-			reverse_iterator operator+(difference_type n) const
+			map_reverse_iterator operator+(difference_type n) const
 			{
-				return reverse_iterator(current_position - n);
+				return map_reverse_iterator(current_position - n);
 			};
 
-			reverse_iterator& operator+=(difference_type n)
+			map_reverse_iterator& operator+=(difference_type n)
 			{
 				current_position -= n;
 				return *this;
 			};
 
-			reverse_iterator operator-(difference_type n) const
+			map_reverse_iterator operator-(difference_type n) const
 			{
-				return reverse_iterator(current_position + n);
+				return map_reverse_iterator(current_position + n);
 			};
 
-			reverse_iterator& operator-=(difference_type n)
+			map_reverse_iterator& operator-=(difference_type n)
 			{
 				current_position += n;
 				return *this;
@@ -183,91 +183,91 @@ namespace ft
 	};
 
 	template <class Iterator>
-		bool    operator==(const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y)
+		bool    operator==(const map_reverse_iterator<Iterator>& x, const map_reverse_iterator<Iterator>& y)
 		{
 			return (x.base() == y.base());
 		}
 
 	template <class T, class U>
-		bool    operator==(const reverse_iterator<T>& x, const reverse_iterator<U>& y)
+		bool    operator==(const map_reverse_iterator<T>& x, const map_reverse_iterator<U>& y)
 		{
 			return (x.base() == y.base());
 		}
 
 	template <class Iterator>
-		bool    operator!=(const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y)
+		bool    operator!=(const map_reverse_iterator<Iterator>& x, const map_reverse_iterator<Iterator>& y)
 		{
 			return (x.base() != y.base());
 		}
 
 	template <class T, class U>
-		bool    operator!=(const reverse_iterator<T>& x, const reverse_iterator<U>& y)
+		bool    operator!=(const map_reverse_iterator<T>& x, const map_reverse_iterator<U>& y)
 		{
 			return (x.base() != y.base());
 		}
 
 	template <class Iterator>
-		bool    operator>(const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y)
+		bool    operator>(const map_reverse_iterator<Iterator>& x, const map_reverse_iterator<Iterator>& y)
 		{
 			return (x.base() < y.base());
 		}
 
 	template <class T, class U>
-		bool    operator>(const reverse_iterator<T>& x, const reverse_iterator<U>& y)
+		bool    operator>(const map_reverse_iterator<T>& x, const map_reverse_iterator<U>& y)
 		{
 			return (x.base() < y.base());
 		}
 
 	template <class Iterator>
-		bool    operator>=(const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y)
+		bool    operator>=(const map_reverse_iterator<Iterator>& x, const map_reverse_iterator<Iterator>& y)
 		{
 			return (x.base() <= y.base());
 		}
 
 	template <class T, class U>
-		bool    operator>=(const reverse_iterator<T>& x, const reverse_iterator<U>& y)
+		bool    operator>=(const map_reverse_iterator<T>& x, const map_reverse_iterator<U>& y)
 		{
 			return (x.base() <= y.base());
 		}
 
 	template <class Iterator>
-		bool    operator<(const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y)
+		bool    operator<(const map_reverse_iterator<Iterator>& x, const map_reverse_iterator<Iterator>& y)
 		{
 			return (x.base() > y.base());
 		}
 
 	template <class T, class U>
-		bool    operator<(const reverse_iterator<T>& x, const reverse_iterator<U>& y)
+		bool    operator<(const map_reverse_iterator<T>& x, const map_reverse_iterator<U>& y)
 		{
 			return (x.base() > y.base());
 		}
 
 	template <class Iterator>
-		bool    operator<=(const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y)
+		bool    operator<=(const map_reverse_iterator<Iterator>& x, const map_reverse_iterator<Iterator>& y)
 		{
 			return (x.base() >= y.base());
 		}
 
 	template <class T, class U>
-		bool    operator<=(const reverse_iterator<T>& x, const reverse_iterator<U>& y)
+		bool    operator<=(const map_reverse_iterator<T>& x, const map_reverse_iterator<U>& y)
 		{
 			return (x.base() >= y.base());
 		}
 
 	template <class Iterator>
-		typename reverse_iterator<Iterator>::difference_type    operator-(const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y)
+		typename map_reverse_iterator<Iterator>::difference_type    operator-(const map_reverse_iterator<Iterator>& x, const map_reverse_iterator<Iterator>& y)
 		{
 			return (y.base() - x.base());
 		}
 
 	template <class T, class U>
-		typename reverse_iterator<T>::difference_type    operator-(const reverse_iterator<T>& x, const reverse_iterator<U>& y)
+		typename map_reverse_iterator<T>::difference_type    operator-(const map_reverse_iterator<T>& x, const map_reverse_iterator<U>& y)
 		{
 			return (y.base() - x.base());
 		}
 
 	template <class Iterator>
-		reverse_iterator<Iterator>  operator+(typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator>& x)
+		map_reverse_iterator<Iterator>  operator+(typename map_reverse_iterator<Iterator>::difference_type n, const map_reverse_iterator<Iterator>& x)
 		{
 			return (x + n);
 		}
