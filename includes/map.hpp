@@ -207,8 +207,15 @@ namespace ft
 
 				pair<iterator, bool> res = insert(input_pair);
 
+				// assigning the address of res.first->second to node->value,
+				// so that node->value points to the same memory location as 
+				// res.first->second
+				// Node<Key, Value> * node = getTree()->findNode(getTree()->getRoot(), x);
+// 
+    			// node->value = res.first->second;
+    			// return node->value;
+
 				return res.first->second;
-	
 				// return (*((this->insert(ft::make_pair(x, mapped_type()))).first)).second;
 			};
 		
