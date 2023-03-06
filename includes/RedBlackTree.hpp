@@ -133,7 +133,8 @@ namespace ft
 				if (rhs.root_ != 0) // if rhs's tree isn't empty, copy rhs in this
 				{
 					// creating new nil_
-					nil_ = new Node<Key, Value>(rhs.nil_->key, rhs.nil_->value);
+					Value value = rhs.nil_->getValue();
+					nil_ = new Node<Key, Value>(rhs.nil_->key, value);
 					nil_->color = BLACK;
 					nil_->parent = 0;
 					nil_->left = nil_;
@@ -169,12 +170,12 @@ namespace ft
 
 //		ACCESSORS --------------------------------------------------------------------------------------
 
-			Value &operator[](const Key &key)
-			{
-				ft::pair<const Key, Value> output;
-				output = insert(ft::make_pair(key, Value()));
-				return output.first->second;
-			};
+			// Value &operator[](const Key &key)
+			// {
+			// 	ft::pair<const Key, Value> output;
+			// 	output = insert(ft::make_pair(key, Value()));
+			// 	return output.first->second;
+			// };
 
 //		VISUALIZERS --------------------------------------------------------------------------------------
 			
@@ -250,13 +251,15 @@ namespace ft
 
 				if (nil_ == 0)
 				{
-					nil_ = new Node<Key, Value>(input_pair.first, input_pair.second);
+					mapped_type value = input_pair.second;
+					nil_ = new Node<Key, Value>(input_pair.first, value);
 					nil_->color = BLACK;
 					nil_->parent = 0;
 					nil_->left = nil_;
 					nil_->right = nil_;
 				}
-				node = insertHelper(root_, input_pair.first, input_pair.second);
+				Value value = input_pair.second;
+				node = insertHelper(root_, input_pair.first, value);
 				// std::cout << "node = " << *node << std::endl;
 				node->color = RED;
 				if (!root_)
@@ -284,19 +287,21 @@ namespace ft
 				if (position == begin() || (--position)->first < input_pair.first)
 				{
 					++position;
-					node = insertHelper(position.getNode(), input_pair.first, input_pair.second);
+					Value value = input_pair.second;
+					node = insertHelper(position.getNode(), input_pair.first, value);
 				}
 
 				else
 				{
-					node = insertHelper(root_, input_pair.first, input_pair.second);
+					Value value = input_pair.second;
+					node = insertHelper(position.getNode(), input_pair.first, value);
 					node->color = RED;
 					if (!root_)
 						root_ = node;
 					fixViolation(node);
 				}
 				size_++;
-				std::cout << "node->data.second = " << node->data.second << std::endl;
+				// std::cout << "node->data.second = " << node->data.second << std::endl;
 				return iterator(node, this);
 			};
 
@@ -392,9 +397,10 @@ namespace ft
 
 			void	clear()
 			{
-				if (!root_)
+				if (root_ == 0)
 					return ;
-				deleteTree(root_);
+				if (root_ != nil_)
+					deleteTree(root_);
 				delete nil_;
 				nil_ = NULL;
 				root_ = NULL;
@@ -454,19 +460,11 @@ namespace ft
 				return const_iterator(getSmallestNode(root_), this);
 			};
 
-			// check if node is the past-the-end element
-			bool isEnd(node_ptr node)
-			{
-				if (node->key == nil_->key)
-				{
-					if (node->parent == getBiggestNode(root_))
-						return true;
-				}
-				return false;
-			}
-
 			iterator	end()
 			{
+				// linking end() with last node,
+				// in order to get a correct
+				// result when doing end()--
 				node_ptr beyondEnd = nil_;
 				if (nil_)
 				{
@@ -487,27 +485,30 @@ namespace ft
 				return const_iterator(beyondEnd, this);
 			};
 
+			// returns a reverse iterator pointing to the last element
+			// in the container (i.e., its reverse beginning).
 			reverse_iterator rbegin()
 			{
-				iterator it(getBiggestNode(root_), this);
-				return reverse_iterator(it);
+				node_ptr biggest = getBiggestNode(root_);
+				iterator output(biggest, this);
+				return reverse_iterator(output);				
 			};
 
 			const_reverse_iterator rbegin() const
 			{
-				return const_reverse_iterator(getBiggestNode(root_), this);
+				node_ptr biggest = getBiggestNode(root_);
+				const_iterator output(biggest, this);
+				return const_reverse_iterator(output);				
 			};
 
 			reverse_iterator	rend()
 			{
-				iterator it(0, this);
-				return reverse_iterator(it);
+				return reverse_iterator(end());
 			};
 
 			const_reverse_iterator rend() const
 			{
-				const_iterator it(0, this);
-				return const_reverse_iterator(it);
+				return const_reverse_iterator(end());
 			};
 
 //		TREE OPERATIONS --------------------------------------------------------------------------------------
@@ -579,16 +580,6 @@ namespace ft
 				return ft::make_pair(low, up);
 			}
 
-		protected:
-			node_ptr							root_;
-			node_ptr							nil_;
-			std::allocator<Node<Key, Value> >	nodeAllocator_;
-			key_compare							comp_; // key comparator
-			allocator_type						allocator_;
-			size_type							size_; // total number of nodes
-
-		private :
-
 			// a function that searches a specific node and returns it
 			node_ptr findNode(node_ptr node, const Key &key) const
 			{
@@ -602,6 +593,14 @@ namespace ft
 				return node;
 			};
 
+		private :
+			node_ptr							root_;
+			node_ptr							nil_;
+			std::allocator<Node<Key, Value> >	nodeAllocator_;
+			key_compare							comp_; // key comparator
+			allocator_type						allocator_;
+			size_type							size_; // total number of nodes
+
 			//		COPY TOOL --------------------------------------------------------------------------------------
 
 			void copyTree(node_ptr & new_node, node_ptr node, node_ptr nil, node_ptr parent)
@@ -614,9 +613,10 @@ namespace ft
 				}
 				else
 				{
-					new_node = new Node<Key, Value>(node->key, node->value);
-					std::cout << PLUM1 << "node-key = " << node->key << RESET << std::endl;
-					std::cout << PLUM1 << "node-value = " << node->value << RESET << std::endl;
+					Value value = node->getValue();
+					new_node = new Node<Key, Value>(node->key,value);
+					// std::cout << PLUM1 << "node-key = " << node->key << RESET << std::endl;
+					// std::cout << PLUM1 << "node-value = " << node->getValue() << RESET << std::endl;
 
 					new_node->parent = parent;
 					new_node->color = node->color;
@@ -666,7 +666,7 @@ namespace ft
 			// 			while (tmp->left)
 			// 				tmp = tmp->left;
 			// 			node->key = tmp->key;
-			// 			node->value = tmp->value;
+			// 			node->getValue() = tmp->getValue();
 			// 			node->right = removeHelper(node->right, tmp->key);
 			// 		}
 			// 	}
@@ -882,7 +882,7 @@ namespace ft
 					std::cout << MEDIUMORCHID3 << "Deleting node: " << node->key << RESET << std::endl;
 				#endif
 			
-				if (node == nil_)
+				if (node == nil_ || node == 0)
 					return;
 			
 				deleteTree(node->left);
@@ -956,7 +956,7 @@ namespace ft
 			// recursive function, used to insert a new node
 			// from root_, find the next available place to create new Node
 			// !! WITHOUT CARING ABOUT BALANCE
-			node_ptr	insertHelper(node_ptr node, const Key &key, const Value &value)
+			node_ptr	insertHelper(node_ptr node, const Key &key, Value &value)
 			{
 				if (node == 0)
 				{
@@ -967,7 +967,8 @@ namespace ft
 				}
 				if (key == node->key)
 				{
-					node->value = value;
+					// node->getValue() = value;
+					node->setValue(value);
 					return node;
 				}
 				if (/*key < node->key*/ comp_(key, node->key))
