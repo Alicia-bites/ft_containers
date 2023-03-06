@@ -15,10 +15,12 @@ namespace ft
 	template <typename Key, typename Value>
 	class Node
 	{
+		private:
+			Value				value;
+
 		public:
 
 			Key					key;
-			Value				value;
 			Color				color;
 			Node<Key, Value>	*left;
 			Node<Key, Value>	*right;
@@ -27,8 +29,8 @@ namespace ft
 
 			// default constructor
 			Node()
-			: key(0)
-			, value(0)
+			: value(0)
+			, key(0)
 			, color(RED)
 			, left(0)
 			, right(0)
@@ -41,9 +43,9 @@ namespace ft
 			};
 
 			// constructor #1
-			Node(const Key & key, const Value & value)
-			: key(key)
-			, value(value)
+			Node(const Key & key, Value & value)
+			: value(value)
+			, key(key)
 			, color(RED)
 			, left(0)
 			, right(0)
@@ -57,9 +59,6 @@ namespace ft
 
 			// copy constructor
 			Node(const Node<typename remove_cv<Key>::type, Value> & original)
-			: key(original.key)
-			, value(original.value)
-			, data(ft::make_pair(key, value))
 			{
 				# if DEBUG
 					std::cout << LIGHTSEAGREEN << "Calling Node copy constructor" << RESET << std::endl;
@@ -67,10 +66,7 @@ namespace ft
 
 				if (this != &original)
 				{
-					color = original.color;
-					left = original.left;
-					right = original.right;
-					parent = original.parent;
+					*this = original;
 				}
 			}
 
@@ -80,6 +76,28 @@ namespace ft
 				# if DEBUG
 					std::cout << LIGHTSEAGREEN << "Calling Node destructor" << RESET << std::endl;
 				# endif
+			}
+
+			// getter
+			Value	getValue()
+			{
+				# if DEBUG
+					std::cout << LIGHTSEAGREEN << "Calling Node value getter" << RESET << std::endl;
+				# endif
+				
+				if (data.second != value)
+					setValue(data.second);
+				return value;
+			}
+
+			// setter
+			void	setValue(Value newValue)
+			{
+				# if DEBUG
+					std::cout << LIGHTSEAGREEN << "Calling Node value setter" << RESET << std::endl;
+				# endif
+
+				value = newValue;
 			}
 
 			// assignement operator
@@ -92,23 +110,27 @@ namespace ft
 				if (this == &rhs)
 					return *this;
 
+				setValue(rhs.getValue());
 				key = rhs.key;
-				value = rhs.value;
 				color = rhs.color;
 				left = rhs.left;
 				right = rhs.right;
 				parent = rhs.parent;
-				data = ft::make_pair(key, value);
+				data = ft::make_pair(key, rhs.getValue());
+
+				setValue(rhs.getValue());
+
 
 				return *this;
 			};
 			
+
 	};
 
 	template<typename Key, typename Value>
-	bool operator==(const Node<Key, Value> & lhs, const Node<Key, Value> & rhs)
+	bool operator==(Node<Key, Value> & lhs, Node<Key, Value> & rhs)
 	{
-		if (lhs.key == rhs.key && lhs.value == rhs.value && lhs.color == rhs.color 
+		if (lhs.key == rhs.key && lhs.getValue() == rhs.getValue() && lhs.color == rhs.color 
 			&& lhs.left == rhs.left && lhs.right == rhs.right && lhs.parent == rhs.parent
 			&& lhs.data == rhs.data)
 			return true;
@@ -116,7 +138,7 @@ namespace ft
 	}
 
 	template<typename Key, typename Value>
-	std::ostream & operator<<(std::ostream & o, const Node<Key, Value> & rhs)
+	std::ostream & operator<<(std::ostream & o, Node<Key, Value> & rhs)
 	{
 		
 		o << "Printing node..." << std::endl;
@@ -124,7 +146,7 @@ namespace ft
 			<< rhs.key
 			<< std::endl
 			<< "value = "
-			<< rhs.value
+			<< rhs.getValue()
 			<< std::endl;
 			if (rhs.color == RED)
 			{
@@ -157,7 +179,7 @@ namespace ft
 				<< rhs.left->key
 				<< std::endl
 				<< "left->value = "
-				<< rhs.left->value
+				<< rhs.left->getValue()
 				<< std::endl;
 				if (rhs.left->color == RED)
 				{
@@ -185,7 +207,7 @@ namespace ft
 			<< rhs.right->key
 			<< std::endl
 			<< "right->value = "
-			<< rhs.right->value
+			<< rhs.right->getValue()
 			<< std::endl;
 			if (rhs.right->color == RED)
 			{
@@ -213,7 +235,7 @@ namespace ft
 			<< rhs.parent->key
 			<< std::endl
 			<< "parent->value = "
-			<< rhs.parent->value
+			<< rhs.parent->getValue()
 			<< std::endl;
 			if (rhs.parent->color == RED)
 			{
