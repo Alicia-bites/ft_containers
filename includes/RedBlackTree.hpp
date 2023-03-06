@@ -89,8 +89,6 @@ namespace ft
 	
 				if (this != &original)
 					*this = original;
-				// if (this != &original)
-					// copyTree(root_, original.root_);
 			};
 
 //	DESTRUCTORS --------------------------------------------------------------------------------------
@@ -121,7 +119,7 @@ namespace ft
 			RedBlackTree<Key, Value, Compare, Allocator> & operator=(const RedBlackTree<Key, Value, Compare, Allocator> & rhs)
 			{
 				#if DEBUG
-					std::cout << MAGENTA3 << "Calling RedBlackTree copy constructor" << RESET << std::endl;
+					std::cout << MAGENTA3 << "Calling RedBlackTree assignement operator" << RESET << std::endl;
 				#endif
 
 				if (this == &rhs)
@@ -139,7 +137,7 @@ namespace ft
 					nil_->parent = 0;
 					nil_->left = nil_;
 					nil_->right = nil_;
-
+					
 					comp_ = rhs.comp_;
 					allocator_ = rhs.allocator_;
 					size_ = rhs.size_;
@@ -189,6 +187,9 @@ namespace ft
 			// print all the keys and values of the tree.
 			void	printTree(node_ptr node)
 			{
+				// std::cout << "nil_ = " << nil_ << std::endl;
+				// std::cout << "node = " << node << std::endl;
+
 				if (node == 0)
 				{
 					std::cout << "Nothing to print!" << std::endl;
@@ -335,6 +336,7 @@ namespace ft
 
 				removeHelper(key);
 				delete node_to_be_deleted;
+				node_to_be_deleted = 0;
 
 				# if DEBUG
 					printRBTree(root_);
@@ -397,6 +399,7 @@ namespace ft
 
 			void	clear()
 			{
+
 				if (root_ == 0)
 					return ;
 				if (root_ != nil_)
@@ -889,6 +892,7 @@ namespace ft
 				deleteTree(node->right);
 
 				delete node;
+				node = NULL;
 			}
 	
 	//		ROTATE NODE TOOLS --------------------------------------------------------------------------------------
