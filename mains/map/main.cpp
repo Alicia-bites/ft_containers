@@ -1065,45 +1065,44 @@ int	main(int argc, char **argv)
 			std::cout << STEELBLUE3 << "Testing mazoise" 
 				<< RESET << std::endl << std::endl;
 
-			// map<char,int> mymap;
+			map<char,int> mymap;
 			
-			// mymap['a']=10;
-			// mymap['b']=20;
-			// mymap['c']=30;
+			mymap['x'] = 100;
+			mymap['y'] = 200;
+			mymap['z'] = 300;
 			
-			// pair<map<char,int>::iterator,map<char,int>::iterator> ret;
-			// ret = mymap.equal_range('d');
+			// show content:
+			map<char,int>::reverse_iterator rit;
+			for (rit=mymap.rbegin(); rit!=mymap.rend(); ++rit)
+			{
+				std::cout << rit->first << " => " << rit->second << '\n';
+			}
 			
-			// std::cout << "lower bound points to: ";
-			// if (ret.first != mymap.end())
-			// 	std::cout << ret.first->first << " => " << ret.first->second << '\n';
 			
-			// std::cout << "upper bound points to: ";
-			// if (ret.second != mymap.end())
-			// 	std::cout << ret.second->first << " => " << ret.second->second << '\n';
-
-			map<std::string, int>map2;
-			map2.insert(make_pair("uch", 442));
-			map2.insert(make_pair("lol", 8));
-			map2.insert(make_pair("xD", 123));
-
-			print_map(map2, "map2");
-			// map2.getTree()->printRBTree(map2.getTree()->getRoot());
-
-			map<std::string, int>mymap;
-
-			std::cout << "copying map2 in mymap..." << std::endl;
-			mymap = map2;
-
-			print_map(map2, "map2");
-			// map2.getTree()->printRBTree(map2.getTree()->getRoot());
-
-			// mymap.getTree()->printTree(mymap.getTree()->getRoot());
-			// std::cout << mymap.getTree()->getRoot() << std::endl;
-			// mymap.getTree()->printRBTree(mymap.getTree()->getRoot());
-			print_map(mymap, "mymap");
-
-
+			for (map<char,int>::const_reverse_iterator it=mymap.rbegin(); it!=mymap.rend(); it++)
+				std::cout << it->first << " => " << it->second << '\n';
+		
+			map<char, int>::const_reverse_iterator it = mymap.rbegin();
+			map<char, int>::const_reverse_iterator ti = mymap.rend();
+		
+			it++;
+			++it;
+			it--;
+			--it;
+		
+			ti--;
+			--ti;
+			++ti;
+			ti++;
+		
+			ti = it;
+		
+			map<char, int>::reverse_iterator end = mymap.rend();
+			while(it != end)
+			{
+				std::cout << it->first << " => " << it->second << '\n';
+				it++;
+			}
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
 			<< std::endl << RESET;
@@ -1118,15 +1117,15 @@ int	main(int argc, char **argv)
 			map<std::string, int> bob;
 
 			bob["xD"] = 123;
-			bob.getTree()->printTree(bob.getTree()->getRoot());
-			std::cout << bob["xD"] << std::endl;
+			// bob.getTree()->printTree(bob.getTree()->getRoot());
+			// std::cout << bob["xD"] << std::endl;
 
-			std::cout << "root_ = " << bob.getTree()->getRoot()->data.second << std::endl;
+			// std::cout << "root_ = " << bob.getTree()->getRoot()->data.second << std::endl;
 			bob["uch"] = 23;
 			bob["lol"] = 8;
 
-			// print_map(bob, "bob");
-			bob.getTree()->printTree(bob.getTree()->getRoot());
+			print_map(bob, "bob");
+			// bob.getTree()->printTree(bob.getTree()->getRoot());
 
 
 			std::cout << std::endl << STEELBLUE2
