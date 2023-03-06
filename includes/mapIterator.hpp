@@ -28,35 +28,43 @@ namespace ft
 				typedef std::bidirectional_iterator_tag     iterator_category;
 				typedef std::ptrdiff_t                      difference_type;
 
-                private:
-                    typedef typename RBT::node_ptr          node_ptr;
-                    typedef RBT*                            RBTree_ptr;
+            private:
+                typedef typename RBT::node_ptr          node_ptr;
+                typedef RBT*                            RBTree_ptr;
 
-                    RBTree_ptr  tree_;
-                    node_ptr    node_;
-                    node_ptr    nil_;
+                RBTree_ptr  tree_;
+                node_ptr    node_;
+                node_ptr    nil_;
+                node_ptr    root_;
+                node_ptr    biggest_;
+                node_ptr    smallest_;
+                pointer     pointer_; // pointer to data, which is a node attribute of type pair<const Key, value>
 
-                    pointer     pointer_; // pointer to data, which is a node attribute of type pair<const Key, value>
+            public:
 
-                public:
-
-                    // default constructor
-                    mapIterator()
-                    : tree_(0)
-                    , node_(0)
-                    , nil_(0)
-                    , pointer_(0)
-                    {
-                        #if DEBUG
-                            std::cout << PALETURQUOISE1 << "Calling mapIterator default constructor" << RESET << std::endl;
-                        #endif
-                    };
+                // default constructor
+                mapIterator()
+                : tree_(0)
+                , node_(0)
+                , nil_(0)
+                , root_(0)
+                , biggest_(0)
+                , smallest_(0)
+                , pointer_(0)
+                {
+                    #if DEBUG
+                        std::cout << PALETURQUOISE1 << "Calling mapIterator default constructor" << RESET << std::endl;
+                    #endif
+                };
 
                 // constructor
                 mapIterator(node_ptr input_node, RBTree_ptr tree)
                 : tree_(tree)
                 , node_(input_node)
                 , nil_(tree_->getNil())
+                , root_(tree_->getRoot())
+                , biggest_(tree->getBiggestNode(root_))
+                , smallest_(tree->getSmallestNode(root_))
                 , pointer_(&input_node->data)
                 {
                     #if DEBUG
@@ -70,16 +78,20 @@ namespace ft
                 // copy constructor
                 // mapIterator(const mapIterator<typename remove_cv<Key>::type, Value> & original)
                 mapIterator(const mapIterator<RBT, Pair_type> & original)
-
                 {
                     # if DEBUG
                         std::cout << PALETURQUOISE1 << "Calling mapIterator copy constructor" << RESET << std::endl;
                     #endif
 
+                    if (this == &original)
+                        return ;
                     tree_ = original.getTree();
                     node_ = original.getNode();
                     pointer_ = original.base();
                     nil_ = original.getNil();
+                    root_ = original.getRoot();
+                    biggest_ = original.getBiggest();
+                    smallest_ = original.getSmallest();
                 };
 
                 // destructor
@@ -114,6 +126,21 @@ namespace ft
                     return tree_;
                 }
 
+                node_ptr    getRoot() const
+                {
+                    return root_;
+                }
+
+                node_ptr    getBiggest() const
+                {
+                    return biggest_;
+                }
+
+                node_ptr    getSmallest() const
+                {
+                    return smallest_;
+                }
+
 // OPERATOR OVERLOADS ---------------------------------------------------------------------------------------------
 				
                 // assignement operator
@@ -126,8 +153,12 @@ namespace ft
 
                     tree_ = rhs.getTree();
                     node_ = rhs.getNode();
-                    pointer_ = rhs.base();
                     nil_ = rhs.getNil();
+                    root_ = rhs.getRoot();
+                    biggest_ = rhs.getBiggest();
+                    smallest_ = rhs.getSmallest();
+                    pointer_ = rhs.base();
+
                     return *this;
                 };
                 
@@ -184,6 +215,17 @@ namespace ft
 
             private :
 
+            	// check if node is the past-the-end element
+                bool isEnd(node_ptr node)
+                {
+                    if (node->key == nil_->key)
+                    {
+                        if (node->parent == biggest_)
+                            return true;
+                    }
+                    return false;
+                }
+
                 void    increment()
                 {
                     // std::cout << *node_ << std::endl;
@@ -193,9 +235,9 @@ namespace ft
                     // to the node who's got the biggest key.
                     if (node_ == nil_)
                     {
-                        node_ = tree_->getBiggestNode(tree_->getRoot());
+                        node_ = biggest_;
                         pointer_ = &node_->data;
-                        return ;                         
+                        return ;
                     }
                     if (node_->right != nil_)
                     {
@@ -231,7 +273,7 @@ namespace ft
 
                 void    decrement()
                 {
-                    if (tree_->isEnd(node_))
+                    if (isEnd(node_))
                     {
                         node_ = node_->parent;
                         pointer_ = &node_->data;
@@ -241,7 +283,7 @@ namespace ft
                     // to the node who's got the smallest key.
                     if (node_ == 0)
                     {
-                        node_ = tree_->getSmallestNode(tree_->getRoot());
+                        node_ = smallest_;
                         pointer_ = &node_->data;
                         return ;                         
                     }
