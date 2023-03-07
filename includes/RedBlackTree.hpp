@@ -846,7 +846,6 @@ namespace ft
 				}
 				if (key == node->key)
 				{
-					// node->getValue() = value;
 					node->setValue(value);
 					return node;
 				}
