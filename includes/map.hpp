@@ -63,7 +63,9 @@ namespace ft
 			typedef RedBlackTree<key_type, mapped_type, key_compare, Allocator>	* RBTree_ptr;	
 			RBTree_ptr    		tree_;
 
-			Node<Key, Value>	*node_ptr;
+			// Node<Key, Value>	*node_ptr;
+			// Node<Value>			*node_ptr;
+
 			size_type			size_;
 
 //	CONSTRUCTORS ----------------------------------------------------------------------------
