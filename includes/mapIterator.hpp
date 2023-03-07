@@ -321,18 +321,6 @@ namespace ft
     	};
 	// RELATIONNAL OPERATOR OVERLOADS ---------------------------------------------------------------------------------------------
 
-	// template <typename RBT, typename Value>
-	// 	bool	operator==(const mapIterator<RBT, Pair_type> & lhs, const mapIterator<RBT, Pair_type> & rhs)
-	// 	{
-    //         if (lhs.base() == 0 && rhs.base() == 0)
-    //             return true;
-    //         else if (lhs.base() == 0 && rhs.base() != 0)
-    //             return false;
-    //         else if (lhs.base() != 0 && rhs.base() == 0)
-    //             return false;
-	// 		return lhs.getNode()->key == rhs.getNode()->key;
-	// 	};
-
     template <typename RBT, typename A, typename B>
 		bool	operator==(const mapIterator<RBT, A> & lhs, const mapIterator<RBT, B> & rhs)
 		{
@@ -345,18 +333,6 @@ namespace ft
 			return lhs.getNode()->key == rhs.getNode()->key;
 		};
 
-	// template <typename RBT, typename Value>
-	// 	bool	operator!=(const mapIterator<RBT, Pair_type> & lhs, const mapIterator<RBT, Pair_type> & rhs)
-	// 	{
-    //         if (lhs.base() == 0 && rhs.base() == 0)
-    //             return false;
-    //         else if (lhs.base() == 0 && rhs.base() != 0)
-    //             return true;
-    //         else if (lhs.base() != 0 && rhs.base() == 0)
-    //             return true;
-	// 		return lhs.getNode()->key != rhs.getNode()->key;
-	// 	};
-    
     template <typename RBT, typename A, typename B>
 		bool	operator!=(const mapIterator<RBT, A> & lhs, const mapIterator<RBT, B> & rhs)
 		{
