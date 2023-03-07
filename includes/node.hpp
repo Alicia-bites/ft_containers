@@ -20,12 +20,12 @@ namespace ft
 
 		public:
 
-			Key					key;
-			Color				color;
-			Node<Key, Value>	*left;
-			Node<Key, Value>	*right;
-			Node<Key, Value>	*parent;
-			ft::pair<const Key, Value> data;
+			Key							key;
+			Color						color;
+			Node<Key, Value>			*left;
+			Node<Key, Value>			*right;
+			Node<Key, Value>			*parent;
+			ft::pair<const Key, Value>	data;
 
 			// default constructor
 			Node()
@@ -119,8 +119,7 @@ namespace ft
 				data = ft::make_pair(key, rhs.getValue());
 
 				setValue(rhs.getValue());
-
-
+				
 				return *this;
 			};
 			

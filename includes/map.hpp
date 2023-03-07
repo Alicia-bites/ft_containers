@@ -26,21 +26,21 @@ namespace ft
 		public:
 			// HOMEMADE TYPE DEFINITION
 
-			typedef Key                                     			key_type; // type of key used to pair with value (1st template parameter)
-			typedef Value                                   			mapped_type; // type of the value paired with key (2nd template parameter)
-			typedef pair<const Key, Value>                  		value_type; // represent the key-value pair
-			typedef Compare                                 			key_compare; // comparaison fonction used to compare keys (3rd template parameter, defaults to: less<key_type>)
-			typedef Allocator                               			allocator_type; // (4th template parameter, defaults to: allocator<value_type>)
-			typedef typename Allocator::reference           			reference; // for the default allocator: value_type &
-			typedef typename Allocator::const_reference     			const_reference; // for the default allocator: const value_type&
-			typedef std::size_t                             			size_type;
-			typedef std::ptrdiff_t                          			difference_type;
-			typedef typename Allocator::pointer             			pointer; // for the default allocator: value_type*
-			typedef typename Allocator::const_pointer       			const_pointer; 	// for the default allocator: const value_type*
-			typedef typename RedBlackTree<key_type, mapped_type>::iterator				iterator; // a bidirectional iterator to value_type
-			typedef typename RedBlackTree<key_type, mapped_type>::const_iterator	const_iterator; // a bidirectional iterator to const value_type
-			typedef typename RedBlackTree<key_type, mapped_type>::reverse_iterator						reverse_iterator;
-			typedef typename RedBlackTree<key_type, mapped_type>::const_reverse_iterator					const_reverse_iterator;
+			typedef Key                                     								key_type; // type of key used to pair with value (1st template parameter)
+			typedef Value                                   								mapped_type; // type of the value paired with key (2nd template parameter)
+			typedef pair<const Key, Value>                  								value_type; // represent the key-value pair
+			typedef Compare                                 								key_compare; // comparaison fonction used to compare keys (3rd template parameter, defaults to: less<key_type>)
+			typedef Allocator                               								allocator_type; // (4th template parameter, defaults to: allocator<value_type>)
+			typedef typename Allocator::reference           								reference; // for the default allocator: value_type &
+			typedef typename Allocator::const_reference     								const_reference; // for the default allocator: const value_type&
+			typedef std::size_t                             								size_type;
+			typedef std::ptrdiff_t                          								difference_type;
+			typedef typename Allocator::pointer             								pointer; // for the default allocator: value_type*
+			typedef typename Allocator::const_pointer       								const_pointer; 	// for the default allocator: const value_type*
+			typedef typename RedBlackTree<key_type, mapped_type>::iterator					iterator; // a bidirectional iterator to value_type
+			typedef typename RedBlackTree<key_type, mapped_type>::const_iterator			const_iterator; // a bidirectional iterator to const value_type
+			typedef typename RedBlackTree<key_type, mapped_type>::reverse_iterator			reverse_iterator;
+			typedef typename RedBlackTree<key_type, mapped_type>::const_reverse_iterator	const_reverse_iterator;
 
 			class value_compare : public std::binary_function<value_type,value_type,bool>
 			{
@@ -200,19 +200,8 @@ namespace ft
 			Value &	operator[](const key_type& x)
 			{
 				ft::pair<key_type, Value> input_pair = ft::make_pair(x, Value());
-
 				pair<iterator, bool> res = insert(input_pair);
-
-				// assigning the address of res.first->second to node->value,
-				// so that node->value points to the same memory location as 
-				// res.first->second
-				// Node<Key, Value> * node = getTree()->findNode(getTree()->getRoot(), x);
-// 
-    			// node->value = res.first->second;
-    			// return node->value;
-
 				return res.first->second;
-				// return (*((this->insert(ft::make_pair(x, mapped_type()))).first)).second;
 			};
 		
 			RBTree_ptr	getTree() const
@@ -361,7 +350,6 @@ namespace ft
 			{
 				return tree_->upper_bound(k);
 			};
-
 
 			// Returns a range containing all elements with the given 
 			// key in the container. The range is defined by two iterators, 

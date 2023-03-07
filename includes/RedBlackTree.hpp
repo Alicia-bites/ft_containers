@@ -43,8 +43,8 @@ namespace ft
 			typedef typename allocator_type::size_type								size_type;		 // an unsigned integral type that can represent any non-negative value of difference_type	usually the same as size_t
 			typedef ft::mapIterator<RedBlackTree<Key, Value>, value_type>			iterator; 		 // a bidirectional iterator to value_type
 			typedef ft::mapIterator<RedBlackTree<Key, Value>, const value_type>		const_iterator;  // a bidirectional iterator to const value_type
-			typedef ft::map_reverse_iterator<iterator>									reverse_iterator;
-			typedef ft::map_reverse_iterator<const_iterator>							const_reverse_iterator;
+			typedef ft::map_reverse_iterator<iterator>								reverse_iterator;
+			typedef ft::map_reverse_iterator<const_iterator>						const_reverse_iterator;
 			typedef Node<Key, Value>												*node_ptr;
 
 //	CONSTRUCTORS ----------------------------------------------------------------------------
@@ -79,9 +79,6 @@ namespace ft
 
 			// copy constructor
 			RedBlackTree(const RedBlackTree<Key, Value, Compare, Allocator> & original)
-			// : nil_(original.nil_)
-			// , comp_(original.comp_)
-			// , allocator_(original.allocator_)
 			{
 				#if DEBUG
 					std::cout << MAGENTA3 << "Calling RedBlackTree copy constructor" << RESET << std::endl;
@@ -141,9 +138,6 @@ namespace ft
 					comp_ = rhs.comp_;
 					allocator_ = rhs.allocator_;
 					size_ = rhs.size_;
-					// std::cout << "rhs.nil_->key = " << rhs.nil_->key << RESET << std::endl;
-					// std::cout << "rhs.nil_->left->key = " << rhs.nil_->key << RESET << std::endl;
-					// std::cout << "rhs.nil_->right->key = " << rhs.nil_->key << RESET << std::endl;
 
 					copyTree(root_, rhs.root_, rhs.nil_, 0);
 				}
@@ -166,15 +160,6 @@ namespace ft
 				return allocator_.max_size();
 			};
 
-//		ACCESSORS --------------------------------------------------------------------------------------
-
-			// Value &operator[](const Key &key)
-			// {
-			// 	ft::pair<const Key, Value> output;
-			// 	output = insert(ft::make_pair(key, Value()));
-			// 	return output.first->second;
-			// };
-
 //		VISUALIZERS --------------------------------------------------------------------------------------
 			
 			// print one node whose key matches the key passed as argument
@@ -187,9 +172,6 @@ namespace ft
 			// print all the keys and values of the tree.
 			void	printTree(node_ptr node)
 			{
-				// std::cout << "nil_ = " << nil_ << std::endl;
-				// std::cout << "node = " << node << std::endl;
-
 				if (node == 0)
 				{
 					std::cout << "Nothing to print!" << std::endl;
@@ -215,10 +197,8 @@ namespace ft
 				if (node == nil_ || node == 0)
 					return;
 			
-				// Print right child
 				printRBTree(node->right, depth + 1, false);
 			
-				// Print current node
 				for (int i = 0; i < depth; i++)
 					std::cout << "    ";
 				if (node->key != root_->key)
@@ -228,7 +208,6 @@ namespace ft
 				std::cout << "(" << node->key << ")" << RESET;
 				std::cout << std::endl;
 			
-				// Print left child
 				printRBTree(node->left, depth + 1, true);
 			}
 
@@ -244,12 +223,14 @@ namespace ft
 
 				node_ptr node = findNode(root_, input_pair.first);
 				
+				// if node with input key exists
 				if (node != nil_)
 				{
 					iterator output(node, this);
 					return ft::make_pair(output, false);
 				}
 
+				// if nil_ hasn't been created yet
 				if (nil_ == 0)
 				{
 					mapped_type value = input_pair.second;
@@ -259,14 +240,16 @@ namespace ft
 					nil_->left = nil_;
 					nil_->right = nil_;
 				}
+
+				// insert node
 				Value value = input_pair.second;
 				node = insertHelper(root_, input_pair.first, value);
-				// std::cout << "node = " << *node << std::endl;
 				node->color = RED;
 				if (!root_)
 					root_ = node;
 				size_++;
 				fixViolation(node);
+
 				iterator output(node, this);
 				return ft::make_pair(output, true);
 			};
@@ -302,7 +285,6 @@ namespace ft
 					fixViolation(node);
 				}
 				size_++;
-				// std::cout << "node->data.second = " << node->data.second << std::endl;
 				return iterator(node, this);
 			};
 
@@ -380,8 +362,6 @@ namespace ft
 				allocator_type				tmpAllocator	= swapMe.allocator_;
 				size_type					tmpSize			= swapMe.size_;
 				
-				// printTree(swapMe.root_);
-
 				swapMe.root_ = root_;
 				swapMe.nil_ = nil_;
 				swapMe.comp_ = comp_;
@@ -393,13 +373,13 @@ namespace ft
 				comp_ = tmpComp;
 				allocator_ = tmpAllocator;
 				size_ = tmpSize;
-
-				// printRBTree(swapMe.root_);
 			}
 
 			void	clear()
 			{
-
+				# if DEBUG
+					std::cout << SPRINGGREEN3 << "RedBlackTree clear function called" << std::endl;
+				#endif
 				if (root_ == 0)
 					return ;
 				if (root_ != nil_)
@@ -412,7 +392,6 @@ namespace ft
 
 //		GETTERS --------------------------------------------------------------------------------------
 
-			// return a pointer to root node
 			node_ptr	getRoot() const
 			{
 				return root_;
@@ -445,11 +424,6 @@ namespace ft
 					node = node->right;
 				return node;
 			}
-
-			void inorder()
-			{
-				inorderHelper(root_);
-			}
 		
 		//		ITERATORS --------------------------------------------------------------------------------------
 	
@@ -463,6 +437,10 @@ namespace ft
 				return const_iterator(getSmallestNode(root_), this);
 			};
 
+			// returns a past-the-end element.
+			// I decided to return an iterator pointing to null
+			// and linked to the biggest element in the container
+			// so that decrementation is possible.
 			iterator	end()
 			{
 				// linking end() with last node,
@@ -604,7 +582,7 @@ namespace ft
 			allocator_type						allocator_;
 			size_type							size_; // total number of nodes
 
-			//		COPY TOOL --------------------------------------------------------------------------------------
+//		COPY TOOL --------------------------------------------------------------------------------------
 
 			void copyTree(node_ptr & new_node, node_ptr node, node_ptr nil, node_ptr parent)
 			{
@@ -618,8 +596,6 @@ namespace ft
 				{
 					Value value = node->getValue();
 					new_node = new Node<Key, Value>(node->key,value);
-					// std::cout << PLUM1 << "node-key = " << node->key << RESET << std::endl;
-					// std::cout << PLUM1 << "node-value = " << node->getValue() << RESET << std::endl;
 
 					new_node->parent = parent;
 					new_node->color = node->color;
@@ -631,108 +607,7 @@ namespace ft
 
 //		MODIFIERS --------------------------------------------------------------------------------------
 	
-	//		NODE REMOVE --------------------------------------------------------------------------------------
-
-			// remove node from tree.
-			// !! when calling function, always set first parameter to tree.getroot()
-			// second parameter should be the key of the item you want to remove.
-			// node_ptr removeHelper(node_ptr node, Key key)
-			// {				nil_ = new Node<Key, Value>();
-
-			// 	if (node == NULL)
-			// 		return node;
-			// 	if (/*key < node->key*/ comp_(key, node->key))
-			// 		node->left = removeHelper(node->left, key);
-			// 	else if (/*key > node->key*/ comp_(node->key, key))
-			// 		node->right = removeHelper(node->right, key);
-			// 	else 
-			// 	{
-			// 		if (node->left == NULL)
-			// 		{
-			// 			node_ptr tmp = node->right;
-			// 			if (tmp)
-			// 				tmp->parent = node->parent;
-			// 			delete node;
-			// 			return tmp;
-			// 		}
-			// 		else if (node->right == NULL)
-			// 		{
-			// 			node_ptr tmp = node->left;
-			// 			if (tmp)
-			// 				tmp->parent = node->parent;
-			// 			delete node;
-			// 			return tmp;
-			// 		} 
-			// 		else
-			// 		{
-			// 			node_ptr tmp = node->right;
-			// 			while (tmp->left)
-			// 				tmp = tmp->left;
-			// 			node->key = tmp->key;
-			// 			node->getValue() = tmp->getValue();
-			// 			node->right = removeHelper(node->right, tmp->key);
-			// 		}
-			// 	}
-			// 	return node;
-			// }
-
-			// node_ptr removeHelper(node_ptr node, Key key)
-			// {
-			// 	if (node == NULL)
-			// 		return node;
-				
-			// 	if (key < node->key)
-			// 		node->left = removeHelper(node->left, key); // just looking for the key
-			// 	else if (key > node->key)
-			// 		node->right = removeHelper(node->right, key); // just looking for the key
-			// 	// the key has been found, let's delete the corresponding node :
-			// 	else
-			// 	{
-			// 		if (node->left == NULL and node->right == NULL) // node has no child
-			// 		{
-			// 			if (node == root_)
-			// 			{
-			// 				delete node;
-			// 				root_ = 0;
-			// 				return NULL;
-			// 			}
-			// 			if (node == node->parent->left)
-			// 				node->parent->left = 0;
-			// 			if (node == node->parent->right)
-			// 				node->parent->right = 0;
-			// 			delete node;
-			// 			return NULL;
-			// 		} 
-			// 		else if (node->left == NULL) // node with only one child
-			// 		{
-			// 			node_ptr tmp = node->right;
-			// 			tmp->parent = node->parent;
-			// 			if (node == root_)
-			// 				root_ = tmp;
-			// 			delete(node);
-			// 			fixViolation(tmp);
-			// 			return tmp;
-			// 		}
-			// 		else if (node->right == NULL) // node with only one child
-			// 		{
-			// 			node_ptr tmp = node->left;
-			// 			tmp->parent = node->parent;
-			// 			if (node == root_)
-			// 				root_ = tmp;
-			// 			delete(node);
-			// 			fixViolation(tmp);
-			// 			return tmp;
-			// 		}
-			
-			// 		// node_ptr successor = getSmallestNode(node->right);
-			// 		node_ptr successor = getBiggestNode(node->left);
-			// 		node->key = successor->key;
-			// 		const_cast<Key&>(node->data.first) = node->key;
-
-			// 		node->left = removeHelper(node->left, successor->key);
-			// 	}
-			// 	return node;
-			// }
+	//		NODE REMOVER --------------------------------------------------------------------------------------
 
 			void	transplant(node_ptr u, node_ptr v)
 			{
@@ -1063,16 +938,6 @@ namespace ft
 					}
 				}
 				root_->color = BLACK; // case 0 --> root node is red (root_ must always be black)
-			}
-
-			void inorderHelper(node_ptr node)
-			{
-				if (node == NULL)
-					return;
-			
-				inorderHelper(node->left);
-				std::cout << node->key << " ";
-				inorderHelper(node->right);
 			}
 
 	//		CHECK RBTree TOOLS --------------------------------------------------------------------------------------
