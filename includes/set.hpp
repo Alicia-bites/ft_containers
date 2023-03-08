@@ -10,8 +10,12 @@
 #include "type_traits.hpp"
 #include "algorithms.hpp"
 #include "pair.hpp"
-#include "RedBlackTree.hpp"
-// #include "setIterator.hpp"
+#include "setRedBlackTree.hpp"
+#include "setIterator.hpp"
+
+
+// Le conteneur set est un cas particulier du conteneur map, dans lequelle aucune valeur
+// n'est associée à la clé. Les éléments du conteneur set ne sont pas des pairs.
 
 namespace ft
 {
@@ -20,37 +24,36 @@ namespace ft
 	{
 		public:
 			// types:
-			typedef Key											key_type;
-			typedef Key											value_type;
-			typedef Compare										key_compare;
-			typedef Compare										value_compare;
-			typedef Allocator									allocator_type;
-			typedef typename Allocator::reference				reference;
-			typedef typename Allocator::const_reference			const_reference;
-			typedef typename Allocator::pointer					pointer;
-			typedef typename Allocator::const_pointer			const_pointer;
-			typedef ft::setIterator								iterator;
-			typedef ft::setIterator								const_iterator;
-			typedef ft::setIterator								size_type;
-			typedef ft::setIterator								difference_type;
-			typedef reverse_iterator<iterator>					reverse_iterator;
-			typedef reverse_iterator<const_iterator>			const_reverse_iterator;
+			typedef Key                                     								key_type; // type of key used to pair with value (1st template parameter)
+			typedef Key                  													value_type; // represent the key-value pair
+			typedef Compare                                 								key_compare; // comparaison fonction used to compare keys (3rd template parameter, defaults to: less<key_type>)
+			typedef Compare                                 								value_compare; // comparaison fonction used to compare keys (3rd template parameter, defaults to: less<key_type>)
+			typedef Allocator                               								allocator_type; // (4th template parameter, defaults to: allocator<value_type>)
+			typedef typename Allocator::reference           								reference; // for the default allocator: value_type &
+			typedef typename Allocator::const_reference     								const_reference; // for the default allocator: const value_type&
+			typedef std::size_t                             								size_type;
+			typedef std::ptrdiff_t                          								difference_type;
+			typedef typename Allocator::pointer             								pointer; // for the default allocator: value_type*
+			typedef typename Allocator::const_pointer       								const_pointer; 	// for the default allocator: const value_type*
+			typedef typename RedBlackTree<key_type, Compare, Allocator>::iterator						iterator; // a bidirectional iterator to value_type
+			typedef typename RedBlackTree<key_type, Compare, Allocator>::const_iterator				const_iterator; // a bidirectional iterator to const value_type
+			typedef typename RedBlackTree<key_type, Compare, Allocator>::reverse_iterator				reverse_iterator;
+			typedef typename RedBlackTree<key_type, Compare, Allocator>::const_reverse_iterator		const_reverse_iterator;
+
 
 		private:
-			typedef RedBlackTree<key_type, setped_type, key_compare, Allocator>	* RBTree_ptr;	
+			typedef RedBlackTree<key_type, key_compare, Allocator>	* RBTree_ptr;	
 			RBTree_ptr    tree_;
-
-			Node<Key, Value> *node_ptr;
-
-			Allocator		allocator_;
 
 		public:
 
 //	CONSTRUCTORS ----------------------------------------------------------------------------
 
 			// default constructor, no arguments required
-			explicit set(const Compare & comp = Compare(), const Allocator & = Allocator())
-			: allocator_(Allocator)
+			// arguments are optionnal, but cannot be implicitly converted (keyword explicit)
+			// Constructs an empty container, with no elements.
+			explicit set(const Compare & comp = Compare(), const Allocator & allocator = Allocator())
+			: tree_(new RedBlackTree<Key, Compare, Allocator>(comp, allocator))
 			{
 				#if DEBUG
 					std::cout << SALMON1 << "Calling set default constructor" << RESET << std::endl;
@@ -58,9 +61,11 @@ namespace ft
 			};
 			
 			// range constructor - construct from other container using iterators
+			// Constructs a container with as many elements as the range [first,last),
+			// with each element constructed from its corresponding element in that range.
 			template <class InputIterator>
-				set(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Allocator& = Allocator())
-				: allocator_()
+				set(InputIterator first, InputIterator last, const Compare & comp = Compare(), const Allocator & allocator = Allocator())
+				: tree_(new RedBlackTree<Key, Compare, Allocator>(comp, allocator))
 				{
 					#if DEBUG
 						std::cout << SALMON1 << "Calling set range constructor" << RESET << std::endl;
@@ -70,16 +75,16 @@ namespace ft
 				};
 
 			// copy constructor. Uses assignement overload operator
+			// Constructs a container with a copy of each of the elements in x.
 			set(const set<Key,Compare,Allocator>& src)
-			: allocator_(src.get_allocator())
 			{
 				#if DEBUG
 					std::cout << SALMON1 << "Calling copy constructor" << RESET << std::endl;
 				#endif
 
-				tree_ = new RedBlackTree<Key, Value, Compare, Allocator>();
-				if (this != &original)
-					*this = original;
+				tree_ = new RedBlackTree<Key, Compare, Allocator>();
+				if (this != &src)
+					*this = src;
 			}
 
 //	DESTRUCTORS --------------------------------------------------------------------------------------
@@ -100,7 +105,7 @@ namespace ft
 //		ASSIGNEMENT ----------------------------------------------------------------------------------------------------------------------------
 
 			// assignement operator overload
-			set<Key,Compare,Allocator>& operator=(const set<Key,Compare,Allocator>& x)
+			set<Key,Compare,Allocator>& operator=(const set<Key,Compare,Allocator>& rhs)
 			{
 				#if DEBUG
 					std::cout << LIGHTSEAGREEN << "Calling set assignement operator" << RESET << std::endl;
@@ -115,14 +120,19 @@ namespace ft
 
 			allocator_type get_allocator() const
 			{
-				return allocator_;
+				return tree_.allocator_;
 			};
+
+			RBTree_ptr	getTree() const
+			{
+				return tree_;
+			}
 
 //		ITERATORS --------------------------------------------------------------------------------------
 
 			iterator begin()
 			{
-				return tree_->begin(;)
+				return tree_->begin();
 			};
 
 			const_iterator	begin() const
@@ -185,18 +195,18 @@ namespace ft
 			// inserted element has a key equivalent to the one of an element already in the container,
 			// and if so, the element is not inserted, returning an iterator to this existing element
 			// (if the function returns a value).
-			ft::pair<iterator, bool>	insert(const value_type & input_pair)
+			ft::pair<iterator, bool>	insert(const key_type & key)
 			{
-				return tree_->insert(input_pair);
+				return tree_->insert(key);
 			};
 			
 			//  Extends the container by inserting new elements, effectively increasing 
 			// the container size by the number of elements inserted.
 			// This versions with a hint return an iterator pointing to either the 
 			// newly inserted element or to the element that already had an equivalent key in the set.
-			iterator	insert(iterator position, const value_type& input_pair)
+			iterator	insert(iterator position, const key_type & key)
 			{
-				return tree_->insert(position, input_pair);
+				return tree_->insert(position, key);
 			}
 
 			// Iterators specifying a range of elements. Copies of the elements
@@ -235,7 +245,7 @@ namespace ft
 			
 			// Exchanges the content of the container by the content of x, 
 			// which is another set of the same type. Sizes may differ.
-			void	swap(set<Key,Value,Compare,Allocator> & swapMe)
+			void	swap(set<Key,Compare,Allocator> & swapMe)
 			{
 				tree_->swap(*(swapMe.getTree()));
 				return ;
@@ -308,7 +318,7 @@ namespace ft
 			// key in the container. The range is defined by two iterators, 
 			// one pointing to the first element that is not less than key 
 			// and another pointing to the first element greater than key. 
-			// Alternatively, the first iterator may be obtained with 
+			// Alternatively, the first iterator may obtained with 
 			// lower_bound(), and the second with upper_bound(). 
 			pair<iterator,iterator>	equal_range(const key_type & k)
 			{
