@@ -76,22 +76,21 @@ namespace ft
                 };
 
                 // copy constructor
-                // mapIterator(const mapIterator<typename remove_cv<Key>::type, Value> & original)
-                mapIterator(const mapIterator<RBT, Pair_type> & original)
+                mapIterator(const mapIterator<RBT, Pair_type> & src)
                 {
                     # if DEBUG
                         std::cout << PALETURQUOISE1 << "Calling mapIterator copy constructor" << RESET << std::endl;
                     #endif
 
-                    if (this == &original)
+                    if (this == &src)
                         return ;
-                    tree_ = original.getTree();
-                    node_ = original.getNode();
-                    pointer_ = original.base();
-                    nil_ = original.getNil();
-                    root_ = original.getRoot();
-                    biggest_ = original.getBiggest();
-                    smallest_ = original.getSmallest();
+                    tree_ = src.getTree();
+                    node_ = src.getNode();
+                    pointer_ = src.base();
+                    nil_ = src.getNil();
+                    root_ = src.getRoot();
+                    biggest_ = src.getBiggest();
+                    smallest_ = src.getSmallest();
                 };
 
                 // destructor
