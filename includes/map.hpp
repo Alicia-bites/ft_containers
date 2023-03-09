@@ -37,10 +37,10 @@ namespace ft
 			typedef std::ptrdiff_t                          								difference_type;
 			typedef typename Allocator::pointer             								pointer; // for the default allocator: value_type*
 			typedef typename Allocator::const_pointer       								const_pointer; 	// for the default allocator: const value_type*
-			typedef typename RedBlackTree<key_type, mapped_type>::iterator					iterator; // a bidirectional iterator to value_type
-			typedef typename RedBlackTree<key_type, mapped_type>::const_iterator			const_iterator; // a bidirectional iterator to const value_type
-			typedef typename RedBlackTree<key_type, mapped_type>::reverse_iterator			reverse_iterator;
-			typedef typename RedBlackTree<key_type, mapped_type>::const_reverse_iterator	const_reverse_iterator;
+			typedef typename RedBlackTree<key_type, mapped_type, key_compare, allocator_type>::iterator					iterator; // a bidirectional iterator to value_type
+			typedef typename RedBlackTree<key_type, mapped_type, key_compare, allocator_type>::const_iterator			const_iterator; // a bidirectional iterator to const value_type
+			typedef typename RedBlackTree<key_type, mapped_type, key_compare, allocator_type>::reverse_iterator			reverse_iterator;
+			typedef typename RedBlackTree<key_type, mapped_type, key_compare, allocator_type>::const_reverse_iterator	const_reverse_iterator;
 
 			class value_compare : public std::binary_function<value_type,value_type,bool>
 			{
@@ -101,9 +101,9 @@ namespace ft
 			// Constructs a container with a copy of each of the elements in x
 			map(const map<Key,Value,Compare,Allocator>& original)
 			{
-				// #if DEBUG
+				#if DEBUG
 					std::cout << LIGHTSEAGREEN << "Calling map copy constructor" << RESET << std::endl;
-				// #endif
+				#endif
 				
 				tree_ = new RedBlackTree<Key, Value, Compare, Allocator>();
 				if (this != &original)
@@ -194,7 +194,9 @@ namespace ft
 
 			size_type	max_size() const
 			{
-				return tree_->max_size();
+				std::allocator<std::pair<Key, Value> > alloc = Allocator();
+				return alloc.max_size();
+				// return tree_->max_size();
 			};
 
 //		ACCESSORS --------------------------------------------------------------------------------------
@@ -228,9 +230,10 @@ namespace ft
 			// the container size by the number of elements inserted.
 			// This versions with a hint return an iterator pointing to either the 
 			// newly inserted element or to the element that already had an equivalent key in the map.
-			iterator	insert(iterator position, const value_type& input_pair)
+			iterator	insert(iterator position, const value_type & input_pair)
 			{
-				return tree_->insert(position, input_pair);
+				static_cast<void>(position);
+				return tree_->insert(input_pair).first;
 			}
 
 			// Iterators specifying a range of elements. Copies of the elements
