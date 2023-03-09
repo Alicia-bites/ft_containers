@@ -41,8 +41,8 @@ namespace ft
 			typedef typename allocator_type::const_pointer							const_pointer;	 // for the default allocator: const value_type*
 			typedef typename allocator_type::difference_type						difference_type; // a signed integral type, identical to: iterator_traits<iterator>::difference_type	usually the same as ptrdiff_t
 			typedef typename allocator_type::size_type								size_type;		 // an unsigned integral type that can represent any non-negative value of difference_type	usually the same as size_t
-			typedef ft::mapIterator<RedBlackTree<Key, Value>, value_type>			iterator; 		 // a bidirectional iterator to value_type
-			typedef ft::mapIterator<RedBlackTree<Key, Value>, const value_type>		const_iterator;  // a bidirectional iterator to const value_type
+			typedef ft::mapIterator<RedBlackTree<Key, Value, Compare, Allocator>, value_type>			iterator; 		 // a bidirectional iterator to value_type
+			typedef ft::mapIterator<RedBlackTree<Key, Value, Compare, Allocator>, const value_type>		const_iterator;  // a bidirectional iterator to const value_type
 			typedef ft::map_reverse_iterator<iterator>								reverse_iterator;
 			typedef ft::map_reverse_iterator<const_iterator>						const_reverse_iterator;
 			typedef Node<Key, Value>												*node_ptr;
