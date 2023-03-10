@@ -97,13 +97,12 @@ namespace ft
 			: current_position(input_it)
 			{};
 
-			// copy constructor - initializes current with u.current.
-			template <typename OtherIterator>
-				reverse_iterator(const OtherIterator & other)
-				: current_position(other.base())
+			// copy constructor
+			template< typename U >
+				reverse_iterator(const reverse_iterator<U> & other)
+				:current_position(other.base())
 				{};
-
-
+				
 	// MEMBER FUNCTIONS --------------------------------------------------------------------------------------------------------------
 
 			// returns the underlying base iterator (returns current_postion)
