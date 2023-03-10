@@ -14,8 +14,8 @@ OPATH			:=	obj
 SRCS_PATH		:=	mains
 # STACK_PATH	:=	stack
 # VECTOR_PATH	:= 	vector
-MAP_PATH		:= 	map
-# SET_PATH		:= set
+# MAP_PATH		:= 	map
+SET_PATH		:= set
 
 RM				:=	rm -rf
 
@@ -23,12 +23,9 @@ RM				:=	rm -rf
 
 # VECTOR_SRCS		:= 	main.cpp
 
-MAP_SRCS		:= 	main.cpp
-# MAP_SRCS		:= 	ite_arrow.cpp
-# MAP_SRCS		:= 	insert.cpp
+# MAP_SRCS		:= 	main.cpp
 
-
-# SET_SRCS		:= 	main.cpp
+SET_SRCS		:= 	main.cpp
 
 
 SRCS			:=	$(STACK_SRCS) \
