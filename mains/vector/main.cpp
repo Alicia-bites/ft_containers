@@ -1584,9 +1584,14 @@ int	main(int argc, char **argv)
 		if (test_number == 31)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing "
+			std::cout << STEELBLUE3 << "Testing max_size()"
 				<< RESET << std::endl << std::endl;
-		
+
+			ft::vector<int> kirikou;
+			std::cout << "kirikou = " << kirikou.max_size() << std::endl;
+			
+			std::vector<int> karaba;
+			std::cout << "karaba  = " << karaba.max_size() << std::endl;
 
 			std::cout << std::endl;
 			std::cout << std::endl << STEELBLUE2
