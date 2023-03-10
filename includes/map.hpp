@@ -2,9 +2,9 @@
 
 #include <iostream>
 #include <stdlib.h>
-// #include <iterator>
 #include <cstddef>
 #include <memory>
+#include <limits>
 
 #include "../colors/colors.hpp"
 
@@ -23,6 +23,14 @@ namespace ft
 		typename Allocator = std::allocator<pair<const Key, Value> > >
 	class map
 	{
+		private :
+			// typedef RBTree_ptr<key_type, value_type, std::_Select1st<value_type>, key_compare, allocator_type>    RBTree_ptr;
+			typedef RedBlackTree<Key, Value, Compare, Allocator>	*RBTree_ptr;	
+			RBTree_ptr    											tree_;
+
+			typedef typename RedBlackTree<Key, Value, Compare, Allocator>::node_ptr	node_ptr;
+			node_ptr	node;
+
 		public:
 			// HOMEMADE TYPE DEFINITION
 
@@ -58,19 +66,8 @@ namespace ft
 					}
 			};
 
-		private :
-			// typedef RBTree_ptr<key_type, value_type, std::_Select1st<value_type>, key_compare, allocator_type>    RBTree_ptr;
-			typedef RedBlackTree<key_type, mapped_type, key_compare, Allocator>	* RBTree_ptr;	
-			RBTree_ptr    		tree_;
-
-			// Node<Key, Value>	*node_ptr;
-			// Node<Value>			*node_ptr;
-
-			size_type			size_;
-
 //	CONSTRUCTORS ----------------------------------------------------------------------------
 
-		public :
 			// Constructs an empty container, with no elements.
 			explicit map(const Compare& comp = Compare(), const Allocator & allocator = Allocator())
 			: tree_(new RedBlackTree<Key, Value, Compare, Allocator>(comp, allocator))
@@ -194,10 +191,8 @@ namespace ft
 
 			size_type	max_size() const
 			{
-				std::allocator<std::pair<Key, Value> > alloc = Allocator();
-				return alloc.max_size();
-				// return tree_->max_size();
-			};
+				return std::numeric_limits<difference_type>::max() / sizeof(*tree_);
+			};			
 
 //		ACCESSORS --------------------------------------------------------------------------------------
 
