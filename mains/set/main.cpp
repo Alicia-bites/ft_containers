@@ -14,11 +14,8 @@
 #include <ctime>
 
 // change default namespace
-#ifndef STD
 # define NAMESPACE ft
-// #else
 // # define NAMESPACE std
-#endif
 
 using namespace NAMESPACE;
 
