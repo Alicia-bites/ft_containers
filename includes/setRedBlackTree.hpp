@@ -8,7 +8,7 @@
 #include "../colors/colors.hpp"
 
 #include "setNode.hpp"
-#include "mapReverseIterator.hpp"
+#include "iterator.hpp"
 #include "stack.hpp"
 
 // #1 A node is eather RED or BLACK
@@ -29,22 +29,22 @@ namespace ft
 	class RedBlackTree
 	{
 		public:		
-			typedef Key																key_type; // type of key used to pair with value (1st template parameter)
-			typedef Key																mapped_type; // type of the value paired with key (2nd template parameter)
-			typedef Key																value_type; 	 // represent the key-value pair
-			typedef Compare		 													key_compare;	 // The third template parameter (Compare)	defaults to: less<key_type>
-			typedef Allocator														allocator_type;	 // The fourth template parameter (Alloc)	defaults to: allocator<value_type>
-			typedef typename allocator_type::reference								reference;		 // for the default allocator: value_type&
-			typedef typename allocator_type::const_reference						const_reference; // for the default allocator: const value_type&
-			typedef typename allocator_type::pointer								pointer;		 // for the default allocator: value_type*
-			typedef typename allocator_type::const_pointer							const_pointer;	 // for the default allocator: const value_type*
-			typedef typename allocator_type::difference_type						difference_type; // a signed integral type, identical to: iterator_traits<iterator>::difference_type	usually the same as ptrdiff_t
-			typedef typename allocator_type::size_type								size_type;		 // an unsigned integral type that can represent any non-negative value of difference_type	usually the same as size_t
-			typedef ft::setIterator<RedBlackTree<Key>, value_type>			iterator; 		 // a bidirectional iterator to value_type
-			typedef ft::setIterator<RedBlackTree<Key>, const value_type>		const_iterator;  // a bidirectional iterator to const value_type
-			typedef ft::map_reverse_iterator<iterator>								reverse_iterator;
-			typedef ft::map_reverse_iterator<const_iterator>						const_reverse_iterator;
-			typedef setNode<Key, mapped_type>												*node_ptr;
+			typedef Key																					key_type; // type of key used to pair with value (1st template parameter)
+			typedef Key																					mapped_type; // type of the value paired with key (2nd template parameter)
+			typedef Key																					value_type; 	 // represent the key-value pair
+			typedef Compare		 																		key_compare;	 // The third template parameter (Compare)	defaults to: less<key_type>
+			typedef Allocator																			allocator_type;	 // The fourth template parameter (Alloc)	defaults to: allocator<value_type>
+			typedef typename allocator_type::reference													reference;		 // for the default allocator: value_type&
+			typedef typename allocator_type::const_reference											const_reference; // for the default allocator: const value_type&
+			typedef typename allocator_type::pointer													pointer;		 // for the default allocator: value_type*
+			typedef typename allocator_type::const_pointer												const_pointer;	 // for the default allocator: const value_type*
+			typedef typename allocator_type::difference_type											difference_type; // a signed integral type, identical to: iterator_traits<iterator>::difference_type	usually the same as ptrdiff_t
+			typedef typename allocator_type::size_type													size_type;		 // an unsigned integral type that can represent any non-negative value of difference_type	usually the same as size_t
+			typedef ft::setIterator<RedBlackTree<Key, Compare, Allocator>, value_type>					iterator; 		 // a bidirectional iterator to value_type
+			typedef ft::setIterator<RedBlackTree<Key, Compare, Allocator>, const value_type>			const_iterator;  // a bidirectional iterator to const value_type
+			typedef ft::reverse_iterator<iterator>														reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>												const_reverse_iterator;
+			typedef setNode<Key, mapped_type>															*node_ptr;
 
 //	CONSTRUCTORS ----------------------------------------------------------------------------
 
@@ -164,7 +164,7 @@ namespace ft
 			// print one node whose key matches the key passed as argument
 			void printsetNode(const Key & key)
 			{
-				node_ptr node = findsetNode(root_, key);
+				node_ptr node = findNode(root_, key);
 				std::cout << *node << std::endl;
 			}
 
@@ -220,7 +220,7 @@ namespace ft
 				if (size_ == allocator_.max_size())
 					throw (std::length_error("map::insert"));
 
-				node_ptr node = findsetNode(root_, input_key);
+				node_ptr node = findNode(root_, input_key);
 				
 				// if node with input key exists
 				if (node != nil_)
@@ -263,7 +263,7 @@ namespace ft
 				if (size_ == allocator_.max_size())
 					throw (std::length_error("map::insert"));
 
-				node_ptr node = findsetNode(root_, input_key);
+				node_ptr node = findNode(root_, input_key);
 
 				if (node != nil_)
 					return iterator(node, this);
@@ -271,13 +271,13 @@ namespace ft
 				{
 					++position;
 					mapped_type value = input_key;
-					node = insertHelper(position.getsetNode(), input_key, value);
+					node = insertHelper(position.getNode(), input_key, value);
 				}
 
 				else
 				{
 					mapped_type value = input_key;
-					node = insertHelper(position.getsetNode(), input_key, value);
+					node = insertHelper(position.getNode(), input_key, value);
 					node->color = RED;
 					if (!root_)
 						root_ = node;
@@ -307,7 +307,7 @@ namespace ft
 
 			size_t	remove(const key_type & key)
 			{
-				node_ptr node_to_be_deleted = findsetNode(root_, key); 
+				node_ptr node_to_be_deleted = findNode(root_, key); 
 				if (node_to_be_deleted == 0 || node_to_be_deleted == nil_)
 					return 0;
 
@@ -449,6 +449,8 @@ namespace ft
 				if (nil_)
 				{
 					node_ptr biggest = getBiggestNode(root_);
+					// beyondEnd->key = biggest->key;
+					// beyondEnd->setValue(biggest->getValue());
 					beyondEnd->parent = biggest;
 				}
 				return iterator(beyondEnd, this);
@@ -469,13 +471,14 @@ namespace ft
 			// in the container (i.e., its reverse beginning).
 			reverse_iterator rbegin()
 			{
-				node_ptr biggest = getBiggestNode(root_);
-				iterator output(biggest, this);
-				return reverse_iterator(output);				
+				return reverse_iterator(end());
 			};
 
 			const_reverse_iterator rbegin() const
 			{
+				// if map is empty
+				if (!root_)
+					return const_reverse_iterator(const_iterator(NULL, this));
 				node_ptr biggest = getBiggestNode(root_);
 				const_iterator output(biggest, this);
 				return const_reverse_iterator(output);				
@@ -483,19 +486,19 @@ namespace ft
 
 			reverse_iterator	rend()
 			{
-				return reverse_iterator(end());
+				return reverse_iterator(begin());
 			};
 
 			const_reverse_iterator rend() const
 			{
-				return const_reverse_iterator(end());
+				return const_reverse_iterator(begin());
 			};
 
 //		TREE OPERATIONS --------------------------------------------------------------------------------------
 
 			iterator	 find(const key_type & key)
 			{
-				node_ptr node = findsetNode(root_, key);
+				node_ptr node = findNode(root_, key);
 				iterator output(node, this);
 				if (!node)
 					return output;
@@ -504,7 +507,7 @@ namespace ft
 
 			size_type count(const key_type & k) const
 			{
-				node_ptr node = findsetNode(root_, k);
+				node_ptr node = findNode(root_, k);
 				if (node == nil_ || node == 0)
 					return 0;
 				return 1;
@@ -522,7 +525,7 @@ namespace ft
 					output++;
 				if (output == end())
 					return end();
-				if (output.getsetNode() == getBiggestNode(root_))
+				if (output.getNode() == getBiggestNode(root_))
 				{
 					if (comp_(k, output->first))
 						return output;
@@ -561,7 +564,7 @@ namespace ft
 			}
 
 			// a function that searches a specific node and returns it
-			node_ptr findsetNode(node_ptr node, const Key &key) const
+			node_ptr findNode(node_ptr node, const Key &key) const
 			{
 				while (node != nil_ && node->key != key)
 				{
@@ -621,7 +624,7 @@ namespace ft
 
 			void	removeHelper(Key key)
 			{
-				node_ptr z = findsetNode(root_, key);
+				node_ptr z = findNode(root_, key);
 
 				if (z == 0)
 				{
