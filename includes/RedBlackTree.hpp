@@ -8,7 +8,7 @@
 #include "../colors/colors.hpp"
 
 #include "node.hpp"
-#include "mapReverseIterator.hpp"
+#include "iterator.hpp"
 #include "stack.hpp"
 
 // #1 A node is eather RED or BLACK
@@ -43,8 +43,8 @@ namespace ft
 			typedef typename allocator_type::size_type								size_type;		 // an unsigned integral type that can represent any non-negative value of difference_type	usually the same as size_t
 			typedef ft::mapIterator<RedBlackTree<Key, Value, Compare, Allocator>, value_type>			iterator; 		 // a bidirectional iterator to value_type
 			typedef ft::mapIterator<RedBlackTree<Key, Value, Compare, Allocator>, const value_type>		const_iterator;  // a bidirectional iterator to const value_type
-			typedef ft::map_reverse_iterator<iterator>								reverse_iterator;
-			typedef ft::map_reverse_iterator<const_iterator>						const_reverse_iterator;
+			typedef ft::reverse_iterator<iterator>								reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>						const_reverse_iterator;
 			typedef Node<Key, Value>												*node_ptr;
 
 //	CONSTRUCTORS ----------------------------------------------------------------------------
@@ -426,7 +426,19 @@ namespace ft
 			}
 		
 		//		ITERATORS --------------------------------------------------------------------------------------
-	
+
+			// iterator	beforeEverything()
+			// {
+			// 	node_ptr beforeEverything = nil_;
+			// 	if (nil_)
+			// 	{
+			// 		node_ptr smallest = getSmallestNode(root_);
+			// 		beforeEverything->left = smallest;
+			// 		beforeEverything->right = smallest;
+			// 	}
+			// 	return iterator(beforeEverything, this);
+			// };
+
 			iterator	begin()
 			{
 				return iterator(getSmallestNode(root_), this);
@@ -450,6 +462,8 @@ namespace ft
 				if (nil_)
 				{
 					node_ptr biggest = getBiggestNode(root_);
+					// beyondEnd->key = biggest->key;
+					// beyondEnd->setValue(biggest->getValue());
 					beyondEnd->parent = biggest;
 				}
 				return iterator(beyondEnd, this);
@@ -470,13 +484,20 @@ namespace ft
 			// in the container (i.e., its reverse beginning).
 			reverse_iterator rbegin()
 			{
-				node_ptr biggest = getBiggestNode(root_);
-				iterator output(biggest, this);
-				return reverse_iterator(output);				
+				// if map is empty
+				// if (!root_)
+					// return reverse_iterator(iterator(NULL, this));
+				// node_ptr biggest = getBiggestNode(root_);
+				// iterator output(biggest, this);
+				// return reverse_iterator(output);
+				return reverse_iterator(end());
 			};
 
 			const_reverse_iterator rbegin() const
 			{
+				// if map is empty
+				if (!root_)
+					return const_reverse_iterator(const_iterator(NULL, this));
 				node_ptr biggest = getBiggestNode(root_);
 				const_iterator output(biggest, this);
 				return const_reverse_iterator(output);				
@@ -484,12 +505,12 @@ namespace ft
 
 			reverse_iterator	rend()
 			{
-				return reverse_iterator(end());
+				return reverse_iterator(begin());
 			};
 
 			const_reverse_iterator rend() const
 			{
-				return const_reverse_iterator(end());
+				return const_reverse_iterator(begin());
 			};
 
 //		TREE OPERATIONS --------------------------------------------------------------------------------------
