@@ -11,25 +11,22 @@
 #include <iostream>
 #include <utility>
 #include <map>
-#include <ctime>
+#include <list>
 
 // change default namespace
-#ifndef STD
 # define NAMESPACE ft
-// #else
 // # define NAMESPACE std
-#endif
 
 using namespace NAMESPACE;
 
-template <typename Key, typename Value>
-	void	print_map(const ::map<Key, Value> & map, std::string map_name)
+template <typename Key, typename Value, typename Compare>
+	void	print_map(const ::map<Key, Value, Compare> & map, std::string map_name)
 	{
 		std::cout << DODGERBLUE2 << "-----------------------------------------------------------------------------" << std::endl;
 		std::cout << "Printing " << map_name << std::endl;
 		std::cout << DEEPSKYBLUE1 << "map size is " << map.size() << std::endl;
 
-		typename ::map<Key, Value>::const_iterator it;
+		typename ::map<Key, Value, Compare>::const_iterator it;
 		std::cout << "Key " << " = " << "Value" << std::endl;
 		it = map.begin();
 		while (it != map.end())
@@ -40,6 +37,74 @@ template <typename Key, typename Value>
 		std::cout << std::endl;
 		std::cout << NAVY << "-----------------------------------------------------------------------------" << RESET << std::endl;
 	}
+
+template <typename T1>
+struct myComp {
+	bool	operator()(const T1 &first, const T1 &second) const {
+		return (first > second);
+	}
+};
+
+template <typename T>
+T	inc(T it, int n)
+{
+	while (n-- > 0)
+		++it;
+	return (it);
+}
+
+template <typename T>
+T	dec(T it, int n)
+{
+	while (n-- > 0)
+		--it;
+	return (it);
+}
+
+template <typename T>
+std::string	printPair(const T &iterator, bool nl = true, std::ostream &o = std::cout)
+{
+	o << "key: " << iterator->first << " | value: " << iterator->second;
+	if (nl)
+		o << std::endl;
+	return ("");
+}
+
+template <typename T>
+class foo {
+	public:
+		typedef T	value_type;
+
+		foo(void) : value(), _verbose(false) { };
+		foo(value_type src, const bool verbose = false) : value(src), _verbose(verbose) { };
+		foo(foo const &src, const bool verbose = false) : value(src.value), _verbose(verbose) { };
+		~foo(void) { if (this->_verbose) std::cout << "~foo::foo()" << std::endl; };
+		void m(void) { std::cout << "foo::m called [" << this->value << "]" << std::endl; };
+		void m(void) const { std::cout << "foo::m const called [" << this->value << "]" << std::endl; };
+		foo &operator=(value_type src) { this->value = src; return *this; };
+		foo &operator=(foo const &src) {
+			if (this->_verbose || src._verbose)
+				std::cout << "foo::operator=(foo) CALLED" << std::endl;
+			this->value = src.value;
+			return *this;
+		};
+		value_type	getValue(void) const { return this->value; };
+		void		switchVerbose(void) { this->_verbose = !(this->_verbose); };
+
+		operator value_type(void) const {
+			return value_type(this->value);
+		}
+	private:
+		value_type	value;
+		bool		_verbose;
+};
+
+template <typename T>
+std::ostream	&operator<<(std::ostream &o, foo<T> const &bar) {
+	o << bar.getValue();
+	return o;
+}
+// --- End of class foo
 
 int	main(int argc, char **argv)
 {
@@ -69,10 +134,10 @@ int	main(int argc, char **argv)
 			std::cout << STEELBLUE3 << "Testing insert(const value_type & input_pair)" 
 				<< RESET << std::endl << std::endl;
 
-			ft::map<int, std::string> mappy;
-			ft::pair<ft::map<int, std::string>::iterator, bool> res;
+			map<int, std::string> mappy;
+			pair<map<int, std::string>::iterator, bool> res;
 			
-			res = mappy.insert(ft::make_pair(7, "first"));
+			res = mappy.insert(make_pair(7, "first"));
 
 			if (res.second == true)
 				std::cout << "Inserted " << res.first->second << " into the map with key "
@@ -81,7 +146,7 @@ int	main(int argc, char **argv)
 				std::cout << "Key " << res.first->first << " already has the value "
 					<< res.first->second << " in the map" << std::endl;
 
-			res = mappy.insert(ft::make_pair(7, "error"));
+			res = mappy.insert(make_pair(7, "error"));
 			if (res.second == true)
 				std::cout << "Inserted " << res.first->second << " into the map with key "
 					<< res.first->first << std::endl;
@@ -89,7 +154,7 @@ int	main(int argc, char **argv)
 				std::cout << "Key " << res.first->first << " already has the value "
 					<< res.first->second << " in the map" << std::endl;
 			
-			res = mappy.insert(ft::make_pair(4, "second"));
+			res = mappy.insert(make_pair(4, "second"));
 			if (res.second == true)
 				std::cout << "Inserted " << res.first->second << " into the map with key "
 					<< res.first->first << std::endl;
@@ -97,7 +162,7 @@ int	main(int argc, char **argv)
 				std::cout << "Key " << res.first->first << " already has the value "
 					<< res.first->second << " in the map" << std::endl;
 
-			res = mappy.insert(ft::make_pair(10, "third"));
+			res = mappy.insert(make_pair(10, "third"));
 			if (res.second == true)
 				std::cout << "Inserted " << res.first->second << " into the map with key "
 					<< res.first->first << std::endl;
@@ -105,7 +170,7 @@ int	main(int argc, char **argv)
 				std::cout << "Key " << res.first->first << " already has the value "
 					<< res.first->second << " in the map" << std::endl;
 
-			res = mappy.insert(ft::make_pair(15, "fourth"));
+			res = mappy.insert(make_pair(15, "fourth"));
 			if (res.second == true)
 				std::cout << "Inserted " << res.first->second << " into the map with key "
 					<< res.first->first << std::endl;
@@ -114,32 +179,25 @@ int	main(int argc, char **argv)
 					<< res.first->second << " in the map" << std::endl;
 			
 			std::cout << std::endl << std::endl;
-			std::cout << DODGERBLUE2 << "PRINTING MAPPY : " << RESET << std::endl;
-			mappy.getTree()->printTree(mappy.getTree()->getRoot());
+			print_map(mappy, "mappy");
 
 			std::cout << "Testing copy constructor" << std::endl;
-			ft::map<int, std::string> coppy(mappy);
-			std::cout << DODGERBLUE2 << "PRINTING COPPY  : " << RESET << std::endl;
-			mappy.getTree()->printTree(coppy.getTree()->getRoot());
-
+			map<int, std::string> coppy(mappy);
+			print_map(coppy, "coppy");
 			std::cout << "Removing one node with key 10 " << std::endl;
 			size_t output = mappy.erase(10);
 			std::cout << "output = " << output << std::endl;
-			std::cout << "root_ is : " << *(mappy.getTree()->getRoot()) << std::endl;
 
 
 			std::cout << "Removing one node with key 15 " << std::endl;
 			output = mappy.erase(15);
 			std::cout << "output = " << output << std::endl;
-			std::cout << "root_ is : " << *(mappy.getTree()->getRoot()) << std::endl;
 
 			std::cout << "Removing one node with key 7 " << std::endl;
 			output = mappy.erase(7);
 			std::cout << "output = " << output << std::endl;
-			std::cout << "root_ is : " << *(mappy.getTree()->getRoot()) << std::endl;
 			std::cout << std::endl << std::endl;
-			std::cout << DODGERBLUE2 << "PRINTING MAPPY : " << RESET << std::endl;
-			mappy.getTree()->printTree(mappy.getTree()->getRoot());
+			print_map(mappy, "mappy");
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
@@ -238,7 +296,7 @@ int	main(int argc, char **argv)
 			std::cout << AQUAMARINE3 << "Testing incrementation of reverse_iterator --> " << "First with i++ : "
 				<< RESET << std::endl; 
 			map<int, int>::reverse_iterator rit1 = june.rbegin();
-			std::cout << rit1->first << std::endl << std::endl;
+
 			for (; rit1 != june.rend(); rit1++)
 				std::cout << rit1->first << std::endl;
 
@@ -286,52 +344,63 @@ int	main(int argc, char **argv)
 		if (test_number == 6)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing second insert function version (with hint position)" 
+			std::cout << STEELBLUE3 << "More insert tests" 
 				<< RESET << std::endl << std::endl;
 
-			map<int, int> joe;
-			joe.insert(make_pair(8, 777));
-			// joe.insert(make_pair(2, 777));
-			joe.insert(make_pair(4, 777));
-			// joe.insert(make_pair(12, 777));
-			joe.insert(make_pair(6, 777));
-			joe.insert(make_pair(14, 777));
-			joe.insert(make_pair(1, 777));
-			joe.insert(make_pair(3, 777));
-			joe.insert(make_pair(5, 777));
-			joe.insert(make_pair(7, 777));
-			joe.insert(make_pair(9, 777));
-			joe.insert(make_pair(10, 777));
-			joe.insert(make_pair(11, 777));
-			joe.insert(make_pair(13, 777));
-			joe.insert(make_pair(15, 777));
+			map<int, std::string> mp, mp2;
 
-			print_map(joe, "joe");
+			pair<int, std::string> input_pair;
+			pair<map<int, std::string>::iterator, bool> output;
+			input_pair = make_pair(42, "lol");
+			output = mp.insert(input_pair);
+			if (output.second)
+				std::cout << "output = " << output.first->first << " | " << output.first->second << std::endl;
+			print_map(mp, "mp");
+			input_pair = make_pair(42, "mdr");
+			output = mp.insert(input_pair);
+			if (output.second)
+				std::cout << "output = " << output.first->first << " | " << output.first->second << std::endl;
+			print_map(mp, "mp");
+			input_pair = make_pair(50, "mdr");
+			output = mp.insert(input_pair);
+			if (output.second)
+				std::cout << "output = " << output.first->first << " | " << output.first->second << std::endl;
+			print_map(mp, "mp");
+			input_pair = make_pair(35, "funny");
+			output = mp.insert(input_pair);
+			if (output.second)
+				std::cout << "output = " << output.first->first << " | " << output.first->second << std::endl;
+			print_map(mp, "mp");
+			input_pair = make_pair(45, "bunny");
+			output = mp.insert(input_pair);
+			if (output.second)
+				std::cout << "output = " << output.first->first << " | " << output.first->second << std::endl;
+			print_map(mp, "mp");
+			input_pair = make_pair(21, "fizz");
+			output = mp.insert(input_pair);
+			if (output.second)
+				std::cout << "output = " << output.first->first << " | " << output.first->second << std::endl;
+			print_map(mp, "mp");
+			input_pair = make_pair(38, "buzz");
+			output = mp.insert(input_pair);
+			if (output.second)
+				std::cout << "output = " << output.first->first << " | " << output.first->second << std::endl;
+			print_map(mp, "mp");
 
-			map<int,int>::iterator it = joe.begin();
-			int n = 9;
-			while (n--)
-				it++;
-			std::cout << "We create a iterator that points to node with key " << it->first << "." << std::endl;
+			map<int, std::string>::iterator res;
+			res = mp.insert(mp.begin(), make_pair(55, "fuzzy"));
+			std::cout << res->first << " | " << res->second << std::endl;
+			print_map(mp, "mp");
 
-			map<int,int>::iterator res;
-
-			std::cout << "Inserting element with key 12 (max efficiency inserting)... " << std::endl;
-			res = joe.insert (it, make_pair(12, 1010101010));  // max efficiency inserting
-			std::cout << "RES = " << res->first << " -- " << res->second << std::endl;
-
-			std::cout << "Inserting element with key 2 (no max efficiency inserting)... " << std::endl;
-			res = joe.insert (it, make_pair(2, 33333333));  // no max efficiency inserting
-			std::cout << "RES = " << res->first << " -- " << res->second << std::endl;
-
-			std::cout << "Inserting element with key that is already taken" << std::endl;
-			res = joe.insert (it, make_pair(2, 33333333));
-			std::cout << "RES = " << res->first << " -- " << res->second << std::endl;
-
-			print_map(joe, "joe");
-
-			// joe.getTree()->printTree(joe.getTree()->getRoot());
-			// joe.getTree()->printRBTree(joe.getTree()->getRoot());
+			res = mp2.insert(mp2.begin(), make_pair(1337, "beauty"));
+			std::cout << res->first << " | " << res->second << std::endl;
+			print_map(mp2, "mp2");
+			res = mp2.insert(mp2.end(), make_pair(1000, "Hello"));
+			std::cout << res->first << " | " << res->second << std::endl;
+			print_map(mp2, "mp2");
+			res = mp2.insert(mp2.end(), make_pair(1500, "World"));
+			std::cout << res->first << " | " << res->second << std::endl;
+			print_map(mp2, "mp2");
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
@@ -1133,8 +1202,134 @@ int	main(int argc, char **argv)
 			<< std::endl << RESET;
 		}
 
-		
 		if (test_number == 26)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing " 
+				<< RESET << std::endl << std::endl;
+
+			ft::map<int, int> kirikou;
+			std::cout << "kirikou = " << kirikou.max_size() << std::endl;
+			
+			std::map<int, int> karaba;
+			std::cout << "karaba  = " << karaba.max_size() << std::endl;
+
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		if (test_number == 27)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing with my own custom compare struct" 
+				<< RESET << std::endl << std::endl;
+			
+			typedef map<int, std::string, myComp<int> > myCompMap;
+			myCompMap mp;
+
+			mp[42] = "fgzgxfn";
+			mp[25] = "funny";
+			mp[80] = "hey";
+			mp[12] = "no";
+			mp[27] = "bee";
+			mp[90] = "8";
+			print_map(mp, "mp");
+
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		if (test_number == 28)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing reverse_iterator constructor" 
+				<< RESET << std::endl << std::endl;
+			
+			map<int, int> mp;
+			map<int, int>::iterator it = mp.begin();
+			map<int, int>::const_iterator cit = mp.begin();
+
+			map<int, int>::reverse_iterator rit(it);
+		
+			map<int, int>::const_reverse_iterator crit(rit);
+			
+			map<int, int>::const_reverse_iterator crit_(it);
+			map<int, int>::const_reverse_iterator crit_2(cit);
+		
+			// error expected -- cannot compile this
+			// map<int, int>::reverse_iterator rit_(crit);
+			// map<int, int>::reverse_iterator rit2(cit);
+			// map<int, int>::iterator it2(rit);
+			// map<int, int>::const_iterator cit2(crit);
+			//
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		if (test_number == 29)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing mli" 
+				<< RESET << std::endl << std::endl;
+
+			std::list<pair<char, int> > lst;
+			unsigned int lst_size = 5;
+			for (unsigned int i = 0; i < lst_size; ++i)
+				lst.push_back(pair<char, int>('a' + i, (i + 1) * 7));
+		
+			map<char, int> mp(lst.begin(), lst.end());
+			map<char, int>::iterator iterator = mp.begin();
+			map<char, int>::reverse_iterator rev_it(iterator), rev_end;
+			print_map(mp, "map");
+			
+			std::cout << "rev_it - 1 = " << printPair(inc(rev_it.base(), 1));
+
+			std::cout << "TEST OFFSET" << std::endl;
+			--rev_it;
+			printPair(rev_it);
+			printPair(rev_it.base());
+
+			rev_it = mp.rbegin(); rev_end = mp.rend();
+			std::cout << "rev_it = " << printPair(rev_it);
+			while (rev_it != rev_end)
+				std::cout << "[rev] " << printPair(rev_it++, false) << std::endl;
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		if (test_number == 30)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing inserting elements from custom class" 
+				<< RESET << std::endl << std::endl;
+
+			map<char, foo<std::string> > mp;
+
+			mp['a'] = "an element";
+			mp['b'] = "another element";
+			mp['c'] = mp['b'];
+			mp['b'] = "old element";
+
+			print_map(mp, "map");
+
+			std::cout << "insert a new element via operator[]: " << mp['d'] << std::endl;
+
+			print_map(mp, "map");
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		if (test_number == 30)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
 			std::cout << STEELBLUE3 << "Testing " 
