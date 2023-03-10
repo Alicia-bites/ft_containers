@@ -19,10 +19,15 @@ MAP_PATH		:= 	map
 
 RM				:=	rm -rf
 
-# STACK_SRCS		:=	main.cpp \
+# STACK_SRCS		:=	main.cpp
 
 # VECTOR_SRCS		:= 	main.cpp
+
 MAP_SRCS		:= 	main.cpp
+# MAP_SRCS		:= 	ite_arrow.cpp
+# MAP_SRCS		:= 	insert.cpp
+
+
 # SET_SRCS		:= 	main.cpp
 
 
