@@ -1,13 +1,13 @@
 #pragma once
 
 # include <iostream>
-# include "vector.hpp"
+# include <vector>
 
 namespace ft 
 {
 	// T - the type of the stored elements.
 	// Container - the type of the underlying container to use to store the elements.
-	template <typename T, typename Container = ft::vector<T> >
+	template <typename T, typename Container = std::vector<T> >
 	class stack
 	{
 		public:

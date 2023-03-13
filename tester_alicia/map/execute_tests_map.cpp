@@ -1,7 +1,7 @@
 #include "../../colors/colors.hpp"
 
 #include "../../includes/map.hpp"
-// #include "../../includes/pair.hpp"
+#include "../../includes/pair.hpp"
 // #include "../../includes/RedBlackTree.hpp"
 // #include "../../mapReverseIterator.hpp"
 
@@ -10,23 +10,25 @@
 #include <algorithm>
 #include <iostream>
 #include <utility>
-#include <map>
 #include <list>
 
-// change default namespace
+#ifndef STD
 # define NAMESPACE ft
-// # define NAMESPACE std
+#else
+# define NAMESPACE std
+#include <map>
+#endif
 
 using namespace NAMESPACE;
 
 template <typename Key, typename Value, typename Compare>
-	void	print_map(const ::map<Key, Value, Compare> & map, std::string map_name)
+	void	print_map(const map<Key, Value, Compare> & map, std::string map_name)
 	{
 		std::cout << DODGERBLUE2 << "-----------------------------------------------------------------------------" << std::endl;
 		std::cout << "Printing " << map_name << std::endl;
 		std::cout << DEEPSKYBLUE1 << "map size is " << map.size() << std::endl;
 
-		typename ::map<Key, Value, Compare>::const_iterator it;
+		typename map<Key, Value, Compare>::const_iterator it;
 		std::cout << "Key " << " = " << "Value" << std::endl;
 		it = map.begin();
 		while (it != map.end())
@@ -106,14 +108,14 @@ std::ostream	&operator<<(std::ostream &o, foo<T> const &bar) {
 }
 // --- End of class foo
 
-int	main(int argc, char **argv)
+int execute_tests_map(int test_number)
 {
-	if (argc != 2)
-	{
-		std::cout << "Usage : ./ft_containers <test number>" << std::endl;
-		return 0;
-	}
-	int test_number = atoi(argv[1]);
+	// if (argc != 2)
+	// {
+	// 	std::cout << "Usage : ./ft_containers <test number>" << std::endl;
+	// 	return 0;
+	// }
+	// int test_number = atoi(argv[1]);
 	try
 	{
 		if (test_number == 1)
@@ -418,12 +420,12 @@ int	main(int argc, char **argv)
 			// lily.insert(make_pair('b', 777));
 			// lily.insert(make_pair('c', 777));
 
-  			map<char,int> anothermap;
-  			anothermap.insert(lily.begin(), lily.find('c'));
-			print_map(anothermap, "anothermap");
+  			map<char,int> another_map;
+  			another_map.insert(lily.begin(), lily.find('c'));
+			print_map(another_map, "another_map");
 
-			map<char, int>::iterator first = anothermap.begin();
-			map<char, int>::iterator last = anothermap.end();
+			map<char, int>::iterator first = another_map.begin();
+			map<char, int>::iterator last = another_map.end();
 
 			lily.insert(make_pair('z', 777));
 			lily.insert(first, last);
@@ -1131,7 +1133,7 @@ int	main(int argc, char **argv)
 		if (test_number == 24)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing mazoise" 
+			std::cout << STEELBLUE3 << "Testing reverse iterator" 
 				<< RESET << std::endl << std::endl;
 
 			map<char,int> mymap;
@@ -1208,11 +1210,11 @@ int	main(int argc, char **argv)
 			std::cout << STEELBLUE3 << "Testing " 
 				<< RESET << std::endl << std::endl;
 
-			ft::map<int, int> kirikou;
+			map<int, int> kirikou;
 			std::cout << "kirikou = " << kirikou.max_size() << std::endl;
 			
-			std::map<int, int> karaba;
-			std::cout << "karaba  = " << karaba.max_size() << std::endl;
+			// std::map<int, int> karaba;
+			// std::cout << "karaba  = " << karaba.max_size() << std::endl;
 
 
 			std::cout << std::endl << STEELBLUE2
@@ -1348,3 +1350,9 @@ int	main(int argc, char **argv)
 	std::cout << STEELBLUE2 << "All tests done!" << RESET << std::endl;
 	return 0;
 }
+
+// int main()
+// {
+	// for (int n = 0; n < 30; n++)
+		// execute_tests_map(n);
+// }

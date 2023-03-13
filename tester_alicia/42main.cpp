@@ -2,7 +2,7 @@
 #include <string>
 #include <deque>
 
-#if 1 //CREATE A REAL STL EXAMPLE
+#ifdef STD //CREATE A REAL STL EXAMPLE
 	#include <map>
 	#include <stack>
 	#include <vector>
@@ -13,6 +13,8 @@
 	#include <vector.hpp>
 #endif
 
+#include "tests.hpp"
+
 #include <stdlib.h>
 
 #define MAX_RAM 4294967296
@@ -22,7 +24,6 @@ struct Buffer
 	int idx;
 	char buff[BUFFER_SIZE];
 };
-
 
 #define COUNT (MAX_RAM / (int)sizeof(Buffer))
 
@@ -113,5 +114,17 @@ int main(int argc, char** argv) {
 		std::cout << *it;
 	}
 	std::cout << std::endl;
+
+	std::cout << "Starting my own tests" << std::endl;
+
+	for (int n = 0; n < 30; n++)
+		execute_tests_stack(n);
+	for (int n = 0; n < 30; n++)
+		execute_tests_vector(n);
+	for (int n = 0; n < 30; n++)
+		execute_tests_map(n);
+	for (int n = 0; n < 30; n++)
+		execute_tests_set(n);
+
 	return (0);
 }

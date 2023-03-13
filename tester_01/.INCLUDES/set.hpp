@@ -118,10 +118,9 @@ namespace ft
 
 //		GETTERS ----------------------------------------------------------------------------------------------------------------------------
 
-			// Returns a copy of the allocator object associated with the set.
 			allocator_type get_allocator() const
 			{
-				return tree_->getAllocator();
+				return tree_.allocator_;
 			};
 
 			RBTree_ptr	getTree() const

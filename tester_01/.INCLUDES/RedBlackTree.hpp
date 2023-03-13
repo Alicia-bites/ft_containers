@@ -7,7 +7,7 @@
 
 #include "../colors/colors.hpp"
 
-#include "setNode.hpp"
+#include "node.hpp"
 #include "iterator.hpp"
 #include "stack.hpp"
 
@@ -21,17 +21,17 @@
 
 namespace ft
 {
-	template<typename Key, typename Value>
-	class setIterator;
+	template <typename Key, typename Value>
+	class mapIterator;
 
-	template <typename Key, typename Compare = std::less<Key>,
-		typename Allocator = std::allocator<Key> >
+	template <typename Key, typename Value, typename Compare = std::less<Key>,
+		typename Allocator = std::allocator<ft::pair<const Key, Value> > >
 	class RedBlackTree
 	{
 		public:		
 			typedef Key																					key_type; // type of key used to pair with value (1st template parameter)
-			typedef Key																					mapped_type; // type of the value paired with key (2nd template parameter)
-			typedef Key																					value_type; 	 // represent the key-value pair
+			typedef Value																				mapped_type; // type of the value paired with key (2nd template parameter)
+			typedef ft::pair<const Key, Value>															value_type; 	 // represent the key-value pair
 			typedef Compare		 																		key_compare;	 // The third template parameter (Compare)	defaults to: less<key_type>
 			typedef Allocator																			allocator_type;	 // The fourth template parameter (Alloc)	defaults to: allocator<value_type>
 			typedef typename allocator_type::reference													reference;		 // for the default allocator: value_type&
@@ -40,11 +40,11 @@ namespace ft
 			typedef typename allocator_type::const_pointer												const_pointer;	 // for the default allocator: const value_type*
 			typedef typename allocator_type::difference_type											difference_type; // a signed integral type, identical to: iterator_traits<iterator>::difference_type	usually the same as ptrdiff_t
 			typedef typename allocator_type::size_type													size_type;		 // an unsigned integral type that can represent any non-negative value of difference_type	usually the same as size_t
-			typedef ft::setIterator<RedBlackTree<Key, Compare, Allocator>, value_type>					iterator; 		 // a bidirectional iterator to value_type
-			typedef ft::setIterator<RedBlackTree<Key, Compare, Allocator>, const value_type>			const_iterator;  // a bidirectional iterator to const value_type
+			typedef ft::mapIterator<RedBlackTree<Key, Value, Compare, Allocator>, value_type>			iterator; 		 // a bidirectional iterator to value_type
+			typedef ft::mapIterator<RedBlackTree<Key, Value, Compare, Allocator>, const value_type>		const_iterator;  // a bidirectional iterator to const value_type
 			typedef ft::reverse_iterator<iterator>														reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>												const_reverse_iterator;
-			typedef setNode<Key, mapped_type>															*node_ptr;
+			typedef Node<Key, Value>																	*node_ptr;
 
 //	CONSTRUCTORS ----------------------------------------------------------------------------
 
@@ -77,7 +77,7 @@ namespace ft
 			};
 
 			// copy constructor
-			RedBlackTree(const RedBlackTree<Key, Compare, Allocator> & original)
+			RedBlackTree(const RedBlackTree<Key, Value, Compare, Allocator> & original)
 			{
 				#if DEBUG
 					std::cout << MAGENTA3 << "Calling RedBlackTree copy constructor" << RESET << std::endl;
@@ -112,7 +112,7 @@ namespace ft
 //		ASSIGNEMENT ----------------------------------------------------------------------------------------------------------------------------
 
 			// deep copy of tree
-			RedBlackTree<Key, Compare, Allocator> & operator=(const RedBlackTree<Key, Compare, Allocator> & rhs)
+			RedBlackTree<Key, Value, Compare, Allocator> & operator=(const RedBlackTree<Key, Value, Compare, Allocator> & rhs)
 			{
 				#if DEBUG
 					std::cout << MAGENTA3 << "Calling RedBlackTree assignement operator" << RESET << std::endl;
@@ -127,8 +127,8 @@ namespace ft
 				if (rhs.root_ != 0) // if rhs's tree isn't empty, copy rhs in this
 				{
 					// creating new nil_
-					mapped_type value = rhs.nil_->getValue();
-					nil_ = new setNode<Key, mapped_type>(rhs.nil_->key, value);
+					Value value = rhs.nil_->getValue();
+					nil_ = new Node<Key, Value>(rhs.nil_->key, value);
 					nil_->color = BLACK;
 					nil_->parent = 0;
 					nil_->left = nil_;
@@ -162,7 +162,7 @@ namespace ft
 //		VISUALIZERS --------------------------------------------------------------------------------------
 			
 			// print one node whose key matches the key passed as argument
-			void printsetNode(const Key & key)
+			void printNode(const Key & key)
 			{
 				node_ptr node = findNode(root_, key);
 				std::cout << *node << std::endl;
@@ -191,7 +191,7 @@ namespace ft
 				return 0;
 			}
 
-			void printRBTree(setNode<Key, mapped_type>* node, int depth = 0, bool isLeft = false)
+			void printRBTree(Node<Key, Value>* node, int depth = 0, bool isLeft = false)
 			{
 				if (node == nil_ || node == 0)
 					return;
@@ -215,12 +215,12 @@ namespace ft
 			// inserts new node.
 			// returns a pair, with its member pair::first set to an iterator pointing to either
 			// the newly inserted element or to the element with an equivalent key in the map
-			ft::pair<iterator, bool>	insert(const value_type & input_key)
+			ft::pair<iterator, bool>	insert(const value_type & input_pair)
 			{
 				if (size_ == allocator_.max_size())
 					throw (std::length_error("map::insert"));
 
-				node_ptr node = findNode(root_, input_key);
+				node_ptr node = findNode(root_, input_pair.first);
 				
 				// if node with input key exists
 				if (node != nil_)
@@ -232,8 +232,8 @@ namespace ft
 				// if nil_ hasn't been created yet
 				if (nil_ == 0)
 				{
-					mapped_type value = input_key;
-					nil_ = new setNode<Key, mapped_type>(input_key, value);
+					mapped_type value = input_pair.second;
+					nil_ = new Node<Key, Value>(input_pair.first, value);
 					nil_->color = BLACK;
 					nil_->parent = 0;
 					nil_->left = nil_;
@@ -241,8 +241,8 @@ namespace ft
 				}
 
 				// insert node
-				mapped_type value = input_key;
-				node = insertHelper(root_, input_key, value);
+				Value value = input_pair.second;
+				node = insertHelper(root_, input_pair.first, value);
 				node->color = RED;
 				if (!root_)
 					root_ = node;
@@ -258,26 +258,26 @@ namespace ft
 			// precede the inserted element.
 			// returns an iterator pointing to either the newly inserted element or to the
 			// element that already had an equivalent key in the map.
-			iterator	insert(iterator position, const value_type & input_key)
+			iterator	insert(iterator position, const value_type & input_pair)
 			{
 				if (size_ == allocator_.max_size())
 					throw (std::length_error("map::insert"));
 
-				node_ptr node = findNode(root_, input_key);
+				node_ptr node = findNode(root_, input_pair.first);
 
 				if (node != nil_)
 					return iterator(node, this);
-				if (position == begin() || (--position)->first < input_key)
+				if (position == begin() || (--position)->first < input_pair.first)
 				{
 					++position;
-					mapped_type value = input_key;
-					node = insertHelper(position.getNode(), input_key, value);
+					Value value = input_pair.second;
+					node = insertHelper(position.getNode(), input_pair.first, value);
 				}
 
 				else
 				{
-					mapped_type value = input_key;
-					node = insertHelper(position.getNode(), input_key, value);
+					Value value = input_pair.second;
+					node = insertHelper(position.getNode(), input_pair.first, value);
 					node->color = RED;
 					if (!root_)
 						root_ = node;
@@ -353,7 +353,7 @@ namespace ft
 				}
 			}
 
-			void	swap(RedBlackTree<Key, Compare, Allocator> & swapMe)
+			void	swap(RedBlackTree<Key, Value, Compare, Allocator> & swapMe)
 			{
 				node_ptr					tmpRoot			= swapMe.root_;
 				node_ptr					tmpNil			= swapMe.nil_;
@@ -423,14 +423,9 @@ namespace ft
 					node = node->right;
 				return node;
 			}
-
-			allocator_type	getAllocator() const
-			{
-				return allocator_;
-			}
 		
 		//		ITERATORS --------------------------------------------------------------------------------------
-	
+
 			iterator	begin()
 			{
 				return iterator(getSmallestNode(root_), this);
@@ -584,7 +579,7 @@ namespace ft
 		private :
 			node_ptr							root_;
 			node_ptr							nil_;
-			std::allocator<setNode<Key, mapped_type> >	nodeAllocator_;
+			std::allocator<Node<Key, Value> >	nodeAllocator_;
 			key_compare							comp_; // key comparator
 			allocator_type						allocator_;
 			size_type							size_; // total number of nodes
@@ -601,8 +596,8 @@ namespace ft
 				}
 				else
 				{
-					mapped_type value = node->getValue();
-					new_node = new setNode<Key, mapped_type>(node->key,value);
+					Value value = node->getValue();
+					new_node = new Node<Key, Value>(node->key,value);
 
 					new_node->parent = parent;
 					new_node->color = node->color;
@@ -840,16 +835,16 @@ namespace ft
 	//		INSERT TOOLS --------------------------------------------------------------------------------------
 
 			// recursive function, used to insert a new node
-			// from root_, find the next available place to create new setNode
+			// from root_, find the next available place to create new Node
 			// !! WITHOUT CARING ABOUT BALANCE
-			node_ptr	insertHelper(node_ptr node, const Key &key, mapped_type &value)
+			node_ptr	insertHelper(node_ptr node, const Key &key, Value &value)
 			{
 				if (node == 0)
 				{
-					node_ptr newsetNode = new setNode<Key, mapped_type>(key, value);
-					newsetNode->left = nil_;
-					newsetNode->right = nil_;
-					return newsetNode;
+					node_ptr newNode = new Node<Key, Value>(key, value);
+					newNode->left = nil_;
+					newNode->right = nil_;
+					return newNode;
 				}
 				if (key == node->key)
 				{
@@ -860,7 +855,7 @@ namespace ft
 				{
 					if (node->left == nil_)
 					{
-						node->left = new setNode<Key, mapped_type> (key, value);
+						node->left = new Node<Key, Value> (key, value);
 						node->left->parent = node;
 						node->left->left = nil_;
 						node->left->right = nil_;
@@ -870,7 +865,7 @@ namespace ft
 				}
 				if (node->right == nil_)
 				{
-					node->right = new setNode<Key, mapped_type> (key, value);
+					node->right = new Node<Key, Value> (key, value);
 					node->right->parent = node;
 					node->right->left = nil_;
 					node->right->right = nil_;

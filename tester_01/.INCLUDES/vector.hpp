@@ -90,7 +90,7 @@ namespace ft
 			, allocator_(allocator)
 			{
 				// std::cout << OLIVE << "Calling default constructor." 
-					// << std::endl << RESET;
+				// 	<< std::endl << RESET;
 			};
 
 			// constructor with a given number of elements
@@ -156,7 +156,7 @@ namespace ft
 				, allocator_(allocator)
 				{
 					// std::cout << OLIVE << "Calling range constructor." 
-						// << std::endl << RESET;
+					// 	<< std::endl << RESET;
 
 					InputIt remember_first = first;
 					for (; first != last; first++)
