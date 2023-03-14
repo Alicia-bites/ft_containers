@@ -21,6 +21,12 @@
 
 namespace ft
 {
+	template <class T, class U>
+	struct rebind
+	{
+		typedef typename std::allocator<U>::template rebind<T>::other other;
+	};
+
 	template<typename Key, typename Value>
 	class setIterator;
 
@@ -50,30 +56,28 @@ namespace ft
 
 			// default constructor
 			RedBlackTree(const Allocator & allocator = Allocator())
-			: nil_(0)
+			: root_(0)
+			, nil_(0)
+			, size_(0)
 			, comp_(std::less<Key>())
 			, allocator_(allocator)
-			, size_(0)
 			{
 				# if DEBUG
 					std::cout << SPRINGGREEN3 << "RedBlackTree default constructor called" << std::endl;
 				#endif
-
-				root_ = nil_;
 			};
 
 			// constuctor with specific compare function and allocator function
 			RedBlackTree(key_compare comp, allocator_type allocator)
-			: nil_(0)
+			: root_(0)
+			, nil_(0)
+			, size_(0)
 			, comp_(comp)
 			, allocator_(allocator)
-			, size_(0)
 			{
 				# if DEBUG
 					std::cout << SPRINGGREEN3 << "RedBlackTree constructor #1 called" << std::endl;
 				#endif
-
-				root_ = nil_;
 			};
 
 			// copy constructor
@@ -102,7 +106,8 @@ namespace ft
 				}
 				if (nil_)
 				{
-					delete nil_;
+					nodeAllocator_.destroy(nil_);
+					nodeAllocator_.deallocate(nil_, 1);
 					nil_ = NULL;
 				}
 			}
@@ -128,7 +133,8 @@ namespace ft
 				{
 					// creating new nil_
 					mapped_type value = rhs.nil_->getValue();
-					nil_ = new setNode<Key, mapped_type>(rhs.nil_->key, value);
+					nil_ = nodeAllocator_.allocate(1);
+					nodeAllocator_.construct(nil_, setNode<Key, mapped_type>(rhs.nil_->key, value));
 					nil_->color = BLACK;
 					nil_->parent = 0;
 					nil_->left = nil_;
@@ -156,7 +162,7 @@ namespace ft
 
 			size_type	max_size() const
 			{
-				return allocator_.max_size();
+				return nodeAllocator_.max_size();
 			};
 
 //		VISUALIZERS --------------------------------------------------------------------------------------
@@ -217,7 +223,7 @@ namespace ft
 			// the newly inserted element or to the element with an equivalent key in the map
 			ft::pair<iterator, bool>	insert(const value_type & input_key)
 			{
-				if (size_ == allocator_.max_size())
+				if (size_ == nodeAllocator_.max_size())
 					throw (std::length_error("map::insert"));
 
 				node_ptr node = findNode(root_, input_key);
@@ -233,7 +239,8 @@ namespace ft
 				if (nil_ == 0)
 				{
 					mapped_type value = input_key;
-					nil_ = new setNode<Key, mapped_type>(input_key, value);
+					nil_ = nodeAllocator_.allocate(1);
+					nodeAllocator_.construct(nil_, setNode<Key, mapped_type>(input_key, value));
 					nil_->color = BLACK;
 					nil_->parent = 0;
 					nil_->left = nil_;
@@ -260,7 +267,7 @@ namespace ft
 			// element that already had an equivalent key in the map.
 			iterator	insert(iterator position, const value_type & input_key)
 			{
-				if (size_ == allocator_.max_size())
+				if (size_ == nodeAllocator_.max_size())
 					throw (std::length_error("map::insert"));
 
 				node_ptr node = findNode(root_, input_key);
@@ -316,7 +323,8 @@ namespace ft
 				# endif
 
 				removeHelper(key);
-				delete node_to_be_deleted;
+				nodeAllocator_.destroy(node_to_be_deleted);
+				nodeAllocator_.deallocate(node_to_be_deleted, 1);
 				node_to_be_deleted = 0;
 
 				# if DEBUG
@@ -383,7 +391,9 @@ namespace ft
 					return ;
 				if (root_ != nil_)
 					deleteTree(root_);
-				delete nil_;
+				
+				nodeAllocator_.destroy(nil_);
+				nodeAllocator_.deallocate(nil_, 1);
 				nil_ = NULL;
 				root_ = NULL;
 				size_ = 0;
@@ -598,10 +608,13 @@ namespace ft
 		private :
 			node_ptr							root_;
 			node_ptr							nil_;
-			std::allocator<setNode<Key, mapped_type> >	nodeAllocator_;
+			size_type							size_; // total number of nodes
 			key_compare							comp_; // key comparator
 			allocator_type						allocator_;
-			size_type							size_; // total number of nodes
+
+			// rebinding Allocator to allocate my own Nodes
+			typedef typename rebind<setNode<key_type, mapped_type>, allocator_type>::other NodeAllocator;
+			NodeAllocator						nodeAllocator_;
 
 //		COPY TOOL --------------------------------------------------------------------------------------
 
@@ -616,7 +629,8 @@ namespace ft
 				else
 				{
 					mapped_type value = node->getValue();
-					new_node = new setNode<Key, mapped_type>(node->key,value);
+					new_node = nodeAllocator_.allocate(1);
+					nodeAllocator_.construct(new_node, setNode<Key, mapped_type>(node->key, value));
 
 					new_node->parent = parent;
 					new_node->color = node->color;
@@ -787,7 +801,8 @@ namespace ft
 				deleteTree(node->left);
 				deleteTree(node->right);
 
-				delete node;
+				nodeAllocator_.destroy(node);
+				nodeAllocator_.deallocate(node, 1);
 				node = NULL;
 			}
 	
@@ -860,10 +875,11 @@ namespace ft
 			{
 				if (node == 0)
 				{
-					node_ptr newsetNode = new setNode<Key, mapped_type>(key, value);
-					newsetNode->left = nil_;
-					newsetNode->right = nil_;
-					return newsetNode;
+					node_ptr new_node = nodeAllocator_.allocate(1);
+					nodeAllocator_.construct(new_node, setNode<Key, mapped_type>(key, value));
+					new_node->left = nil_;
+					new_node->right = nil_;
+					return new_node;
 				}
 				if (key == node->key)
 				{
@@ -874,7 +890,9 @@ namespace ft
 				{
 					if (node->left == nil_)
 					{
-						node->left = new setNode<Key, mapped_type> (key, value);
+						// node->left = new setNode<Key, mapped_type> (key, value);
+						node->left = nodeAllocator_.allocate(1);
+						nodeAllocator_.construct(node->left, setNode<Key, mapped_type>(key, value));
 						node->left->parent = node;
 						node->left->left = nil_;
 						node->left->right = nil_;
@@ -884,7 +902,9 @@ namespace ft
 				}
 				if (node->right == nil_)
 				{
-					node->right = new setNode<Key, mapped_type> (key, value);
+					// node->right = new setNode<Key, mapped_type> (key, value);
+					node->right = nodeAllocator_.allocate(1);
+					nodeAllocator_.construct(node->right, setNode<Key, mapped_type>(key, value));
 					node->right->parent = node;
 					node->right->left = nil_;
 					node->right->right = nil_;
