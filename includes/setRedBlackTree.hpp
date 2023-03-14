@@ -267,7 +267,7 @@ namespace ft
 
 				if (node != nil_)
 					return iterator(node, this);
-				if (position == begin() || (--position)->first < input_key)
+				if (position == begin() || --(*position) < input_key)
 				{
 					++position;
 					mapped_type value = input_key;
@@ -523,16 +523,16 @@ namespace ft
 			iterator	upper_bound(const key_type & k)
 			{
 				iterator output = begin();
-				if (comp_(k, output->first))
+				if (comp_(k, *output))
 					return output;
 				iterator endOfTime = end();
-				while (output != endOfTime && comp_(output->first, k))
+				while (output != endOfTime && comp_(*output, k))
 					output++;
 				if (output == end())
 					return end();
 				if (output.getNode() == getBiggestNode(root_))
 				{
-					if (comp_(k, output->first))
+					if (comp_(k, *output))
 						return output;
 					else
 						return end();
@@ -547,7 +547,7 @@ namespace ft
 			{
 				iterator output = begin();
 				iterator endOfTime = end();
-				while (output != endOfTime && comp_(output->first, k))
+				while (output != endOfTime && comp_(*output, k))
 					++output;
 				return output;
 			}
@@ -557,6 +557,13 @@ namespace ft
 				iterator low = lower_bound(k);
 				iterator up = upper_bound(k);
 
+				//If no matches are found, the range returned has a length of zero, 
+				// with both iterators pointing to the first element that is 
+				// considered to go after val according to the container's
+				// internal comparison object (key_comp).
+				node_ptr node_to_find = findNode(root_, k);
+				if (node_to_find == 0 || node_to_find == nil_)
+					up = low;
 				return ft::make_pair(low, up);
 			}
 
@@ -565,6 +572,13 @@ namespace ft
 				const_iterator low = lower_bound(k);
 				const_iterator up = upper_bound(k);
 
+				//If no matches are found, the range returned has a length of zero, 
+				// with both iterators pointing to the first element that is 
+				// considered to go after val according to the container's
+				// internal comparison object (key_comp).
+				node_ptr node_to_find = findNode(root_, k);
+				if (node_to_find == 0 || node_to_find == nil_)
+					up = low;
 				return ft::make_pair(low, up);
 			}
 
