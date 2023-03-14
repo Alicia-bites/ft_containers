@@ -192,6 +192,7 @@ namespace ft
 			size_type	max_size() const
 			{
 				return std::numeric_limits<difference_type>::max() / sizeof(*tree_);
+				// return tree_->get_allocator().max_size();
 			};			
 
 //		ACCESSORS --------------------------------------------------------------------------------------
@@ -207,6 +208,11 @@ namespace ft
 			{
 				return tree_;
 			};
+
+			allocator_type	get_allocator() const
+			{
+				return tree_->get_allocator();
+			}
 
 //		MODIFIERS --------------------------------------------------------------------------------------
 			
