@@ -1,3 +1,8 @@
+#Colors
+RESET=\033[0m
+DODGERBLUE1=\033[38;5;33m
+ORANGERED1=\033[38;5;202m
+
 # project settings
 NAME            :=  ft_containers
 NAME_AR         :=  ft_containers.a
@@ -19,18 +24,19 @@ SET_PATH		:=	set
 
 RM              :=  rm -rf
 
-VECTOR_SRCS		:= 	execute_tests_vector.cpp
-STACK_SRCS		:=	execute_tests_stack.cpp
-MAP_SRCS		:= 	execute_tests_map.cpp
+# VECTOR_SRCS		:= 	execute_tests_vector.cpp
+# STACK_SRCS		:=	execute_tests_stack.cpp
+# MAP_SRCS		:= 	execute_tests_map.cpp
 SET_SRCS		:=	execute_tests_set.cpp
 
+SRCS			:=	$(SET_SRCS)
 # SRCS			:=	$(MAP_SRCS)
-SRCS            :=  42main.cpp \
-					$(VECTOR_SRCS) \
-					$(STACK_SRCS) \
-					$(MAP_SRCS) \
-					$(SET_SRCS)
-
+# SRCS            :=  42main.cpp \
+					# $(VECTOR_SRCS) \
+					# $(STACK_SRCS) \
+					# $(MAP_SRCS) \
+					# $(SET_SRCS)
+# 
 OBJS            :=  $(addprefix $(OPATH)/, $(SRCS:.cpp=.o))
 DEPS            :=  $(OBJS:.o=.d)
 
@@ -47,9 +53,12 @@ all: ft
 
 std: CXXFLAGSADD += $(STD_FLAG)
 std: $(NAME)
+	@echo "${DODGERBLUE1} using namespace std${RESET}"
 
 ft: CXXFLAGSADD += $(FT_FLAG)
 ft: $(NAME)
+	@echo "${ORANGERED1} using namespace ft${RESET}"
+
 
 $(OPATH)/%.o: %.cpp
 	$(C++) $(CXXFLAGS) $(CXXFLAGSADD) -I $(IPATH) -c $< -o $@
