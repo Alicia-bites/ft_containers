@@ -40,3 +40,6 @@ std_map
 ft_map
 std_set
 ft_set
+std_out
+ft_out
+DIFF_OUT
