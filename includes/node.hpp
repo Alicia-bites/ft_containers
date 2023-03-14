@@ -105,7 +105,6 @@ namespace ft
 			}
 
 			// assignement operator
-			// Node<Key, Value>&    operator=(const Node<typename remove_cv<Key>::type, Value> & rhs)
 			Node<Key, Value>&    operator=(const Node<Key, Value> & rhs)
 			{
 				# if DEBUG
