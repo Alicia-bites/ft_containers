@@ -289,6 +289,11 @@ namespace ft
 				return tree_->find(key);
 			};
 
+			const_iterator find(const key_type & key) const
+			{
+				return tree_->find(key);
+			};
+
 			// Returns the number of elements with key that compares equivalent 
 			// to the specified argument. 
 			// This is either 1 or 0 since this container does not allow duplicates.
