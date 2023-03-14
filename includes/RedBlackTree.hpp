@@ -21,6 +21,12 @@
 
 namespace ft
 {
+	template <class T, class U>
+	struct rebind
+	{
+		typedef typename std::allocator<U>::template rebind<T>::other other;
+	};
+
 	template <typename Key, typename Value>
 	class mapIterator;
 
@@ -50,30 +56,28 @@ namespace ft
 
 			// default constructor
 			RedBlackTree(const Allocator & allocator = Allocator())
-			: nil_(0)
+			: root_(0)
+			, nil_(0)
+			, size_(0)
 			, comp_(std::less<Key>())
 			, allocator_(allocator)
-			, size_(0)
 			{
 				# if DEBUG
 					std::cout << SPRINGGREEN3 << "RedBlackTree default constructor called" << std::endl;
 				#endif
-
-				root_ = nil_;
 			};
 
 			// constuctor with specific compare function and allocator function
 			RedBlackTree(key_compare comp, allocator_type allocator)
-			: nil_(0)
+			: root_(0)
+			, nil_(0)
+			, size_(0)
 			, comp_(comp)
 			, allocator_(allocator)
-			, size_(0)
 			{
 				# if DEBUG
 					std::cout << SPRINGGREEN3 << "RedBlackTree constructor #1 called" << std::endl;
 				#endif
-
-				root_ = nil_;
 			};
 
 			// copy constructor
@@ -102,7 +106,9 @@ namespace ft
 				}
 				if (nil_)
 				{
-					delete nil_;
+					nodeAllocator_.destroy(nil_);
+					nodeAllocator_.deallocate(nil_, 1);
+					// delete nil_;
 					nil_ = NULL;
 				}
 			}
@@ -128,7 +134,9 @@ namespace ft
 				{
 					// creating new nil_
 					Value value = rhs.nil_->getValue();
-					nil_ = new Node<Key, Value>(rhs.nil_->key, value);
+					// nil_ = new Node<Key, Value>(rhs.nil_->key, value);
+					nil_ = nodeAllocator_.allocate(1);
+					nodeAllocator_.construct(nil_, Node<Key, Value>(rhs.nil_->key, value));
 					nil_->color = BLACK;
 					nil_->parent = 0;
 					nil_->left = nil_;
@@ -233,7 +241,9 @@ namespace ft
 				if (nil_ == 0)
 				{
 					mapped_type value = input_pair.second;
-					nil_ = new Node<Key, Value>(input_pair.first, value);
+					// nil_ = new Node<Key, Value>(input_pair.first, value);
+					nil_ = nodeAllocator_.allocate(1);
+					nodeAllocator_.construct(nil_, Node<Key, Value>(input_pair.first, value));
 					nil_->color = BLACK;
 					nil_->parent = 0;
 					nil_->left = nil_;
@@ -316,7 +326,9 @@ namespace ft
 				# endif
 
 				removeHelper(key);
-				delete node_to_be_deleted;
+				// delete node_to_be_deleted;
+				nodeAllocator_.destroy(node_to_be_deleted);
+				nodeAllocator_.deallocate(node_to_be_deleted, 1);
 				node_to_be_deleted = 0;
 
 				# if DEBUG
@@ -383,7 +395,10 @@ namespace ft
 					return ;
 				if (root_ != nil_)
 					deleteTree(root_);
-				delete nil_;
+				
+				// delete nil_;
+				nodeAllocator_.destroy(nil_);
+				nodeAllocator_.deallocate(nil_, 1);
 				nil_ = NULL;
 				root_ = NULL;
 				size_ = 0;
@@ -581,13 +596,17 @@ namespace ft
 				return node;
 			};
 
+			
 		private :
 			node_ptr							root_;
 			node_ptr							nil_;
-			std::allocator<Node<Key, Value> >	nodeAllocator_;
+			size_type							size_; // total number of nodes
 			key_compare							comp_; // key comparator
 			allocator_type						allocator_;
-			size_type							size_; // total number of nodes
+
+			// rebinding Allocator to allocate my own Nodes
+			typedef typename rebind<Node<key_type, mapped_type>, allocator_type>::other NodeAllocator;
+			NodeAllocator						nodeAllocator_;
 
 //		COPY TOOL --------------------------------------------------------------------------------------
 
@@ -602,7 +621,10 @@ namespace ft
 				else
 				{
 					Value value = node->getValue();
-					new_node = new Node<Key, Value>(node->key,value);
+					// new_node = new Node<Key, Value>(node->key, value);
+					new_node = nodeAllocator_.allocate(1);
+					nodeAllocator_.construct(new_node, Node<Key, Value>(node->key, value));
+
 
 					new_node->parent = parent;
 					new_node->color = node->color;
@@ -773,7 +795,9 @@ namespace ft
 				deleteTree(node->left);
 				deleteTree(node->right);
 
-				delete node;
+				// delete node;
+				nodeAllocator_.destroy(node);
+				nodeAllocator_.deallocate(node, 1);
 				node = NULL;
 			}
 	
@@ -846,7 +870,9 @@ namespace ft
 			{
 				if (node == 0)
 				{
-					node_ptr newNode = new Node<Key, Value>(key, value);
+					// node_ptr newNode = new Node<Key, Value>(key, value);
+					node_ptr newNode = nodeAllocator_.allocate(1);
+					nodeAllocator_.construct(newNode, Node<Key, Value>(key, value));
 					newNode->left = nil_;
 					newNode->right = nil_;
 					return newNode;
@@ -860,7 +886,9 @@ namespace ft
 				{
 					if (node->left == nil_)
 					{
-						node->left = new Node<Key, Value> (key, value);
+						// node->left = new Node<Key, Value> (key, value);
+						node->left = nodeAllocator_.allocate(1);
+						nodeAllocator_.construct(node->left, Node<Key, Value>(key, value));
 						node->left->parent = node;
 						node->left->left = nil_;
 						node->left->right = nil_;
@@ -870,7 +898,9 @@ namespace ft
 				}
 				if (node->right == nil_)
 				{
-					node->right = new Node<Key, Value> (key, value);
+					// node->right = new Node<Key, Value> (key, value);
+					node->right = nodeAllocator_.allocate(1);
+					nodeAllocator_.construct(node->right, Node<Key, Value>(key, value));
 					node->right->parent = node;
 					node->right->left = nil_;
 					node->right->right = nil_;
