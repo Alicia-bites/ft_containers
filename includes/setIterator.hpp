@@ -22,7 +22,7 @@ namespace ft
 			public:
                 typedef typename RBT::key_type              key_type;
                 typedef typename RBT::mapped_type           mapped_type;
-				typedef Key                          		value_type;
+				typedef const Key                          	value_type;
 				typedef value_type&                         reference;
 				typedef value_type*                         pointer;
 				typedef std::bidirectional_iterator_tag     iterator_category;
@@ -38,7 +38,7 @@ namespace ft
                 node_ptr    root_;
                 node_ptr    biggest_;
                 node_ptr    smallest_;
-                pointer     pointer_; // pointer to data, which is a node attribute of type pair<const Key, value>
+                pointer     pointer_; // pointer to data, which is a node attribute of type Key
 
             public:
 
