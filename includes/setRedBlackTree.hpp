@@ -51,6 +51,8 @@ namespace ft
 			typedef ft::reverse_iterator<iterator>														reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>												const_reverse_iterator;
 			typedef setNode<Key, mapped_type>															*node_ptr;
+			// rebinding Allocator to allocate my own Nodes
+			typedef typename rebind<setNode<key_type, mapped_type>, allocator_type>::other NodeAllocator;
 
 //	CONSTRUCTORS ----------------------------------------------------------------------------
 
@@ -434,7 +436,12 @@ namespace ft
 				return node;
 			}
 
-			allocator_type	getAllocator() const
+			allocator_type	get_allocator() const
+			{
+				return allocator_;
+			}
+
+			NodeAllocator	get_nodeAllocator() const
 			{
 				return allocator_;
 			}
@@ -547,7 +554,7 @@ namespace ft
 					else
 						return end();
 				}
-				output++;
+				// output++;
 				return output;
 			}
 
@@ -612,8 +619,6 @@ namespace ft
 			key_compare							comp_; // key comparator
 			allocator_type						allocator_;
 
-			// rebinding Allocator to allocate my own Nodes
-			typedef typename rebind<setNode<key_type, mapped_type>, allocator_type>::other NodeAllocator;
 			NodeAllocator						nodeAllocator_;
 
 //		COPY TOOL --------------------------------------------------------------------------------------
