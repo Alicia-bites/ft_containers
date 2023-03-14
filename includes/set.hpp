@@ -226,7 +226,7 @@ namespace ft
 			// removed, which are destroyed.
 			void	erase(iterator position)
 			{
-				tree_->remove(position->first);
+				tree_->remove(*position);
 			};
 
 			// Removes from the set container a single element.
