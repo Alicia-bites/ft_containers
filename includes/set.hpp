@@ -207,7 +207,9 @@ namespace ft
 			// newly inserted element or to the element that already had an equivalent key in the set.
 			iterator	insert(iterator position, const key_type & key)
 			{
-				return tree_->insert(position, key);
+				static_cast<void>(position);
+				return tree_->insert(key).first;
+				// return tree_->insert(position, key);
 			}
 
 			// Iterators specifying a range of elements. Copies of the elements
