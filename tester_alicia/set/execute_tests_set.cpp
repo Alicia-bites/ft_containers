@@ -34,6 +34,38 @@ template <typename Key, typename Value>
 		std::cout << NAVY << "-----------------------------------------------------------------------------" << RESET << std::endl;
 	}
 
+static int iter = 0;
+
+template <typename SET>
+void	ft_bound(SET &st, const T1 &param)
+{
+	ft_iterator ite = st.end(), it[2];
+	_pair<ft_iterator, ft_iterator> ft_range;
+
+	std::cout << "\t-- [" << iter++ << "] --" << std::endl;
+	std::cout << "with key [" << param << "]:" << std::endl;
+	it[0] = st.lower_bound(param); it[1] = st.upper_bound(param);
+	ft_range = st.equal_range(param);
+	std::cout << "lower_bound: " << (it[0] == ite ? "end()" : printPair(it[0], false)) << std::endl;
+	std::cout << "upper_bound: " << (it[1] == ite ? "end()" : printPair(it[1], false)) << std::endl;
+	std::cout << "equal_range: " << (ft_range.first == it[0] && ft_range.second == it[1]) << std::endl;
+}
+
+template <typename SET>
+void	ft_const_bound(const SET &st, const T1 &param)
+{
+	ft_const_iterator ite = st.end(), it[2];
+	_pair<ft_const_iterator, ft_const_iterator> ft_range;
+
+	std::cout << "\t-- [" << iter++ << "] (const) --" << std::endl;
+	std::cout << "with key [" << param << "]:" << std::endl;
+	it[0] = st.lower_bound(param); it[1] = st.upper_bound(param);
+	ft_range = st.equal_range(param);
+	std::cout << "lower_bound: " << (it[0] == ite ? "end()" : printPair(it[0], false)) << std::endl;
+	std::cout << "upper_bound: " << (it[1] == ite ? "end()" : printPair(it[1], false)) << std::endl;
+	std::cout << "equal_range: " << (ft_range.first == it[0] && ft_range.second == it[1]) << std::endl;
+}
+
 bool fncomp (int lhs, int rhs)
 {
 	return lhs<rhs;
@@ -267,8 +299,29 @@ int	execute_tests_set(int test_number)
 		if (test_number == 9)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing allocator getter" 
+			std::cout << STEELBLUE3 << "Testing erase()" 
 				<< RESET << std::endl << std::endl;
+
+			set<int> myset;
+			set<int>::iterator it;
+			
+			// insert some values:
+			for (int i=1; i<10; i++) myset.insert(i*10);  // 10 20 30 40 50 60 70 80 90
+			
+			it = myset.begin();
+			++it;                                         // "it" points now to 20
+			
+			myset.erase (it);
+			
+			myset.erase (40);
+			
+			it = myset.find (60);
+			myset.erase (it, myset.end());
+			
+			std::cout << "myset contains:";
+			for (it=myset.begin(); it!=myset.end(); ++it)
+				std::cout << ' ' << *it;
+			std::cout << '\n';
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
@@ -276,6 +329,142 @@ int	execute_tests_set(int test_number)
 		}
 
 		if (test_number == 10)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing insert()" 
+				<< RESET << std::endl << std::endl;
+
+			set<int> myset;
+			set<int>::iterator it;
+			pair<set<int>::iterator,bool> ret;
+			
+			// set some initial values:
+			for (int i=1; i<=5; ++i) myset.insert(i*10);    // set: 10 20 30 40 50
+			
+			ret = myset.insert(20);               // no new element inserted
+			
+			if (ret.second==false) it=ret.first;  // "it" now points to element 20
+
+			std::cout << "ret points to = " << *(ret.first) << std::endl;
+			
+			myset.insert (it,25);                 // max efficiency inserting
+			myset.insert (it,24);                 // max efficiency inserting
+			myset.insert (it,26);                 // no max efficiency inserting
+			
+			int myints[]= {5,10,15};              // 10 already in set, not inserted
+			myset.insert (myints,myints+3);
+			
+			std::cout << "myset contains:";
+			for (it=myset.begin(); it!=myset.end(); ++it)
+				std::cout << ' ' << *it;
+			std::cout << '\n';
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		if (test_number == 11)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing allocator getter" 
+				<< RESET << std::endl << std::endl;
+
+			std::list<T1> lst;
+			unsigned int lst_size = 10;
+			for (unsigned int i = 0; i < lst_size; ++i)
+				lst.push_back((i + 1) * 3);
+			set<T1> st(lst.begin(), lst.end());
+			print_map(st);
+		
+			ft_const_bound(st, -10);
+			ft_const_bound(st, 1);
+			ft_const_bound(st, 5);
+			ft_const_bound(st, 10);
+			ft_const_bound(st, 50);
+		
+			print_map(st);
+		
+			ft_bound(st, 5);
+			ft_bound(st, 7);
+		
+			printSize(st);
+			
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+		if (test_number == 12)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing allocator getter" 
+				<< RESET << std::endl << std::endl;
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+		if (test_number == 13)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing allocator getter" 
+				<< RESET << std::endl << std::endl;
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+		if (test_number == 14)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing allocator getter" 
+				<< RESET << std::endl << std::endl;
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+		if (test_number == 15)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing allocator getter" 
+				<< RESET << std::endl << std::endl;
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+		if (test_number == 16)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing allocator getter" 
+				<< RESET << std::endl << std::endl;
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+		if (test_number == 17)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing allocator getter" 
+				<< RESET << std::endl << std::endl;
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+		if (test_number == 18)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing allocator getter" 
+				<< RESET << std::endl << std::endl;
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+		if (test_number == 19)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
 			std::cout << STEELBLUE3 << "Testing allocator getter" 
