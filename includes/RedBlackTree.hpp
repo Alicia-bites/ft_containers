@@ -108,7 +108,6 @@ namespace ft
 				{
 					nodeAllocator_.destroy(nil_);
 					nodeAllocator_.deallocate(nil_, 1);
-					// delete nil_;
 					nil_ = NULL;
 				}
 			}
@@ -134,7 +133,6 @@ namespace ft
 				{
 					// creating new nil_
 					Value value = rhs.nil_->getValue();
-					// nil_ = new Node<Key, Value>(rhs.nil_->key, value);
 					nil_ = nodeAllocator_.allocate(1);
 					nodeAllocator_.construct(nil_, Node<Key, Value>(rhs.nil_->key, value));
 					nil_->color = BLACK;
@@ -241,7 +239,6 @@ namespace ft
 				if (nil_ == 0)
 				{
 					mapped_type value = input_pair.second;
-					// nil_ = new Node<Key, Value>(input_pair.first, value);
 					nil_ = nodeAllocator_.allocate(1);
 					nodeAllocator_.construct(nil_, Node<Key, Value>(input_pair.first, value));
 					nil_->color = BLACK;
@@ -326,7 +323,6 @@ namespace ft
 				# endif
 
 				removeHelper(key);
-				// delete node_to_be_deleted;
 				nodeAllocator_.destroy(node_to_be_deleted);
 				nodeAllocator_.deallocate(node_to_be_deleted, 1);
 				node_to_be_deleted = 0;
@@ -396,7 +392,6 @@ namespace ft
 				if (root_ != nil_)
 					deleteTree(root_);
 				
-				// delete nil_;
 				nodeAllocator_.destroy(nil_);
 				nodeAllocator_.deallocate(nil_, 1);
 				nil_ = NULL;
@@ -621,7 +616,6 @@ namespace ft
 				else
 				{
 					Value value = node->getValue();
-					// new_node = new Node<Key, Value>(node->key, value);
 					new_node = nodeAllocator_.allocate(1);
 					nodeAllocator_.construct(new_node, Node<Key, Value>(node->key, value));
 
@@ -795,7 +789,6 @@ namespace ft
 				deleteTree(node->left);
 				deleteTree(node->right);
 
-				// delete node;
 				nodeAllocator_.destroy(node);
 				nodeAllocator_.deallocate(node, 1);
 				node = NULL;
@@ -886,7 +879,6 @@ namespace ft
 				{
 					if (node->left == nil_)
 					{
-						// node->left = new Node<Key, Value> (key, value);
 						node->left = nodeAllocator_.allocate(1);
 						nodeAllocator_.construct(node->left, Node<Key, Value>(key, value));
 						node->left->parent = node;
