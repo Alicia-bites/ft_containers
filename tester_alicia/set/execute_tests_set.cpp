@@ -169,9 +169,18 @@ int	execute_tests_set(int test_number)
 		if (test_number == 5)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing allocator getter" 
+			std::cout << STEELBLUE3 << "Testing end()" 
 				<< RESET << std::endl << std::endl;
 
+			int myints[] = {75,23,65,42,13};
+			set<int> myset (myints,myints+5);
+			
+			std::cout << "myset contains:";
+			for (set<int>::iterator it=myset.begin(); it!=myset.end(); ++it)
+				std::cout << ' ' << *it;
+			
+			std::cout << '\n';
+			
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
 			<< std::endl << RESET;
@@ -180,8 +189,22 @@ int	execute_tests_set(int test_number)
 		if (test_number == 6)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing allocator getter" 
+			std::cout << STEELBLUE3 << "Testing count" 
 				<< RESET << std::endl << std::endl;
+
+			set<int> myset;
+
+			// set some initial values:
+			for (int i=1; i<5; ++i) myset.insert(i*3);    // set: 3 6 9 12
+			
+			for (int i=0; i<10; ++i)
+			{
+				std::cout << i;
+				if (myset.count(i)!=0)
+					std::cout << " is an element of myset.\n";
+				else
+					std::cout << " is not an element of myset.\n";
+			}
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
@@ -191,8 +214,22 @@ int	execute_tests_set(int test_number)
 		if (test_number == 7)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing allocator getter" 
+			std::cout << STEELBLUE3 << "Testing empty()" 
 				<< RESET << std::endl << std::endl;
+
+			set<int> myset;
+			
+			myset.insert(20);
+			myset.insert(30);
+			myset.insert(10);
+			
+			std::cout << "myset contains:";
+			while (!myset.empty())
+			{
+				std::cout << ' ' << *myset.begin();
+				myset.erase(myset.begin());
+			}
+			std::cout << '\n';
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
@@ -202,8 +239,25 @@ int	execute_tests_set(int test_number)
 		if (test_number == 8)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing allocator getter" 
+			std::cout << STEELBLUE3 << "Testing equal_range" 
 				<< RESET << std::endl << std::endl;
+
+			set<int> myset;
+			
+			for (int i=1; i<=5; i++) myset.insert(i*10);   // myset: 10 20 30 40 50
+			
+			pair<set<int>::const_iterator, set<int>::const_iterator> ret;
+			ret = myset.equal_range(30);
+			
+			std::cout << "the lower bound points to: " << *ret.first << '\n';
+			std::cout << "the upper bound points to: " << *ret.second << '\n';
+
+			std::cout << "What happens if no matches are found?" << std::endl;
+
+			ret = myset.equal_range(15);
+			
+			std::cout << "the lower bound points to: " << *ret.first << '\n';
+			std::cout << "the upper bound points to: " << *ret.second << '\n';
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
@@ -238,5 +292,13 @@ int	execute_tests_set(int test_number)
 		std::cerr << e.what() << '\n';
 	}
 	std::cout << STEELBLUE2 << "All tests done!" << RESET << std::endl;
+	return 0;
+}
+
+int main(int argc, char **argv)
+{
+	static_cast<void>(argc);
+	int test_number = atoi(argv[1]);
+	execute_tests_set(test_number);
 	return 0;
 }
