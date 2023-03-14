@@ -121,7 +121,7 @@ namespace ft
 			// Returns a copy of the allocator object associated with the set.
 			allocator_type get_allocator() const
 			{
-				return tree_->getAllocator();
+				return tree_->get_allocator();
 			};
 
 			RBTree_ptr	getTree() const
@@ -185,7 +185,8 @@ namespace ft
 
 			size_type	max_size() const
 			{
-				return tree_->max_size();
+				// return tree_->max_size();
+				return tree_->get_nodeAllocator().max_size();
 			};
 
 //		MODIFIERS --------------------------------------------------------------------------------------
@@ -306,6 +307,11 @@ namespace ft
 				return tree_->lower_bound(k);
 			};
 
+			const_iterator lower_bound(const key_type& k) const
+			{
+				return tree_->lower_bound(k);
+			};
+
 			// A similar member function, lower_bound, has the same
 			// behavior as upper_bound, except in the case that
 			// the set contains an element with a key equivalent 
@@ -313,6 +319,11 @@ namespace ft
 			// pointing to that element, whereas upper_bound returns 
 			// an iterator pointing to the next element.
 			iterator	upper_bound(const key_type& k)
+			{
+				return tree_->upper_bound(k);
+			};
+
+			const_iterator upper_bound(const key_type& k) const
 			{
 				return tree_->upper_bound(k);
 			};
@@ -327,6 +338,11 @@ namespace ft
 			{
 				return tree_->equal_range(k);
 			}
+
+			pair<const_iterator,const_iterator>	equal_range(const key_type& k) const
+			{
+				return tree_->equal_range(k);
+			};
 
 	};
 
