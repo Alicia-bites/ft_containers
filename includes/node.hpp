@@ -60,16 +60,18 @@ namespace ft
 			};
 
 			// copy constructor
-			Node(const Node<typename remove_cv<Key>::type, Value> & original)
+			Node(const Node<Key, Value> & other)
+				: value(other.value)
+				, key(other.key)
+				, color(other.color)
+				, left(other.left)
+				, right(other.right)
+				, parent(other.parent)
+				, data(ft::make_pair(const_cast<Key&>(other.key), other.value))
 			{
-				# if DEBUG
+				#if DEBUG
 					std::cout << LIGHTSEAGREEN << "Calling Node copy constructor" << RESET << std::endl;
-				# endif
-
-				if (this != &original)
-				{
-					*this = original;
-				}
+				#endif
 			}
 
 			// destructor
@@ -103,7 +105,8 @@ namespace ft
 			}
 
 			// assignement operator
-			Node<Key, Value>&    operator=(const Node<typename remove_cv<Key>::type, Value> & rhs)
+			// Node<Key, Value>&    operator=(const Node<typename remove_cv<Key>::type, Value> & rhs)
+			Node<Key, Value>&    operator=(const Node<Key, Value> & rhs)
 			{
 				# if DEBUG
 					std::cout << LIGHTSEAGREEN << "Calling Node assignement operator" << RESET << std::endl;
@@ -112,20 +115,16 @@ namespace ft
 				if (this == &rhs)
 					return *this;
 
-				setValue(rhs.getValue());
+				value = rhs.value;
 				key = rhs.key;
 				color = rhs.color;
 				left = rhs.left;
 				right = rhs.right;
 				parent = rhs.parent;
-				data = ft::make_pair(key, rhs.getValue());
-
-				setValue(rhs.getValue());
+				data = ft::make_pair(const_cast<Key&>(rhs.key), rhs.value);
 
 				return *this;
 			};
-			
-
 	};
 
 	template<typename Key, typename Value>
