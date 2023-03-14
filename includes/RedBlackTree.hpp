@@ -423,7 +423,12 @@ namespace ft
 					node = node->right;
 				return node;
 			}
-		
+
+			allocator_type	get_allocator() const
+			{
+				return allocator_;
+			}
+			
 		//		ITERATORS --------------------------------------------------------------------------------------
 
 			iterator	begin()
