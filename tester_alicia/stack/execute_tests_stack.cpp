@@ -145,10 +145,10 @@ int execute_tests_stack(int test_number)
 	return 0;
 }
 
-int main(int argc, char **argv)
-{
-	static_cast<void>(argc);
-	int test_number = atoi(argv[1]);
-	execute_tests_stack(test_number);
-	return 0;
-}
+// int main(int argc, char **argv)
+// {
+// 	static_cast<void>(argc);
+// 	int test_number = atoi(argv[1]);
+// 	execute_tests_stack(test_number);
+// 	return 0;
+// }
