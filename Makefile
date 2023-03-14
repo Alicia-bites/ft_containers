@@ -24,18 +24,19 @@ SET_PATH		:=	set
 
 RM              :=  rm -rf
 
-# VECTOR_SRCS		:= 	execute_tests_vector.cpp
-# STACK_SRCS		:=	execute_tests_stack.cpp
-# MAP_SRCS		:= 	execute_tests_map.cpp
+VECTOR_SRCS		:= 	execute_tests_vector.cpp
+STACK_SRCS		:=	execute_tests_stack.cpp
+MAP_SRCS		:= 	execute_tests_map.cpp
 SET_SRCS		:=	execute_tests_set.cpp
 
-SRCS			:=	$(SET_SRCS)
+# SRCS			:=	$(SET_SRCS)
+# SRCS			:=	$(STACK_SRCS)
 # SRCS			:=	$(MAP_SRCS)
-# SRCS            :=  42main.cpp \
-					# $(VECTOR_SRCS) \
-					# $(STACK_SRCS) \
-					# $(MAP_SRCS) \
-					# $(SET_SRCS)
+SRCS            :=  42main.cpp \
+					$(VECTOR_SRCS) \
+					$(STACK_SRCS) \
+					$(MAP_SRCS) \
+					$(SET_SRCS)
 # 
 OBJS            :=  $(addprefix $(OPATH)/, $(SRCS:.cpp=.o))
 DEPS            :=  $(OBJS:.o=.d)
