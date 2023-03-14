@@ -334,7 +334,7 @@ namespace ft
 				// creating a stack to store elements;
 				ft::stack<Key> to_delete_tmp;
 				for(; first != last; first++)
-					to_delete_tmp.push(first->first);
+					to_delete_tmp.push(*first);
 				
 				// reversing order of stack to delete elements in the right order
 				Key item;
