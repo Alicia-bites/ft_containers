@@ -28,7 +28,7 @@ template <typename Key, typename Value, typename Compare>
 		std::cout << "Printing " << map_name << std::endl;
 		std::cout << DEEPSKYBLUE1 << "map size is " << map.size() << std::endl;
 
-		typename map<Key, Value, Compare>::const_iterator it;
+		typename ::map<Key, Value, Compare>::const_iterator it;
 		std::cout << "Key " << " = " << "Value" << std::endl;
 		it = map.begin();
 		while (it != map.end())
@@ -1207,15 +1207,22 @@ int execute_tests_map(int test_number)
 		if (test_number == 26)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing " 
+			std::cout << STEELBLUE3 << "Testing allocator" 
 				<< RESET << std::endl << std::endl;
 
-			map<int, int> kirikou;
-			std::cout << "kirikou = " << kirikou.max_size() << std::endl;
+			int psize;
+			map<char,int> mymap;
+			pair<const char,int>* p;
 			
-			// std::map<int, int> karaba;
-			// std::cout << "karaba  = " << karaba.max_size() << std::endl;
-
+			// allocate an array of 5 elements using mymap's allocator:
+			p=mymap.get_allocator().allocate(5);
+			
+			// assign some values to array
+			psize = sizeof(map<char,int>::value_type)*5;
+			
+			std::cout << "The allocated array has a size of " << psize << " bytes.\n";
+			
+			mymap.get_allocator().deallocate(p,5);
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
@@ -1350,9 +1357,12 @@ int execute_tests_map(int test_number)
 	std::cout << STEELBLUE2 << "All tests done!" << RESET << std::endl;
 	return 0;
 }
-
-// int main()
+// 
+// int main(int argc, char** argv)
 // {
+	// static_cast<void>(argc);
+	// int test_number = atoi(argv[1]);
 	// for (int n = 0; n < 30; n++)
 		// execute_tests_map(n);
+	// execute_tests_map(test_number);
 // }
