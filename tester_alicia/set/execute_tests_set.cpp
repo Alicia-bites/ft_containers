@@ -5,6 +5,7 @@
 #include <string>
 #include <algorithm>
 #include <iostream>
+#include <list>
 
 #ifndef STD
 # define NAMESPACE ft
@@ -34,13 +35,22 @@ template <typename Key, typename Value>
 		std::cout << NAVY << "-----------------------------------------------------------------------------" << RESET << std::endl;
 	}
 
+template <typename T>
+std::string	printPair(const T &iterator, bool nl = true, std::ostream &o = std::cout)
+{
+	o << "value: " << *iterator;
+	if (nl)
+		o << std::endl;
+	return ("");
+}
+
 static int iter = 0;
 
 template <typename SET>
-void	ft_bound(SET &st, const T1 &param)
+void	ft_bound(SET &st, const int &param)
 {
-	ft_iterator ite = st.end(), it[2];
-	_pair<ft_iterator, ft_iterator> ft_range;
+	set<int>::iterator ite = st.end(), it[2];
+	pair<set<int>::iterator, set<int>::iterator> ft_range;
 
 	std::cout << "\t-- [" << iter++ << "] --" << std::endl;
 	std::cout << "with key [" << param << "]:" << std::endl;
@@ -52,10 +62,10 @@ void	ft_bound(SET &st, const T1 &param)
 }
 
 template <typename SET>
-void	ft_const_bound(const SET &st, const T1 &param)
+void	ft_const_bound(const SET &st, const int &param)
 {
-	ft_const_iterator ite = st.end(), it[2];
-	_pair<ft_const_iterator, ft_const_iterator> ft_range;
+	set<int>::const_iterator ite = st.end(), it[2];
+	pair<set<int>::const_iterator, set<int>::const_iterator> ft_range;
 
 	std::cout << "\t-- [" << iter++ << "] (const) --" << std::endl;
 	std::cout << "with key [" << param << "]:" << std::endl;
@@ -367,15 +377,15 @@ int	execute_tests_set(int test_number)
 		if (test_number == 11)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing allocator getter" 
+			std::cout << STEELBLUE3 << "Testing lower_bound() and upper_bound()" 
 				<< RESET << std::endl << std::endl;
 
-			std::list<T1> lst;
+			std::list<int> lst;
 			unsigned int lst_size = 10;
 			for (unsigned int i = 0; i < lst_size; ++i)
 				lst.push_back((i + 1) * 3);
-			set<T1> st(lst.begin(), lst.end());
-			print_map(st);
+			set<int> st(lst.begin(), lst.end());
+			print_set(st, "st");
 		
 			ft_const_bound(st, -10);
 			ft_const_bound(st, 1);
@@ -383,12 +393,12 @@ int	execute_tests_set(int test_number)
 			ft_const_bound(st, 10);
 			ft_const_bound(st, 50);
 		
-			print_map(st);
+			print_set(st, "st");
 		
 			ft_bound(st, 5);
 			ft_bound(st, 7);
 		
-			printSize(st);
+			print_set(st, "st");
 			
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
