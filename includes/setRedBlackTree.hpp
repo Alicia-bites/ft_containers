@@ -554,7 +554,8 @@ namespace ft
 					else
 						return end();
 				}
-				// output++;
+				if (!comp_(*output, k))
+					output++;
 				return output;
 			}
 
