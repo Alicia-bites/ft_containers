@@ -2,6 +2,7 @@
 
 #include "../../includes/set.hpp"
 
+
 #include <string>
 #include <algorithm>
 #include <iostream>
@@ -28,7 +29,7 @@ template <typename Key, typename Value>
 		it = set.begin();
 		while (it != set.end())
 		{
-			std::cout << DARKTURQUOISE << *it << "    =    " << std::endl;
+			std::cout << DARKTURQUOISE << *it << std::endl;
 			it++;
 		}
 		std::cout << std::endl;
@@ -88,6 +89,77 @@ struct classcomp
 		return lhs<rhs;
 	}
 };
+
+set<int> st;
+set<int>::iterator it = st.end();
+
+void	ft_find(int const &k)
+{
+	set<int>::iterator ret = st.find(k);
+
+	if (ret != it)
+		printPair(ret);
+	else
+		std::cout << "set::find(" << k << ") returned end()" << std::endl;
+}
+
+void	ft_count(int const &k)
+{
+	std::cout << "set::count(" << k << ")\treturned [" << st.count(k) << "]" << std::endl;
+}
+
+// --- Class foo
+template <typename T>
+class foo {
+	public:
+		typedef T	value_type;
+
+		foo(void) : value(), _verbose(false) { };
+		foo(value_type src, const bool verbose = false) : value(src), _verbose(verbose) { };
+		foo(foo const &src, const bool verbose = false) : value(src.value), _verbose(verbose) { };
+		~foo(void) { if (this->_verbose) std::cout << "~foo::foo()" << std::endl; };
+		void m(void) { std::cout << "foo::m called [" << this->value << "]" << std::endl; };
+		void m(void) const { std::cout << "foo::m const called [" << this->value << "]" << std::endl; };
+		foo &operator=(value_type src) { this->value = src; return *this; };
+		foo &operator=(foo const &src) {
+			if (this->_verbose || src._verbose)
+				std::cout << "foo::operator=(foo) CALLED" << std::endl;
+			this->value = src.value;
+			return *this;
+		};
+		value_type	getValue(void) const { return this->value; };
+		void		switchVerbose(void) { this->_verbose = !(this->_verbose); };
+
+		operator value_type(void) const {
+			return value_type(this->value);
+		}
+	private:
+		value_type	value;
+		bool		_verbose;
+};
+
+template <typename T>
+std::ostream	&operator<<(std::ostream &o, foo<T> const &bar) {
+	o << bar.getValue();
+	return o;
+}
+// --- End of class foo
+
+template <typename T>
+T	inc(T it, int n)
+{
+	while (n-- > 0)
+		++it;
+	return (it);
+}
+
+template <typename T>
+T	dec(T it, int n)
+{
+	while (n-- > 0)
+		--it;
+	return (it);
+}
 
 int	execute_tests_set(int test_number)
 {
@@ -407,9 +479,42 @@ int	execute_tests_set(int test_number)
 		if (test_number == 12)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing allocator getter" 
+			std::cout << STEELBLUE3 << "Testing find() and count()" 
 				<< RESET << std::endl << std::endl;
 
+			// set<int> st;
+			// set<int>::iterator it = st.end();
+
+			st.insert(42);
+			st.insert(25);
+			st.insert(80);
+			st.insert(12);
+			st.insert(27);
+			st.insert(90);
+			print_set(st, "st");
+		
+			std::cout << "\t-- FIND --" << std::endl;
+			ft_find(12);
+			ft_find(3);
+			ft_find(35);
+			ft_find(90);
+			ft_find(100);
+		
+			std::cout << "\t-- COUNT --" << std::endl;
+			ft_count(-3);
+			ft_count(12);
+			ft_count(3);
+			ft_count(35);
+			ft_count(90);
+			ft_count(100);
+		
+			st.erase(st.find(27));
+		
+			print_set(st, "st");
+		
+			set<int> const c_set(st.begin(), st.end());
+			std::cout << "const set.find(" << 42 << ")->second: [" << *(c_set.find(42)) << "]" << std::endl;
+			std::cout << "const set.count(" << 80 << "): [" << c_set.count(80) << "]" << std::endl;
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
 			<< std::endl << RESET;
@@ -417,9 +522,44 @@ int	execute_tests_set(int test_number)
 		if (test_number == 13)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing allocator getter" 
+			std::cout << STEELBLUE3 << "Testing iterator #1" 
 				<< RESET << std::endl << std::endl;
-
+			
+			std::list<foo<int> > lst;
+			unsigned int lst_size = 5;
+			for (unsigned int i = 0; i < lst_size; ++i)
+				lst.push_back(2.5 + i);
+		
+			set<foo<int> > st(lst.begin(), lst.end());
+			set<foo<int> >::iterator it(st.begin());
+			set<foo<int> >::const_iterator ite(st.begin());
+			print_set(st, "set");
+		
+			printPair(++ite);
+			printPair(ite++);
+			printPair(ite++);
+			printPair(++ite);
+		
+			it->m();
+			ite->m();
+		
+			printPair(++it);
+			printPair(it++);
+			printPair(it++);
+			printPair(++it);
+		
+			printPair(--ite);
+			printPair(ite--);
+			printPair(--ite);
+			printPair(ite--);
+		
+			(*it).m();
+			(*ite).m();
+		
+			printPair(--it);
+			printPair(it--);
+			printPair(it--);
+			printPair(--it);
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
 			<< std::endl << RESET;
@@ -427,9 +567,14 @@ int	execute_tests_set(int test_number)
 		if (test_number == 14)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing allocator getter" 
+			std::cout << STEELBLUE3 << "Testing that it returns a const value that cannot be modified"
 				<< RESET << std::endl << std::endl;
-
+			
+			// set<int> st;
+		// 
+			// set<int>::const_iterator ite = st.begin();
+			// *ite = 42; // < -- error
+			
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
 			<< std::endl << RESET;
@@ -440,6 +585,11 @@ int	execute_tests_set(int test_number)
 			std::cout << STEELBLUE3 << "Testing allocator getter" 
 				<< RESET << std::endl << std::endl;
 
+			// set<int> st;
+			
+			// set<int>::iterator ite = st.begin();
+			// *ite = 42; // < -- error as well ; T is always const, even with regular iterator
+
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
 			<< std::endl << RESET;
@@ -449,7 +599,8 @@ int	execute_tests_set(int test_number)
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
 			std::cout << STEELBLUE3 << "Testing allocator getter" 
 				<< RESET << std::endl << std::endl;
-
+		
+			(void)it;
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
 			<< std::endl << RESET;
@@ -494,10 +645,10 @@ int	execute_tests_set(int test_number)
 	return 0;
 }
 
-int main(int argc, char **argv)
-{
-	static_cast<void>(argc);
-	int test_number = atoi(argv[1]);
-	execute_tests_set(test_number);
-	return 0;
-}
+// int main(int argc, char **argv)
+// {
+// 	static_cast<void>(argc);
+// 	int test_number = atoi(argv[1]);
+// 	execute_tests_set(test_number);
+// 	return 0;
+// }
