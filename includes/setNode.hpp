@@ -55,21 +55,17 @@ namespace ft
 				# if DEBUG
 					std::cout << LIGHTSEAGREEN << "Calling setNode constructor #1" << RESET << std::endl;
 				# endif
-
-
 			};
 
 			// copy constructor
-			setNode(const setNode<typename remove_cv<Key>::type, Value> & original)
+			setNode(const setNode<Key, Value> & src)
 			{
 				# if DEBUG
 					std::cout << LIGHTSEAGREEN << "Calling setNode copy constructor" << RESET << std::endl;
 				# endif
 
-				if (this != &original)
-				{
-					*this = original;
-				}
+				if (this != &src)
+					*this = src;
 			}
 
 			// destructor
@@ -103,7 +99,7 @@ namespace ft
 			}
 
 			// assignement operator
-			setNode<Key, Value>&    operator=(const setNode<typename remove_cv<Key>::type, Value> & rhs)
+			setNode<Key, Value>&    operator=(const setNode<Key, Value> & rhs)
 			{
 				# if DEBUG
 					std::cout << LIGHTSEAGREEN << "Calling setNode assignement operator" << RESET << std::endl;
@@ -112,15 +108,13 @@ namespace ft
 				if (this == &rhs)
 					return *this;
 
-				setValue(rhs.getValue());
+				value = rhs.value;
 				key = rhs.key;
 				color = rhs.color;
 				left = rhs.left;
 				right = rhs.right;
 				parent = rhs.parent;
 				data = rhs.data;
-
-				setValue(rhs.getValue());
 
 				return *this;
 			};
