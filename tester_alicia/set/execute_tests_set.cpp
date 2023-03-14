@@ -567,14 +567,26 @@ int	execute_tests_set(int test_number)
 		if (test_number == 14)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing that it returns a const value that cannot be modified"
+			std::cout << STEELBLUE3 << "Testing key_comp"
 				<< RESET << std::endl << std::endl;
 			
-			// set<int> st;
-		// 
-			// set<int>::const_iterator ite = st.begin();
-			// *ite = 42; // < -- error
+			set<int> myset;
+			int highest;
 			
+			set<int>::key_compare mycomp = myset.key_comp();
+			
+			for (int i=0; i<=5; i++) myset.insert(i);
+			
+			std::cout << "myset contains:";
+			
+			highest=*myset.rbegin();
+			set<int>::iterator it=myset.begin();
+			do {
+				std::cout << ' ' << *it;
+			} while ( mycomp(*(++it),highest) );
+			
+			std::cout << '\n';
+
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
 			<< std::endl << RESET;
@@ -582,13 +594,18 @@ int	execute_tests_set(int test_number)
 		if (test_number == 15)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing allocator getter" 
+			std::cout << STEELBLUE3 << "Testing operator =" 
 				<< RESET << std::endl << std::endl;
 
-			// set<int> st;
+			int myints[]={ 12,82,37,64,15 };
+			set<int> first (myints,myints+5);   // set with 5 ints
+			set<int> second;                    // empty set
 			
-			// set<int>::iterator ite = st.begin();
-			// *ite = 42; // < -- error as well ; T is always const, even with regular iterator
+			second = first;                          // now second contains the 5 ints
+			first = set<int>();                 // and first is empty
+			
+			std::cout << "Size of first: " << int (first.size()) << '\n';
+			std::cout << "Size of second: " << int (second.size()) << '\n';
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
@@ -618,8 +635,19 @@ int	execute_tests_set(int test_number)
 		if (test_number == 18)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
-			std::cout << STEELBLUE3 << "Testing allocator getter" 
+			std::cout << STEELBLUE3 << "rbegin()" 
 				<< RESET << std::endl << std::endl;
+			
+			int myints[] = {21,64,17,78,49};
+			set<int> myset (myints,myints+5);
+			
+			set<int>::reverse_iterator rit;
+			
+			std::cout << "myset contains:";
+			for (rit=myset.rbegin(); rit != myset.rend(); ++rit)
+				std::cout << ' ' << *rit;
+			
+			std::cout << '\n';
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
@@ -628,8 +656,159 @@ int	execute_tests_set(int test_number)
 		if (test_number == 19)
 		{
 			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing rend()" 
+				<< RESET << std::endl << std::endl;
+
+			int myints[] = {21,64,17,78,49};
+			set<int> myset (myints,myints+5);
+			
+			set<int>::reverse_iterator rit;
+			
+			std::cout << "myset contains:";
+			for (rit=myset.rbegin(); rit != myset.rend(); ++rit)
+				std::cout << ' ' << *rit;
+			
+			std::cout << '\n';
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		if (test_number == 20)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing size()" 
+				<< RESET << std::endl << std::endl;
+
+			set<int> myints;
+			std::cout << "0. size: " << myints.size() << '\n';
+			
+			for (int i=0; i<10; ++i) myints.insert(i);
+			std::cout << "1. size: " << myints.size() << '\n';
+			
+			myints.insert (100);
+			std::cout << "2. size: " << myints.size() << '\n';
+			
+			myints.erase(5);
+			std::cout << "3. size: " << myints.size() << '\n';
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		if (test_number == 21)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing swap" 
+				<< RESET << std::endl << std::endl;
+
+			int myints[]={12,75,10,32,20,25};
+			set<int> first (myints,myints+3);     // 10,12,75
+			set<int> second (myints+3,myints+6);  // 20,25,32
+			
+			first.swap(second);
+			
+			std::cout << "first contains:";
+			for (set<int>::iterator it=first.begin(); it!=first.end(); ++it)
+				std::cout << ' ' << *it;
+			std::cout << '\n';
+			
+			std::cout << "second contains:";
+			for (set<int>::iterator it=second.begin(); it!=second.end(); ++it)
+				std::cout << ' ' << *it;
+			std::cout << '\n';
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		if (test_number == 22)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing value_comp" 
+				<< RESET << std::endl << std::endl;
+
+			set<int> myset;
+			
+			set<int>::value_compare mycomp = myset.value_comp();
+			
+			for (int i=0; i<=5; i++) myset.insert(i);
+			
+			std::cout << "myset contains:";
+			
+			int highest=*myset.rbegin();
+			set<int>::iterator it=myset.begin();
+			do {
+				std::cout << ' ' << *it;
+			} while ( mycomp(*(++it),highest) );
+			
+			std::cout << '\n';
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+		
+		if (test_number == 23)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing relational operators" 
+				<< RESET << std::endl << std::endl;
+
+			set<int> foo,bar;
+			foo.insert(10);
+			bar.insert(20);
+			bar.insert(30);
+			foo.insert(40);
+			
+			// foo ({10,40}) vs bar ({20,30}):
+			if (foo==bar) std::cout << "foo and bar are equal\n";
+			if (foo!=bar) std::cout << "foo and bar are not equal\n";
+			if (foo< bar) std::cout << "foo is less than bar\n";
+			if (foo> bar) std::cout << "foo is greater than bar\n";
+			if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
+			if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		if (test_number == 24)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
 			std::cout << STEELBLUE3 << "Testing allocator getter" 
 				<< RESET << std::endl << std::endl;
+
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
+		if (test_number == 25)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing allocator getter" 
+				<< RESET << std::endl << std::endl;
+
+			int myints[]={12,75,10,32,20,25};
+			set<int> first (myints,myints+3);     // 10,12,75
+			set<int> second (myints+3,myints+6);  // 20,25,32
+			
+			swap(first,second);
+			
+			std::cout << "first contains:";
+			for (set<int>::iterator it=first.begin(); it!=first.end(); ++it)
+				std::cout << ' ' << *it;
+			std::cout << '\n';
+			
+			std::cout << "second contains:";
+			for (set<int>::iterator it=second.begin(); it!=second.end(); ++it)
+				std::cout << ' ' << *it;
+			std::cout << '\n';
 
 			std::cout << std::endl << STEELBLUE2
 			<< "#########################################################"
