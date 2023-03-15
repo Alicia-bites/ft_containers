@@ -17,12 +17,12 @@ read -p "Enter a SEED value: " SEED
 #STEP 1 -- test with "STD namespace"
 make clean && make std
 echo -e "$DODGERBLUE1 Executing ./ft_containers with namespace STD$RESET"
-./ft_containers $SEED > std_out
+time ./std_containers $SEED > std_out
 
 #STEP 2 -- test with "FT namespace"
 make clean && make ft
 echo -e "$SPRINGGREEN5 Executing ./ft_containers with namespace FT$RESET"
-./ft_containers $SEED > ft_out
+time ./ft_containers $SEED > ft_out
 
 echo -e "$ORANGERED1 Producing diff file : DIFF_OUT $RESET"
 diff std_out ft_out > DIFF_OUT

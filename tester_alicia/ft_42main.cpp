@@ -2,16 +2,10 @@
 #include <string>
 #include <deque>
 
-#ifdef STD //CREATE A REAL STL EXAMPLE
-	#include <map>
-	#include <stack>
-	#include <vector>
-	namespace ft = std;
-#else
-	#include <map.hpp>
-	#include <stack.hpp>
-	#include <vector.hpp>
-#endif
+
+#include <map.hpp>
+#include <stack.hpp>
+#include <vector.hpp>
 
 #include "tests.hpp"
 
@@ -52,6 +46,7 @@ int main(int argc, char** argv) {
 		std::cerr << "Usage: ./test seed" << std::endl;
 		std::cerr << "Provide a seed please" << std::endl;
 		std::cerr << "Count value:" << COUNT << std::endl;
+		std::cerr << "using container : ft" << std::endl;
 		return 1;
 	}
 	const int seed = atoi(argv[1]);

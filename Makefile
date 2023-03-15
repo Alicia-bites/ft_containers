@@ -5,6 +5,8 @@ ORANGERED1=\033[38;5;202m
 
 # project settings
 NAME            :=  ft_containers
+STD_NAME		:=  std_containers
+
 NAME_AR         :=  ft_containers.a
 C++             :=  c++
 CXXFLAGS        :=  -MMD -Wall -Wextra -Werror -std=c++98
@@ -29,13 +31,22 @@ STACK_SRCS		:=	execute_tests_stack.cpp
 MAP_SRCS		:= 	execute_tests_map.cpp
 SET_SRCS		:=	execute_tests_set.cpp
 
-SRCS            :=  42main.cpp \
+FT_SRCS            :=  ft_42main.cpp \
 					$(VECTOR_SRCS) \
 					$(STACK_SRCS) \
 					$(MAP_SRCS) \
 					$(SET_SRCS)
+
+STD_SRCS            :=  std_42main.cpp \
+					$(VECTOR_SRCS) \
+					$(STACK_SRCS) \
+					$(MAP_SRCS) \
+					$(SET_SRCS)
+
 # 
-OBJS            :=  $(addprefix $(OPATH)/, $(SRCS:.cpp=.o))
+FT_OBJS            :=  $(addprefix $(OPATH)/, $(FT_SRCS:.cpp=.o))
+STD_OBJS            :=  $(addprefix $(OPATH)/, $(STD_SRCS:.cpp=.o))
+
 DEPS            :=  $(OBJS:.o=.d)
 
 vpath %.hpp $(IPATH)
@@ -47,10 +58,10 @@ vpath %.cpp $(SRCS_PATH)\
 
 vpath %.o $(OPATH)
 
-all: ft
+all: ft std
 
 std: CXXFLAGSADD += $(STD_FLAG)
-std: $(NAME)
+std: $(STD_NAME)
 	@echo "${DODGERBLUE1} using namespace std${RESET}"
 
 ft: CXXFLAGSADD += $(FT_FLAG)
@@ -61,10 +72,14 @@ ft: $(NAME)
 $(OPATH)/%.o: %.cpp
 	$(C++) $(CXXFLAGS) $(CXXFLAGSADD) -I $(IPATH) -c $< -o $@
 
-$(NAME): $(OBJS)
-	$(C++) $(CXXFLAGS) $(CXXFLAGSADD) $(OBJS) -I $(IPATH) -o $(NAME)
+$(NAME): $(FT_OBJS)
+	$(C++) $(CXXFLAGS) $(CXXFLAGSADD) $(FT_OBJS) -I $(IPATH) -o $(NAME)
 
-$(OBJS): | $(OPATH)
+$(STD_NAME): $(STD_OBJS)
+	$(C++) $(CXXFLAGS) $(CXXFLAGSADD) $(STD_OBJS) -I $(IPATH) -o $(STD_NAME)
+
+$(FT_OBJS): | $(OPATH)
+$(STD_OBJS): | $(OPATH)
 
 $(OPATH):
 	mkdir -p $(OPATH)
