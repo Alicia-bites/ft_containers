@@ -34,6 +34,7 @@ obj/
 
 .vscode
 ft_containers
+std_containers
 
 #debug
 std_map
