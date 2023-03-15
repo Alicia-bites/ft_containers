@@ -26,11 +26,3 @@ echo -e "$SPRINGGREEN5 Executing ./ft_containers with namespace FT$RESET"
 
 echo -e "$ORANGERED1 Producing diff file : DIFF_OUT $RESET"
 diff std_out ft_out > DIFF_OUT
-# echo "Testing with valgrind"
-# valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes ./ft_containers $SEED
-
-# for n in {0..30}
-# do
-    # echo "Executing ./ft_containers with n = $n"
-    # ./ft_containers $n > ft_out
-# done
