@@ -8,7 +8,7 @@ NAME            :=  ft_containers
 NAME_AR         :=  ft_containers.a
 C++             :=  c++
 CXXFLAGS        :=  -MMD -Wall -Wextra -Werror -std=c++98
-CXXFLAGSADD     :=  -g3
+# CXXFLAGSADD     :=  -g3
 # CXXFLAGSADD   :=  -g3 -D DEBUG=1
 STD_FLAG        :=  -DSTD
 FT_FLAG         :=  -DFT
