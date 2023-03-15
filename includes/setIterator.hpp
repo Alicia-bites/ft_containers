@@ -179,6 +179,11 @@ namespace ft
                     return typename RBT::const_iterator(node_, tree_);
                 }
 
+                operator typename RBT::iterator() const
+                {
+                    return typename RBT::iterator(node_, tree_);
+                }
+
 	// ARITHMETIC OPERATOR OVERLOADS ---------------------------------------------------------------------------------------------
 	
                 // increment pointer and return a reference to its new
