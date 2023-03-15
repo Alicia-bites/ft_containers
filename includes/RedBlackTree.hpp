@@ -441,7 +441,7 @@ namespace ft
 				return allocator_;
 			}
 			
-			NodeAllocator	get_NodeAllocator() const
+			NodeAllocator	get_nodeAllocator() const
 			{
 				return nodeAllocator_;
 			}
@@ -537,24 +537,21 @@ namespace ft
 
 			// returns iterator to node whose key is greater
 			// than k.
-			iterator	upper_bound(const key_type & k)
+			iterator	upper_bound(const key_type & key)
 			{
-				iterator output = begin();
-				if (comp_(k, output->first))
-					return output;
-				iterator endOfTime = end();
-				while (output != endOfTime && comp_(output->first, k))
-					output++;
-				if (output == end())
-					return end();
-				if (output.getNode() == getBiggestNode(root_))
+				iterator output = end();
+				node_ptr tmp = root_;
+				while (tmp != nil_)
 				{
-					if (comp_(k, output->first))
-						return output;
+					if (comp_(key, tmp->key))
+					{
+						if (output == end() || comp_(tmp->key, output->first) )
+							output = iterator(tmp, this);
+						tmp = tmp->left;
+					}
 					else
-						return end();
+						tmp = tmp->right;
 				}
-				output++;
 				return output;
 			}
 
