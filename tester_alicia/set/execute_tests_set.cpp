@@ -815,6 +815,22 @@ int	execute_tests_set(int test_number)
 			<< std::endl << RESET;
 		}
 
+		if (test_number == 26)
+		{
+			std::cout << STEELBLUE2 << "TEST #" << test_number << std::endl << RESET;
+			std::cout << STEELBLUE3 << "Testing const_iterator to iterator conversion" 
+				<< RESET << std::endl << std::endl;
+
+			set<int> const st;
+			set<int>::iterator it = st.begin(); // <-- no error, actually ! set allows for const_iterator => iterator conversion
+			
+			(void)it;
+			
+			std::cout << std::endl << STEELBLUE2
+			<< "#########################################################"
+			<< std::endl << RESET;
+		}
+
 	}
 	catch(const std::exception& e)
 	{
@@ -830,4 +846,11 @@ int	execute_tests_set(int test_number)
 // 	int test_number = atoi(argv[1]);
 // 	execute_tests_set(test_number);
 // 	return 0;
+// }
+
+// int main()
+// {
+	// for (int n = 0; n < 30; n++)
+		// execute_tests_set(n);
+	// return 0;
 // }
