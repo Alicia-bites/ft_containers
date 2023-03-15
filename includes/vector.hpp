@@ -884,16 +884,4 @@ namespace ft
 			{
 				x.swap(y);
 			};
-	
-	// FOR DEBUG ----------------------------------------------------------------------------------------------------------------------------------
-
-		template <typename T, typename Allocator>
-			std::ostream&	operator<<(std::ostream& o, vector<T, Allocator> const & rhs)
-			{
-				std::cout << DARKTURQUOISE << "Printing content of vector of size(" << rhs.size() << ") : " << std::endl;
-				for (size_t i = 0; i < rhs.size(); i++)
-					o << rhs.get_array()[i] << " | ";
-				std::cout << RESET << std::endl;
-				return o;
-			}
 }
