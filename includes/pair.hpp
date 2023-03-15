@@ -103,18 +103,4 @@ namespace ft
 			{
 				return pair<T1, T2>(x, y);	
 			};
-
-		// // Constructs a pair object with its first element set to x and its second element set to y.
-		// template <typename T1, typename T2>
-		// 	pair<T1, T2>    make_pair(T1 x, typename enable_if<is_same<T2, const char *>::value, T2>::type y)
-		// 	{
-		// 		return pair<T1, T2>(x, std::string(y));	
-		// 	};
-
-		// // Constructs a pair object with its first element set to x and its second element set to y.
-		// template <typename T1, typename T2>
-		// 	pair<T1, T2>    make_pair(typename enable_if<is_same<T1, const char *>::value, T1>::type x, T2 y)
-		// 	{
-		// 		return pair<T1, T2>(x, std::string(y));	
-		// 	};
 }

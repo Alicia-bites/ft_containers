@@ -1,7 +1,0 @@
-conversion from 
-‘ft::set<int>::iterator’ 
-{aka 
-‘ft::setIterator<ft::RedBlackTree<int, std::less<int>, std::allocator<int> >, int>’}
-to non-scalar type ‘std::set<int>::iterator’ 
-{aka 
-‘std::_Rb_tree<int, int, std::_Identity<int>, std::less<int>, std::allocator<int> >::const_iterator’} 

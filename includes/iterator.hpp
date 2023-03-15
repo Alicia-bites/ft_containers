@@ -10,12 +10,6 @@
 
 namespace ft
 {
-	// struct input_iterator_tag {};
-	// struct forward_iterator_tag {};
-	// struct bidirectional_iterator_tag	: public input_iterator_tag {};
-	// struct random_access_iterator_tag	: public forward_iterator_tag {};
-	// struct output_iterator_tag			: public bidirectional_iterator_tag {};
-
 	// our base for different iterator types. Stock all the caracteristic of an
 	// iterator for later use.
 	template <typename Category, typename T, typename Distance = std::ptrdiff_t,
@@ -110,15 +104,6 @@ namespace ft
 			{ 
 				return current_position;
 			};
-
-			// template <typename K, typename V>
-			// 	typename enable_if<is_same<Iterator, mapIterator<K, V> >::value, typename Iterator::reference>::type operator*() const
-			// 	{ 
-			// 		std::cout << DEEPPINK3 << "YOOOOOOOOOUHOOOOOOOOOOOOOOOOOOOOUUU" << RESET << std::endl;
-
-			// 		Iterator tmp(current_position);
-			// 		return *tmp;
-			// 	}
 
 			reference operator*() const
 			{ 

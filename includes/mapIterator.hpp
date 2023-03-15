@@ -6,10 +6,6 @@
 #include "node.hpp"
 #include "pair.hpp"
 #include "utils.hpp"
-// #include "RedBlackTree.hpp"
-
-// FOR DEBUG
-// #include <utility>
 
 namespace ft
 {
@@ -143,7 +139,6 @@ namespace ft
 // OPERATOR OVERLOADS ---------------------------------------------------------------------------------------------
 				
                 // assignement operator
-                // mapIterator<Key, Value>&    operator=(const mapIterator<typename remove_cv<Key>::type, Value> & rhs)
                 mapIterator<RBT, Pair_type>&    operator=(const mapIterator<RBT, Pair_type> & rhs)
                 {
                     # if DEBUG
@@ -227,11 +222,6 @@ namespace ft
 
                 void    increment()
                 {
-                    // std::cout << *node_ << std::endl;
-                    // std::cout << *(node_->left) << std::endl;
-
-                    // if you try to increment beyond biggest Key, always return a pointer
-                    // to the node who's got the biggest key.
                     if (node_ == nil_)
                     {
                         node_ = biggest_;
@@ -278,8 +268,6 @@ namespace ft
                         pointer_ = &node_->data;
                         return ;
                     }
-                    // if you try to decrement beyond smallest Key, always return a pointer
-                    // to the node who's got the smallest key.
                     if (node_ == 0)
                     {
                         node_ = smallest_;

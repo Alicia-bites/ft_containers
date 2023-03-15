@@ -29,9 +29,6 @@ STACK_SRCS		:=	execute_tests_stack.cpp
 MAP_SRCS		:= 	execute_tests_map.cpp
 SET_SRCS		:=	execute_tests_set.cpp
 
-# SRCS			:=	$(SET_SRCS)
-# SRCS			:=	$(STACK_SRCS)
-# SRCS			:=	$(MAP_SRCS)
 SRCS            :=  42main.cpp \
 					$(VECTOR_SRCS) \
 					$(STACK_SRCS) \

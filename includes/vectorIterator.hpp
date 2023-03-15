@@ -48,17 +48,6 @@ namespace ft
 				pointer_ = rhs.base();
 				return *this;
 			};
-
-			// // this is a type conversion operator function. Its genereic form is
-			// // operator type() 
-			// // where type is the type to which the class should be converted.
-			// // Here, we convert to vectorIterator<const T>
-			// // wich allows conversion to a constant type T
-			// // (initially, our class is vectorIterator<T>).
-			// operator vectorIterator<const T>() const
-			// {
-			// 	return (vectorIterator<const T>(pointer_));
-			// }
 			
 			// dereference
 			reference operator*(void) const

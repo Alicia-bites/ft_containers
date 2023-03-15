@@ -24,7 +24,6 @@ namespace ft
 	class map
 	{
 		private :
-			// typedef RBTree_ptr<key_type, value_type, std::_Select1st<value_type>, key_compare, allocator_type>    RBTree_ptr;
 			typedef RedBlackTree<Key, Value, Compare, Allocator>	*RBTree_ptr;	
 			RBTree_ptr    											tree_;
 
@@ -191,8 +190,6 @@ namespace ft
 
 			size_type	max_size() const
 			{
-				// return std::numeric_limits<difference_type>::max() / sizeof(*tree_);
-				// return tree_->get_allocator().max_size();
 				return tree_->get_nodeAllocator().max_size();
 			};			
 
